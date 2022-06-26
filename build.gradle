@@ -5,6 +5,15 @@ buildscript {
         material3_version = 'material3:1.0.0-alpha13'
         lifecycle_version =  '2.4.1'
         activity_compose_version = '1.4.0'
+        nav_version = "2.4.2"
+        hilt_version = "2.40"
+        hilt_nav_fragment = "1.0.0"
+    }
+    dependencies {
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+        //To pass parameters as part of deeplink
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
+
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
