@@ -1,4 +1,4 @@
-package com.piappstudio.giftregister.ui.theme
+package com.piappstudio.pitheme.theme
 
 import android.app.Activity
 import android.os.Build
