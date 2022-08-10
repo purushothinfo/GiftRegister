@@ -11,7 +11,7 @@ import com.piappstudio.welcome.welcomeNavGraph
 /** To build the navigation graph*/
 @Composable
 fun AppNavGraph(navController: NavHostController) {
-   NavHost(navController = navController , startDestination = Root.AUTH, route = Root.APPROOT) {
+   NavHost(navController = navController , startDestination = Root.WELCOME, route = Root.APPROOT) {
       welcomeNavGraph()
       homeGraph()
       authNavGraph()
