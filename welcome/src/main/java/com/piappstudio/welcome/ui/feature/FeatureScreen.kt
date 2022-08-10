@@ -17,7 +17,7 @@ import com.piappstudio.pitheme.theme.Dimen
 fun FeatureScreen() {
     @Composable
     fun ItemView() {
-        Row(modifier = Modifier.padding(start = Dimen.doubleSpace, end = Dimen.doubleSpace)) {
+        Row(modifier = Modifier.padding(start = Dimen.double_space, end = Dimen.double_space)) {
             Text(text = "A")
             Text(text = "B")
             Text(text = "Element C")
@@ -25,10 +25,10 @@ fun FeatureScreen() {
     }
 
 
-    LazyColumn (verticalArrangement = Arrangement.spacedBy(Dimen.doubleSpace), modifier = Modifier.fillMaxWidth()) {
+    LazyColumn (verticalArrangement = Arrangement.spacedBy(Dimen.double_space), modifier = Modifier.fillMaxWidth()) {
         stickyHeader { 
             Text(text = "Sticky Header",
-                modifier = Modifier.fillMaxWidth().background(Color.Red). padding(Dimen.doubleSpace))
+                modifier = Modifier.fillMaxWidth().background(Color.Red). padding(Dimen.double_space))
         }
         items(100) {
             ItemView()
