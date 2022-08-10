@@ -12,6 +12,7 @@ import androidx.navigation.navigation
 import com.piappstudio.giftregister.ui.event.EventDetailScreen
 import com.piappstudio.giftregister.ui.event.EventListScreen
 import com.piappstudio.giftregister.ui.event.EventScreen
+import com.piappstudio.giftregister.ui.event.eventinfo.EventInfo
 import com.piappstudio.giftregister.ui.gift.GiftDetailScreen
 import com.piappstudio.giftregister.ui.gift.GiftListScreen
 import com.piappstudio.pitheme.route.Root
@@ -26,7 +27,7 @@ fun NavGraphBuilder.homeGraph() {
 
 fun NavGraphBuilder.eventGraph() {
 
-    navigation(startDestination = Route.Home.EVENT.EVENTSCREEN, route = Root.Home.EVENTS) {
+    navigation(startDestination = Route.Home.EVENT.EVENTINFO, route = Root.Home.EVENTS) {
 
         composable(Route.Home.EVENT.LIST) {
             EventListScreen()
@@ -35,9 +36,10 @@ fun NavGraphBuilder.eventGraph() {
         composable(Route.Home.EVENT.MANAGE_EVENT) {
             EventDetailScreen()
         }
-        composable(Route.Home.EVENT.EVENTSCREEN) {
-            EventScreen()
+        composable(Route.Home.EVENT.EVENTINFO) {
+            EventInfo()
         }
+
 
     }
 }
