@@ -7,4 +7,6 @@
 <resources>
     <string name="title_events">Events</string>
     <string name="acc_add_new_event">Add new events</string>
+    <string name="your_event_is_empty">Your event is empty</string>
+    <string name="lets_add_your_event">Let\'s add your event</string>
 </resources>

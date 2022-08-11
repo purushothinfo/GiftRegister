@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.piappstudio.giftregister.R
 import com.piappstudio.pigiftmodel.Constant.EMPTY_STRING
@@ -29,7 +28,6 @@ import com.piappstudio.pitheme.theme.Dimen
 
 // MVVM = Model- View- ViewModel
 
-@Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventListScreen(viewModel: EventListScreenViewModel = hiltViewModel()) {
@@ -87,7 +85,7 @@ fun RenderEventView(model:EventInfo) {
             }
         }
     }
-    
+
 }
 
 
@@ -99,4 +97,12 @@ fun ItemCountView(imageVector: ImageVector, text:String?) {
             Text(text = text, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
         }
     }
+}
+
+@Composable
+fun RenderEmptyScreen() {
+
+    EventEmptyScreen()
+
+
 }

@@ -10,6 +10,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.piappstudio.giftregister.ui.event.EventDetailScreen
+import com.piappstudio.giftregister.ui.event.list.EventEmptyScreen
 import com.piappstudio.giftregister.ui.event.list.EventListScreen
 import com.piappstudio.giftregister.ui.gift.GiftDetailScreen
 import com.piappstudio.giftregister.ui.gift.GiftListScreen
@@ -33,6 +34,10 @@ fun NavGraphBuilder.eventGraph() {
         composable(Route.Home.EVENT.LIST) {
             EventListScreen()
         }
+        composable(Route.Home.EVENT.EVENTEMPTSCREEN) {
+            EventEmptyScreen()
+        }
+
 
         composable(Route.Home.EVENT.MANAGE_EVENT) {
             EventDetailScreen()

@@ -18,6 +18,7 @@ object Route {
         object EVENT {
             val LIST = "events"
             val MANAGE_EVENT = "event"
+            val EVENTEMPTSCREEN ="eventemptyscreen"
         }
 
         object GIFT {
