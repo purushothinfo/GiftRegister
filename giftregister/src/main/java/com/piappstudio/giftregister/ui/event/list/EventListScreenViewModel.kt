@@ -29,7 +29,8 @@ class EventListScreenViewModel @Inject constructor() : ViewModel() {
 
     init {
         Timber.d("init part")
-        fetchEvents()
+       // fetchEvents()
+
     }
 
     private fun fetchEvents() {

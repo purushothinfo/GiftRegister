@@ -39,31 +39,41 @@ fun EventListScreen(viewModel: EventListScreenViewModel = hiltViewModel()) {
             Text(text = stringResource(R.string.title_events))
         })
     }) {
+       if (lstEvents.isNotEmpty()){
 
-        Box(modifier = Modifier.fillMaxSize()) {
 
-            LazyColumn(
-                modifier = Modifier
-                    .padding(it)
-                    .padding(start = Dimen.double_space, end = Dimen.double_space)
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(Dimen.double_space),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                items(lstEvents) { event->
-                    // Rendering the row
-                    RenderEventView(model = event)
+           Box(modifier = Modifier.fillMaxSize()) {
 
-                }
-            }
-            ExtendedFloatingActionButton(onClick = { /*TODO*/ }, modifier = Modifier.align(Alignment.BottomEnd).padding(Dimen.double_space)) {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(imageVector = Icons.Default.Add, contentDescription = stringResource(R.string.acc_add_new_event))
-                }
-            }
+               LazyColumn(
+                   modifier = Modifier
+                       .padding(it)
+                       .padding(start = Dimen.double_space, end = Dimen.double_space)
+                       .fillMaxSize(),
+                   verticalArrangement = Arrangement.spacedBy(Dimen.double_space),
+                   horizontalAlignment = Alignment.CenterHorizontally,
+               ) {
+                   items(lstEvents) { event ->
+                       // Rendering the row
+                       RenderEventView(model = event)
 
-        }
+                   }
+               }
+               ExtendedFloatingActionButton(
+                   onClick = { },
+                   modifier = Modifier.align(Alignment.BottomEnd).padding(Dimen.double_space)
+               ) {
+                   IconButton(onClick = {viewModel.lstEvents}) {
+                       Icon(
+                           imageVector = Icons.Default.Add,
+                           contentDescription = stringResource(R.string.acc_add_new_event)
+                       )
+                   }
+               }
 
+           }
+       }else {
+           EventEmptyScreen()
+       }
     }
 }
 
@@ -97,12 +107,11 @@ fun ItemCountView(imageVector: ImageVector, text:String?) {
             Text(text = text, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
         }
     }
+
 }
 
 @Composable
 fun RenderEmptyScreen() {
-
-    EventEmptyScreen()
 
 
 }

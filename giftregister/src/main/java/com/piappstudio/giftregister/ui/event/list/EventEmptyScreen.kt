@@ -22,7 +22,9 @@ import com.piappstudio.pitheme.theme.Dimen
 
 @Composable
 fun EventEmptyScreen() {
-    Box(modifier = Modifier.fillMaxSize()) {
+
+
+    Box(modifier = Modifier. fillMaxSize()) {
         Column(
             modifier = Modifier
                 .padding(Dimen.fourth_space)
