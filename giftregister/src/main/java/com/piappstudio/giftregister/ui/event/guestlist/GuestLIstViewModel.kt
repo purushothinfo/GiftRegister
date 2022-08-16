@@ -54,5 +54,12 @@ class GuestLIstViewModel @Inject constructor(): ViewModel() {
 
         }
 
+      fun onClickAdd(){
+          Timber.d("onclick is called")
+      }
+     fun onClickEdit(info: GuestInfo){
+         Timber.d("called name= ${info.name},address = ${info.address}, phone = ${info.phone}")
+     }
+
     }
 

@@ -5,6 +5,7 @@
  */
 
 package com.piappstudio.giftregister.ui.event.guestlist
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -47,22 +48,21 @@ fun GuestLIstScreen(viewModel: GuestLIstViewModel= hiltViewModel()){
             ) {
                 items(lstGuest) { guest ->
                     // Rendering the row
-                    RenderGuestListView(model = guest )
+                    RenderGuestListView(guestInfo = guest,viewModel)
 
                 }
             }
             ExtendedFloatingActionButton(
-                onClick = { },
+                onClick = {viewModel.onClickAdd() },
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(Dimen.double_space)
             ) {
-                IconButton(onClick = {}) {
                     Icon(
                         imageVector = Icons.Default.Add,
                         contentDescription = "Add Guest list"
                     )
-                }
+
             }
 
         }
@@ -72,15 +72,15 @@ fun GuestLIstScreen(viewModel: GuestLIstViewModel= hiltViewModel()){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RenderGuestListView(model:GuestInfo) {
+fun RenderGuestListView(guestInfo: GuestInfo,viewModel: GuestLIstViewModel) {
 
-    Card(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth().clickable {viewModel.onClickEdit(guestInfo)  }) {
         Column (modifier = Modifier.padding(Dimen.double_space)) {
-            Text(text = model.name?: Constant.EMPTY_STRING, style = MaterialTheme.typography.titleMedium)
+            Text(text = guestInfo.name?: Constant.EMPTY_STRING, style = MaterialTheme.typography.titleMedium)
             Spacer(modifier = Modifier.height(Dimen.space))
-            Text(text = model.address?: Constant.EMPTY_STRING, style = MaterialTheme.typography.titleSmall)
+            Text(text = guestInfo.address?: Constant.EMPTY_STRING, style = MaterialTheme.typography.titleSmall)
             Spacer(modifier = Modifier.height(Dimen.double_space))
-            Text(text = model.phone?: Constant.EMPTY_STRING , style = MaterialTheme.typography.titleSmall)
+            Text(text = guestInfo.phone?: Constant.EMPTY_STRING , style = MaterialTheme.typography.titleSmall)
 
 
         }
