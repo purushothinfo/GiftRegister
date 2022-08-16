@@ -11,7 +11,8 @@ data class GuestInfo(
     var address:String?=null,
     var phone:String? =null,
     val giftValue: Double? = null,
-    val giftType:GiftType =GiftType.CASH
+    val giftType:GiftType =GiftType.CASH,
+
 
 )
 

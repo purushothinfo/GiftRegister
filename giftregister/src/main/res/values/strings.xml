@@ -11,4 +11,13 @@
     <string name="lets_add_your_event">Let\'s add your event</string>
     <string name="title_name">name</string>
     <string name="guestlist">GuestList</string>
+    <string name="title_edit_guest">Edit Guest </string>
+    <string name="type_name">Type Name</string>
+    <string name="type_address">Type Address</string>
+    <string name="full_name">Full name</string>
+    <string name="address">Address</string>
+    <string name="_address">Address</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="submit">Submit</string>
+
 </resources>

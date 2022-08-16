@@ -7,6 +7,7 @@
 package com.piappstudio.giftregister.ui.event.guestlist
 
 import androidx.lifecycle.ViewModel
+import com.piappstudio.pigiftmodel.GiftType
 import com.piappstudio.pigiftmodel.GuestInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,11 +35,12 @@ class GuestLIstViewModel @Inject constructor(): ViewModel() {
         calender.time.time = Date().time
 
       val phone=956668991
-
+        var cash=100
+        var gold=2
+        var others =5
         for (index in 1..100) {
             calender.add(Calendar.DATE, 1)
             val updatedPhone  = phone+index
-
 
             val guestInfo=GuestInfo(
                 name = "Gundu$index ",
