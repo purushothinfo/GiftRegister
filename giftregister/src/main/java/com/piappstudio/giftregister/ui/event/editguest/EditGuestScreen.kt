@@ -5,24 +5,21 @@
  */
 
 package com.piappstudio.giftregister.ui.event.editguest
-
-import android.view.View
-import android.widget.RadioButton
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.piappstudio.giftregister.R
 import com.piappstudio.pitheme.theme.Dimen
 
@@ -93,6 +90,9 @@ fun EditGuestScreen() {
                             .fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
                     )
+                    Spacer(modifier = Modifier.height(Dimen.double_space))
+
+                    RadioButtonDemo()
 
                     Spacer(modifier = Modifier.height(Dimen.triple_space))
 
@@ -116,15 +116,39 @@ fun EditGuestScreen() {
 
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-    val radioButton= listOf("cash,gold,others")
-    val selectedButton= remember {
-        mutableStateOf(radioButton.first())
-    }
-    radioButton.forEach {
-        val isSelected = it==selectedButton.value
-        val colors =RadioButtonDefaults.colors(
-            selectedColor = colorResource(id = androidx.appcompat.R.color.abc_background_cache_hint_selector_material_light)
-        )
+fun RadioButtonDemo() {
+    Column {
+        val selectedGiftType = remember { mutableStateOf("") }
+        Text("Select GiftType")
+        Spacer(modifier = Modifier.size(Dimen.double_space))
+        Row (modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+            ){
+            RadioButton(selected = selectedGiftType.value =="", onClick = {
+                selectedGiftType.value = ""
+            })
+            Text(GiftType.Cash)
+            RadioButton(selected = selectedGiftType.value == GiftType.Gold, onClick = {
+                selectedGiftType.value = GiftType.Gold
+            },colors = RadioButtonDefaults.colors(Color.Red))
+            Text(GiftType.Gold)
+
+            RadioButton(selected = selectedGiftType.value == GiftType.Others, onClick = {
+                selectedGiftType.value = GiftType.Others
+            },colors = RadioButtonDefaults.colors(Color.Red))
+            Text(GiftType.Others)
+
+        }
+
     }
 }
+
+object GiftType {
+    const val Cash = "Cash"
+    const val Gold= "Gold"
+    const val Others="Others"
+}
+
