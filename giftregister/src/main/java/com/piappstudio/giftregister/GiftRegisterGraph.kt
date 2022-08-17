@@ -9,6 +9,7 @@ package com.piappstudio.giftregister
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.piappstudio.giftregister.ui.event.editevent.EditEventScreen
 import com.piappstudio.giftregister.ui.event.editguest.EditGuestScreen
 import com.piappstudio.giftregister.ui.event.guestlist.GuestLIstScreen
 import com.piappstudio.giftregister.ui.event.list.EventEmptyScreen
@@ -30,7 +31,7 @@ fun NavGraphBuilder.homeGraph() {
 
 fun NavGraphBuilder.eventGraph() {
 
-    navigation(startDestination = Route.Home.EVENT.EDITGUEST, route = Root.Home.EVENTS) {
+    navigation(startDestination = Route.Home.EVENT.EDITEVENT, route = Root.Home.EVENTS) {
 
         composable(Route.Home.EVENT.LIST) {
             EventListScreen()
@@ -43,6 +44,9 @@ fun NavGraphBuilder.eventGraph() {
         }
         composable(Route.Home.EVENT.EDITGUEST) {
             EditGuestScreen()
+        }
+        composable(Route.Home.EVENT.EDITEVENT){
+            EditEventScreen()
         }
     }
 }

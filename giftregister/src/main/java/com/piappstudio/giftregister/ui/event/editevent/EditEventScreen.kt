@@ -4,18 +4,17 @@
  *
  */
 
-package com.piappstudio.giftregister.ui.event.editguest
+package com.piappstudio.giftregister.ui.event.editevent
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -24,11 +23,10 @@ import com.piappstudio.pitheme.theme.Dimen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditGuestScreen() {
+fun EditEventScreen() {
     Scaffold(topBar = {
         SmallTopAppBar(title = {
-            Text(text = stringResource(R.string.title_edit_guest))
-
+            Text(text = stringResource(R.string.edit_event))
         })
 
     }) {
@@ -36,8 +34,9 @@ fun EditGuestScreen() {
             modifier = Modifier
                 .padding(it)
                 .padding(start = Dimen.double_space, end = Dimen.double_space)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(Dimen.double_space),
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
                 Column(
@@ -46,7 +45,7 @@ fun EditGuestScreen() {
                 ) {
                     Spacer(modifier = Modifier.height(Dimen.triple_space))
                     Text(
-                        text = stringResource(R.string.full_name),
+                        text = stringResource(id = R.string.title_name),
                         fontWeight = FontWeight.Normal
                     )
 
@@ -56,20 +55,20 @@ fun EditGuestScreen() {
 
                         },
                         placeholder = {
-                            Text(text = stringResource(R.string.type_name))
+                            Text(text = stringResource(R.string.please_enter_your_event))
                         },
                         leadingIcon = {
                             Icon(
-                                Icons.Default.Person,
-                                contentDescription = "Person"
+                                Icons.Default.People,
+                                contentDescription = stringResource(R.string.people)
                             )
                         }, modifier = Modifier
                             .fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
                     )
-                    Spacer(modifier = Modifier.height(Dimen.double_space))
+                    Spacer(modifier = Modifier.height(Dimen.triple_space))
                     Text(
-                        text = stringResource(R.string._address),
+                        text = stringResource(id = R.string._date),
                         fontWeight = FontWeight.Normal
                     )
                     Spacer(modifier = Modifier.height(Dimen.double_space))
@@ -78,20 +77,17 @@ fun EditGuestScreen() {
 
                         },
                         placeholder = {
-                            Text(text = stringResource(R.string.type_address))
+                            Text(text = "Please enter your date")
                         },
                         leadingIcon = {
                             Icon(
-                                Icons.Default.Home,
-                                contentDescription = "Address"
+                                Icons.Default.CalendarToday,
+                                contentDescription = "Date"
                             )
                         }, modifier = Modifier
                             .fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
                     )
-                    Spacer(modifier = Modifier.height(Dimen.double_space))
-
-                    RadioButtonDemo()
 
                     Spacer(modifier = Modifier.height(Dimen.fourth_space))
 
@@ -99,55 +95,12 @@ fun EditGuestScreen() {
                     }, modifier = Modifier.fillMaxWidth()) {
                         Text(
                             text = stringResource(R.string.submit),
-                            modifier = Modifier.padding(Dimen.space),
-                            fontWeight = FontWeight.Bold
+                            modifier = Modifier.padding(Dimen.space)
                         )
                     }
-
-
                 }
-
-
             }
 
         }
     }
-
 }
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun RadioButtonDemo() {
-    Column {
-        val selectedGiftType = remember { mutableStateOf("") }
-        Text("Select GiftType")
-        Spacer(modifier = Modifier.size(Dimen.double_space))
-        Row (modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-            ){
-            RadioButton(selected = selectedGiftType.value ==GiftType.Cash, onClick = {
-                selectedGiftType.value =GiftType.Cash
-            })
-            Text(GiftType.Cash)
-            RadioButton(selected = selectedGiftType.value == GiftType.Gold, onClick = {
-                selectedGiftType.value = GiftType.Gold
-            },colors = RadioButtonDefaults.colors(Color.Red))
-            Text(GiftType.Gold)
-
-            RadioButton(selected = selectedGiftType.value == GiftType.Others, onClick = {
-                selectedGiftType.value = GiftType.Others
-            },colors = RadioButtonDefaults.colors(Color.Red))
-            Text(GiftType.Others)
-
-        }
-
-    }
-}
-
-object GiftType {
-    const val Cash = "Cash"
-    const val Gold= "Gold"
-    const val Others="Others"
-}
-

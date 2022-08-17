@@ -20,6 +20,7 @@ object Route {
             val EVENTEMPTSCREEN ="eventemptyscreen"
             val GUESTLIST ="guestlist"
             val EDITGUEST ="editguest"
+            val EDITEVENT ="editevent"
         }
 
         object GIFT {
