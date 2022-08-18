@@ -12,21 +12,32 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.piappstudio.giftregister.R
 import com.piappstudio.pitheme.theme.Dimen
+import javax.security.auth.callback.Callback
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditEventScreen() {
+fun EditEventScreen(viewModel: EditEventViewModel= hiltViewModel(),callback:()->Unit) {
     Scaffold(topBar = {
         SmallTopAppBar(title = {
             Text(text = stringResource(R.string.edit_event))
+        }, modifier = Modifier.padding(Dimen.space), actions = {
+            IconButton(onClick = { callback.invoke()}) {
+                Icon(imageVector = Icons.Default.Close, contentDescription ="close" )
+
+            }
         })
 
     }) {
@@ -89,6 +100,7 @@ fun EditEventScreen() {
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
                     )
 
+
                     Spacer(modifier = Modifier.height(Dimen.fourth_space))
 
                     Button(onClick = {
@@ -103,4 +115,7 @@ fun EditEventScreen() {
 
         }
     }
+
 }
+
+

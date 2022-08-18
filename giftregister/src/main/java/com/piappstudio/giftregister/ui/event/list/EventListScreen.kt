@@ -30,7 +30,7 @@ import com.piappstudio.pitheme.theme.Dimen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EventListScreen(viewModel: EventListScreenViewModel = hiltViewModel()) {
+fun EventListScreen(viewModel: EventListScreenViewModel = hiltViewModel(), callBack:()->Unit) {
 
     val lstEvents by viewModel.lstEvents.collectAsState()
 
@@ -59,15 +59,13 @@ fun EventListScreen(viewModel: EventListScreenViewModel = hiltViewModel()) {
                    }
                }
                ExtendedFloatingActionButton(
-                   onClick = { },
+                   onClick = { callBack.invoke() },
                    modifier = Modifier.align(Alignment.BottomEnd).padding(Dimen.double_space)
                ) {
-                   IconButton(onClick = {viewModel.lstEvents}) {
-                       Icon(
-                           imageVector = Icons.Default.Add,
-                           contentDescription = stringResource(R.string.acc_add_new_event)
-                       )
-                   }
+                   Icon(
+                       imageVector = Icons.Default.Add,
+                       contentDescription = stringResource(R.string.acc_add_new_event)
+                   )
                }
 
            }
