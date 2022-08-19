@@ -21,10 +21,11 @@ import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @Composable
-fun EventHome(){
+fun EventHome() {
 
-    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(bottomSheetState =
-    BottomSheetState(BottomSheetValue.Collapsed)
+    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
+        bottomSheetState =
+        BottomSheetState(BottomSheetValue.Collapsed)
     )
 
     val coroutineScope = rememberCoroutineScope()
@@ -32,13 +33,16 @@ fun EventHome(){
     BottomSheetScaffold(
         scaffoldState = bottomSheetScaffoldState,
         sheetContent = {
-            Box(Modifier.fillMaxWidth().fillMaxHeight(.4f).background(Color(0XFF0F9D58))) {
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(.6f)
+                    .background(Color(0XFF0F9D58))) {
                 EditEventScreen {
                     coroutineScope.launch {
                         bottomSheetScaffoldState.bottomSheetState.collapse()
 
                     }
-
                 }
             }
 

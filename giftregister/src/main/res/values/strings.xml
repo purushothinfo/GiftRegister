@@ -23,5 +23,7 @@
     <string name="_date">Date</string>
     <string name="people">People</string>
     <string name="please_enter_your_event">Please enter your event</string>
+    <string name="error_name">Please enter name</string>
+    <string name="error_date">Enter event date</string>
 
 </resources>
