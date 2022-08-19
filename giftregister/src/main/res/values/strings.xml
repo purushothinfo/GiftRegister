@@ -14,7 +14,7 @@
     <string name="title_edit_guest">Edit Guest </string>
     <string name="type_name">Type Name</string>
     <string name="type_address">Type Address</string>
-    <string name="full_name">Full name</string>
+    <string name="name"> Name</string>
     <string name="address">Address</string>
     <string name="_address">Address</string>
     <string name="phone_number">Phone Number</string>
@@ -25,5 +25,8 @@
     <string name="please_enter_your_event">Please enter your event</string>
     <string name="error_name">Please enter name</string>
     <string name="error_date">Enter event date</string>
+    <string name="error_address">Enter your address</string>
+    <string name="icon_address">Address</string>
+
 
 </resources>

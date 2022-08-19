@@ -58,6 +58,6 @@ class EditEventViewModel  @Inject constructor() : ViewModel()  {
 }
 
 data class EventError(
-    val nameError:UiError = UiError(errorText = R.string.error_name),
+    val nameError:UiError = UiError(errorText =R.string.error_name),
     val dateError:UiError = UiError(errorText = R.string.error_date)
 )
