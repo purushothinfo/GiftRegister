@@ -6,4 +6,6 @@
 
 <resources>
     <string name="title_gift_register">Gift Register</string>
+    <string name="copy_rights">Pi App Studio Inc. Reserved all rights © 2022</string>
+    <string name="welcome_description">Let\'s save your loving one\'s gift and return it back</string>
 </resources>

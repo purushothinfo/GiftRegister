@@ -12,4 +12,5 @@ object Dimen {
     val splash_size = 100.dp
     val space = 8.dp
     val doubleSpace = 16.dp
+    val tripleSpace = 24.dp
 }

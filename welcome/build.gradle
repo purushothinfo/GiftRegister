@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -44,9 +46,15 @@ dependencies {
     //For lottie animation integration
     implementation "com.airbnb.android:lottie-compose:$lottieVersion"
 
+    implementation project(path: ':PiNavigation')
     // For Timber
     implementation "com.jakewharton.timber:timber:$timber_version"
 
+    // To integrate Hilt Android
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    // To use additional extensions of navigation frameworks like hiltViewModel()
+    implementation "androidx.hilt:hilt-navigation-compose:$hilt_navigation_compose"
 
     // To integrate Navigation
     implementation "androidx.navigation:navigation-compose:$nav_version"

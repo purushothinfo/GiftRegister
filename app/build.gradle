@@ -63,17 +63,20 @@ dependencies {
 
     // To integrate Hilt Android
     implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    // To use additional extensions of navigation frameworks like hiltViewModel()
+    implementation "androidx.hilt:hilt-navigation-fragment:$hilt_nav_fragment"
     implementation project(path: ':welcome')
     implementation project(path: ':authentication')
     implementation project(path: ':pitheme')
     implementation project(path: ':giftregister')
-    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    implementation project(path: ':PiNavigation')
+
 
     // To integrate Navigation
     implementation "androidx.navigation:navigation-compose:$nav_version"
 
-    // To use additional extensions of navigation frameworks like hiltViewModel()
-    implementation "androidx.hilt:hilt-navigation-fragment:$hilt_nav_fragment"
+
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
