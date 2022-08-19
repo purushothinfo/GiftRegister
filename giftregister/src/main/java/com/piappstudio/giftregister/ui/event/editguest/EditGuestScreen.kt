@@ -147,16 +147,16 @@ fun RadioButtonDemo() {
             ){
             RadioButton(selected = selectedGiftType.value ==GiftType.Cash, onClick = {
                 selectedGiftType.value =GiftType.Cash
-            })
+            },colors = RadioButtonDefaults.colors(Color.Green))
             Text(GiftType.Cash)
             RadioButton(selected = selectedGiftType.value == GiftType.Gold, onClick = {
                 selectedGiftType.value = GiftType.Gold
-            },colors = RadioButtonDefaults.colors(Color.Red))
+            },colors = RadioButtonDefaults.colors(Color.Green))
             Text(GiftType.Gold)
 
             RadioButton(selected = selectedGiftType.value == GiftType.Others, onClick = {
                 selectedGiftType.value = GiftType.Others
-            },colors = RadioButtonDefaults.colors(Color.Red))
+            },colors = RadioButtonDefaults.colors(Color.Green))
             Text(GiftType.Others)
 
         }

@@ -35,7 +35,7 @@ fun NavGraphBuilder.homeGraph() {
 @OptIn(ExperimentalMaterialApi::class)
 fun NavGraphBuilder.eventGraph() {
 
-    navigation(startDestination = Route.Home.EVENT.GUESTLIST, route = Root.Home.EVENTS) {
+    navigation(startDestination = Route.Home.EVENT.LIST, route = Root.Home.EVENTS) {
 
         composable(Route.Home.EVENT.LIST) {
             EventHome()

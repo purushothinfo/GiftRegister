@@ -8,7 +8,6 @@ package com.piappstudio.giftregister.ui.event.editguest
 
 import androidx.lifecycle.ViewModel
 import com.piappstudio.giftregister.R
-import com.piappstudio.giftregister.ui.event.editevent.EventError
 import com.piappstudio.pigiftmodel.GuestInfo
 import com.piappstudio.pitheme.component.UiError
 import dagger.hilt.android.lifecycle.HiltViewModel

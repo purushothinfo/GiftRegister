@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 @HiltViewModel
 class EditEventViewModel  @Inject constructor() : ViewModel()  {
@@ -61,3 +62,5 @@ data class EventError(
     val nameError:UiError = UiError(errorText =R.string.error_name),
     val dateError:UiError = UiError(errorText = R.string.error_date)
 )
+
+

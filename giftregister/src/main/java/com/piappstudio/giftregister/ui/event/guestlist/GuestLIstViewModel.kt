@@ -34,10 +34,8 @@ class GuestLIstViewModel @Inject constructor(): ViewModel() {
         val calender = Calendar.getInstance()
         calender.time.time = Date().time
 
+
       val phone=956668991
-        var cash=100
-        var gold=2
-        var others =5
         for (index in 1..100) {
             calender.add(Calendar.DATE, 1)
             val updatedPhone  = phone+index
@@ -46,6 +44,8 @@ class GuestLIstViewModel @Inject constructor(): ViewModel() {
                 name = "Gundu$index ",
                 address = "Arumbakkam",
                 phone = updatedPhone.toString()
+
+
 
             )
             guests.add(guestInfo)
