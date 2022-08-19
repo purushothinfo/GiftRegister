@@ -27,10 +27,11 @@ import com.piappstudio.giftregister.ui.event.list.ItemCountView
 import com.piappstudio.pigiftmodel.Constant
 import com.piappstudio.pigiftmodel.GuestInfo
 import com.piappstudio.pitheme.theme.Dimen
+import javax.security.auth.callback.Callback
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GuestLIstScreen(viewModel: GuestLIstViewModel = hiltViewModel()) {
+fun GuestLIstScreen(viewModel: GuestLIstViewModel = hiltViewModel(),callback: ()->Unit) {
 
     val lstGuest by viewModel.lstGuest.collectAsState()
 
@@ -57,7 +58,7 @@ fun GuestLIstScreen(viewModel: GuestLIstViewModel = hiltViewModel()) {
                 }
             }
             ExtendedFloatingActionButton(
-                onClick = { viewModel.onClickAdd() },
+                onClick = {callback.invoke() },
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(Dimen.double_space)
