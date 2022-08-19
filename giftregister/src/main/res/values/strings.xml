@@ -9,4 +9,24 @@
     <string name="acc_add_new_event">Add new events</string>
     <string name="your_event_is_empty">Your event is empty</string>
     <string name="lets_add_your_event">Let\'s add your event</string>
+    <string name="title_name">Name</string>
+    <string name="guestlist">GuestList</string>
+    <string name="title_edit_guest">Edit Guest </string>
+    <string name="type_name">Type Name</string>
+    <string name="type_address">Type Address</string>
+    <string name="name"> Name</string>
+    <string name="address">Address</string>
+    <string name="_address">Address</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="submit">Submit</string>
+    <string name="edit_event">Edit Event</string>
+    <string name="_date">Date</string>
+    <string name="people">People</string>
+    <string name="please_enter_your_event">Please enter your event</string>
+    <string name="error_name">Please enter name</string>
+    <string name="error_date">Enter event date</string>
+    <string name="error_address">Enter your address</string>
+    <string name="icon_address">Address</string>
+
+
 </resources>
