@@ -8,7 +8,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
-import com.piappstudio.giftregister.data.GiftDatabase
+import com.piappstudio.pigiftmodel.data.GiftDatabase
 import com.piappstudio.giftregister.navgraph.AppNavGraph
 import com.piappstudio.pitheme.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
             applicationContext,
             GiftDatabase::class.java, "Gift Database"
         ).fallbackToDestructiveMigration().build()
-        val userDao = database. userInfo()
+        val eventDao = database. eventInfo()
         setContent {
             AppTheme {
                 SetUpAppNavGraph()

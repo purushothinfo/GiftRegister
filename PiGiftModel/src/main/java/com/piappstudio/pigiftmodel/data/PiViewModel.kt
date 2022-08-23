@@ -4,7 +4,7 @@
  *
  */
 
-package com.piappstudio.giftregister.data
+package com.piappstudio.pigiftmodel.data
 
 import androidx.lifecycle.ViewModel
 
