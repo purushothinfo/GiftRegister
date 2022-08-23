@@ -13,9 +13,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.piappstudio.pigiftmodel.EventInfo
 
-@Database(entities = [EventInfo::class], version = 2, exportSchema = false)
+@Database(entities = [EventInfo::class], version = 2,exportSchema = false )
 abstract class GiftDatabase:RoomDatabase() {
-    abstract fun eventInfo(): EventInfo
+    abstract fun eventInfo(): EventDao
 
     companion object {
         // Singleton prevents multiple instances of database opening at the

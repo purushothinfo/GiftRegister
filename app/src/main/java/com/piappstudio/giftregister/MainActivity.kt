@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val database = Room.databaseBuilder(
             applicationContext,
-            GiftDatabase::class.java, "Gift Database"
+            GiftDatabase::class.java, "GiftDatabase"
         ).fallbackToDestructiveMigration().build()
         val eventDao = database. eventInfo()
         setContent {
