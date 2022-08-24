@@ -4,7 +4,7 @@
  *
  */
 
-package com.piappstudio.pigiftmodel
+package com.piappstudio.pimodel
 
 data class GuestInfo(
     var name:String? = null,

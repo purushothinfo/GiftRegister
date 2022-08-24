@@ -8,14 +8,13 @@ package com.piappstudio.giftregister.ui.event.editevent
 
 import androidx.lifecycle.ViewModel
 import com.piappstudio.giftregister.R
-import com.piappstudio.pigiftmodel.EventInfo
+import com.piappstudio.pimodel.EventInfo
 import com.piappstudio.pitheme.component.UiError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import timber.log.Timber
-import java.util.*
 import javax.inject.Inject
 @HiltViewModel
 class EditEventViewModel  @Inject constructor() : ViewModel()  {

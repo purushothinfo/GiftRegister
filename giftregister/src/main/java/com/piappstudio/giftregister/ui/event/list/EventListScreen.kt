@@ -22,8 +22,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.piappstudio.giftregister.R
-import com.piappstudio.pigiftmodel.Constant.EMPTY_STRING
-import com.piappstudio.pigiftmodel.EventInfo
+import com.piappstudio.pimodel.Constant.EMPTY_STRING
+import com.piappstudio.pimodel.EventInfo
 import com.piappstudio.pitheme.theme.Dimen
 
 // MVVM = Model- View- ViewModel

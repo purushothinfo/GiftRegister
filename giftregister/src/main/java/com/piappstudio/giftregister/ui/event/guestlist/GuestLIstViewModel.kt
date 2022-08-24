@@ -7,8 +7,7 @@
 package com.piappstudio.giftregister.ui.event.guestlist
 
 import androidx.lifecycle.ViewModel
-import com.piappstudio.pigiftmodel.GiftType
-import com.piappstudio.pigiftmodel.GuestInfo
+import com.piappstudio.pimodel.GuestInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

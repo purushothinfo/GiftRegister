@@ -8,7 +8,7 @@ package com.piappstudio.giftregister.ui.event.editguest
 
 import androidx.lifecycle.ViewModel
 import com.piappstudio.giftregister.R
-import com.piappstudio.pigiftmodel.GuestInfo
+import com.piappstudio.pimodel.GuestInfo
 import com.piappstudio.pitheme.component.UiError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
