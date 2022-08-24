@@ -24,10 +24,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.piappstudio.giftregister.R
 import com.piappstudio.giftregister.ui.event.list.ItemCountView
-import com.piappstudio.pigiftmodel.Constant
-import com.piappstudio.pigiftmodel.GuestInfo
+import com.piappstudio.pimodel.Constant
+import com.piappstudio.pimodel.GuestInfo
 import com.piappstudio.pitheme.theme.Dimen
-import javax.security.auth.callback.Callback
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -6,14 +6,11 @@
 
 package com.piappstudio.giftregister.ui.event.list
 
-import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
-import com.piappstudio.pigiftmodel.EventInfo
+import com.piappstudio.pimodel.EventInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject

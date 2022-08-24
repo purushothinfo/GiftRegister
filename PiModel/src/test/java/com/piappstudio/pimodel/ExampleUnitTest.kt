@@ -4,7 +4,7 @@
  *
  */
 
-package com.piappstudio.pigiftmodel
+package com.piappstudio.pimodel
 
 import org.junit.Test
 

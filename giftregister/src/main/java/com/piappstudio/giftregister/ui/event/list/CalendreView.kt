@@ -15,7 +15,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
-import com.piappstudio.pigiftmodel.Constant
+import com.piappstudio.pimodel.Constant
 import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.O)

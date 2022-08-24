@@ -22,10 +22,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.piappstudio.giftregister.R
-import com.piappstudio.pigiftmodel.GuestInfo
 import com.piappstudio.pitheme.component.PiErrorView
 import com.piappstudio.pitheme.theme.Dimen
-import javax.security.auth.callback.Callback
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
