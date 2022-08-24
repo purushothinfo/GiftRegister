@@ -37,7 +37,7 @@ fun GuestHome() {
             Box(
                 Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(.6f)
+                    .fillMaxHeight(.8f)
                     .background(Color(0XFF0F9D58))) {
                 EditGuestScreen{
                     coroutineScope.launch{bottomSheetScaffoldState.bottomSheetState.collapse()}

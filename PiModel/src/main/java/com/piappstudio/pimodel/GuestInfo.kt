@@ -6,7 +6,16 @@
 
 package com.piappstudio.pimodel
 
+import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+@Entity
 data class GuestInfo(
+    @PrimaryKey(autoGenerate = true)
+    val id:Long = 0,
     var name:String? = null,
     var address:String?=null,
     var phone:String? =null,
@@ -14,7 +23,7 @@ data class GuestInfo(
     val giftType:GiftType =GiftType.CASH,
 
 
-)
+) : Parcelable
 
 enum class GiftType{
     CASH,

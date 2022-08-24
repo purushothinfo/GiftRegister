@@ -6,18 +6,22 @@
 
 package com.piappstudio.giftregister.ui.event.editguest
 
+
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.piappstudio.giftregister.R
 import com.piappstudio.pimodel.GuestInfo
+import com.piappstudio.pimodel.pidatabase.PiGuestDataRepository
 import com.piappstudio.pitheme.component.UiError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 @HiltViewModel
-class EditGuestViewModel   @Inject constructor() : ViewModel() {
+class EditGuestViewModel   @Inject constructor(private val piGuestDataRepository: PiGuestDataRepository) : ViewModel() {
 
     private val _guestInfo = MutableStateFlow(GuestInfo())
     val guestInfo: StateFlow<GuestInfo> = _guestInfo
@@ -48,10 +52,10 @@ class EditGuestViewModel   @Inject constructor() : ViewModel() {
         } else {
             _errorInfo.update { it.copy(addressError  = it.addressError.copy(isError = false)) }
         }
-
-        //TODO: Save event information
-        Timber.d("Save event information")
-
+        viewModelScope.launch {
+            piGuestDataRepository.insert(guestInfo)
+            Timber.d("Save event information")
+        }
 
     }
 }
