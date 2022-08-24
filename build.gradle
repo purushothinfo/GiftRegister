@@ -12,11 +12,13 @@ buildscript {
         timber_version = "5.0.1"
         hilt_navigation_compose = "1.0.0"
         room_version = "2.3.0-beta02"
+        kotlin_version = "1.6.21"
     }
     dependencies {
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
         //To pass parameters as part of deeplink
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
     }
 
