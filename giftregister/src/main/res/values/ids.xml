@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /***
+  ~ Pi App Studio. All rights reserved.Copyright (c) 2022.
+  ~ **/
+  -->
+
+<resources>
+    <item name="radio_pirates" type="id" />
+    <item name="radio_ninjas" type="id" />
+</resources>
