@@ -22,7 +22,7 @@ data class EventInfo(
     val id:Long = 0,
     val title: String? = null,
     val date: String? = null,
-    val noOfPeople: Int? = 0,
+    val noOfPeople: Int? = null,
     val cashAmount: Double? = null,
     val totalGold:Float? = null,
     val totalOthers:Int? = null

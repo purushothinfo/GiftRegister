@@ -24,72 +24,93 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.piappstudio.giftregister.R
 import com.piappstudio.pimodel.Constant.EMPTY_STRING
 import com.piappstudio.pimodel.EventInfo
+import com.piappstudio.pitheme.component.AttachLifeCycleEvent
 import com.piappstudio.pitheme.theme.Dimen
 
 // MVVM = Model- View- ViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EventListScreen(viewModel: EventListScreenViewModel = hiltViewModel(), callBack:()->Unit) {
+fun EventListScreen(viewModel: EventListScreenViewModel = hiltViewModel(), callBack: () -> Unit) {
 
     val lstEvents by viewModel.lstEvents.collectAsState()
-
+    AttachLifeCycleEvent(onResume = {
+        viewModel.fetchEvents()
+    })
     Scaffold(topBar = {
         SmallTopAppBar(title = {
             Text(text = stringResource(R.string.title_events))
         })
     }) {
-       if (lstEvents.isNotEmpty()){
 
 
-           Box(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.fillMaxSize()) {
 
-               LazyColumn(
-                   modifier = Modifier
-                       .padding(it)
-                       .padding(start = Dimen.double_space, end = Dimen.double_space)
-                       .fillMaxSize(),
-                   verticalArrangement = Arrangement.spacedBy(Dimen.double_space),
-                   horizontalAlignment = Alignment.CenterHorizontally,
-               ) {
-                   items(lstEvents) { event ->
-                       // Rendering the row
-                       RenderEventView(model = event)
+            if (lstEvents.isNotEmpty()) {
+                LazyColumn(
+                    modifier = Modifier
+                        .padding(it)
+                        .padding(start = Dimen.double_space, end = Dimen.double_space)
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(Dimen.double_space),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    items(lstEvents) { event ->
+                        // Rendering the row
+                        RenderEventView(model = event)
 
-                   }
-               }
-               ExtendedFloatingActionButton(
-                   onClick = { callBack.invoke() },
-                   modifier = Modifier.align(Alignment.BottomEnd).padding(Dimen.double_space)
-               ) {
-                   Icon(
-                       imageVector = Icons.Default.Add,
-                       contentDescription = stringResource(R.string.acc_add_new_event)
-                   )
-               }
+                    }
+                }
+            } else {
+                EventEmptyScreen()
+            }
+            ExtendedFloatingActionButton(
+                onClick = { callBack.invoke() },
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(Dimen.double_space)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(R.string.acc_add_new_event)
+                )
+            }
 
-           }
-       }else {
-           EventEmptyScreen()
-       }
+        }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RenderEventView(model:EventInfo) {
+fun RenderEventView(model: EventInfo) {
 
     Card(modifier = Modifier.fillMaxWidth()) {
-        Column (modifier = Modifier.padding(Dimen.double_space)) {
-            Text(text = model.title?:EMPTY_STRING, style = MaterialTheme.typography.titleMedium)
+        Column(modifier = Modifier.padding(Dimen.double_space)) {
+            Text(text = model.title ?: EMPTY_STRING, style = MaterialTheme.typography.titleMedium)
             Spacer(modifier = Modifier.height(Dimen.space))
-            Text(text = model.date?: EMPTY_STRING, style = MaterialTheme.typography.titleSmall)
+            Text(text = model.date ?: EMPTY_STRING, style = MaterialTheme.typography.titleSmall)
             Spacer(modifier = Modifier.height(Dimen.double_space))
-            Row (verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxWidth()){
-               ItemCountView(imageVector = Icons.Default.People, text = model.noOfPeople?.toString())
-               ItemCountView(imageVector = Icons.Default.Payments, text = model.cashAmount?.toString())
-               ItemCountView(imageVector = Icons.Default.Diamond, text = model.totalGold?.toString())
-               ItemCountView(imageVector = Icons.Default.Redeem, text = model.totalOthers?.toString())
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                ItemCountView(
+                    imageVector = Icons.Default.People,
+                    text = model.noOfPeople?.toString()
+                )
+                ItemCountView(
+                    imageVector = Icons.Default.Payments,
+                    text = model.cashAmount?.toString()
+                )
+                ItemCountView(
+                    imageVector = Icons.Default.Diamond,
+                    text = model.totalGold?.toString()
+                )
+                ItemCountView(
+                    imageVector = Icons.Default.Redeem,
+                    text = model.totalOthers?.toString()
+                )
             }
         }
     }
@@ -98,11 +119,18 @@ fun RenderEventView(model:EventInfo) {
 
 
 @Composable
-fun ItemCountView(imageVector: ImageVector, text:String?) {
+fun ItemCountView(imageVector: ImageVector, text: String?) {
     text?.let {
-        Column (verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Icon(imageVector = imageVector, contentDescription = text)
-            Text(text = text, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
+            Text(
+                text = text,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Black
+            )
         }
     }
 
