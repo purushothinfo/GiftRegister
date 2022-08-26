@@ -9,6 +9,7 @@ package com.piappstudio.giftregister.ui.event.list
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -21,6 +22,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.piappstudio.giftregister.R
 import com.piappstudio.pimodel.Constant.EMPTY_STRING
 import com.piappstudio.pimodel.EventInfo
@@ -32,11 +35,12 @@ import com.piappstudio.pitheme.theme.Dimen
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventListScreen(viewModel: EventListScreenViewModel = hiltViewModel(), callBack: () -> Unit) {
-
-    val lstEvents by viewModel.lstEvents.collectAsState()
+   /* val lstEvents by viewModel.lstEvents.collectAsState()
     AttachLifeCycleEvent(onResume = {
         viewModel.fetchEvents()
-    })
+    })*/
+
+    val lstEvents = viewModel.lstEvents.collectAsLazyPagingItems
     Scaffold(topBar = {
         SmallTopAppBar(title = {
             Text(text = stringResource(R.string.title_events))

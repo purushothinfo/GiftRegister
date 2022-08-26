@@ -17,5 +17,5 @@ interface IEventDao {
     suspend fun insert(eventInfo: EventInfo):Long
 
     @Query ("SELECT * FROM eventinfo")
-    suspend fun fetchEvents():List<EventInfo>?
+    suspend fun fetchEvents():List<EventInfo>
 }
