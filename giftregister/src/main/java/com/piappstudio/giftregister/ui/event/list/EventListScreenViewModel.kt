@@ -26,26 +26,8 @@ import javax.inject.Inject
 // ViewModel, Model-View-ViewModel
 @HiltViewModel
 class EventListScreenViewModel @Inject constructor(private val piDataRepository: PiDataRepository) : ViewModel() {
-   /* // mutable
-    private val _lstEvents: MutableStateFlow<List<EventInfo>> = MutableStateFlow(emptyList())
 
-    // immutable
-    val lstEvents: StateFlow<List<EventInfo>> = _lstEvents*/
-    val lstEvents : Flow<PagingData<EventInfo>> = Pager(PagingConfig(pageSize = 20)) {
+    val lstEvents : Flow<PagingData<EventInfo>> = Pager(PagingConfig(pageSize = 1)) {
        EventPagingSource(piDataRepository)
     }.flow
-
-    /*fun fetchEvents() {
-        viewModelScope.launch {
-            piDataRepository.fetchEvents().onEach { response->
-                if (response.status == Resource.Status.SUCCESS) {
-                    response.data?.let { events->
-                        _lstEvents.value = events
-                    }
-                }
-
-            }.collect()
-        }
-
-    }*/
 }

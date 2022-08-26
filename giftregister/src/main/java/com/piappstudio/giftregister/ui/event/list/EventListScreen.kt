@@ -8,26 +8,21 @@ package com.piappstudio.giftregister.ui.event.list
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import com.piappstudio.giftregister.R
 import com.piappstudio.pimodel.Constant.EMPTY_STRING
 import com.piappstudio.pimodel.EventInfo
-import com.piappstudio.pitheme.component.AttachLifeCycleEvent
 import com.piappstudio.pitheme.theme.Dimen
 
 // MVVM = Model- View- ViewModel
@@ -35,12 +30,7 @@ import com.piappstudio.pitheme.theme.Dimen
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventListScreen(viewModel: EventListScreenViewModel = hiltViewModel(), callBack: () -> Unit) {
-   /* val lstEvents by viewModel.lstEvents.collectAsState()
-    AttachLifeCycleEvent(onResume = {
-        viewModel.fetchEvents()
-    })*/
-
-    val lstEvents = viewModel.lstEvents.collectAsLazyPagingItems
+    val lstEvents = viewModel.lstEvents.collectAsLazyPagingItems()
     Scaffold(topBar = {
         SmallTopAppBar(title = {
             Text(text = stringResource(R.string.title_events))
@@ -50,7 +40,7 @@ fun EventListScreen(viewModel: EventListScreenViewModel = hiltViewModel(), callB
 
         Box(modifier = Modifier.fillMaxSize()) {
 
-            if (lstEvents.isNotEmpty()) {
+            if (lstEvents.itemCount != 0) {
                 LazyColumn(
                     modifier = Modifier
                         .padding(it)
@@ -59,11 +49,12 @@ fun EventListScreen(viewModel: EventListScreenViewModel = hiltViewModel(), callB
                     verticalArrangement = Arrangement.spacedBy(Dimen.double_space),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    items(lstEvents) { event ->
-                        // Rendering the row
-                        RenderEventView(model = event)
-
+                    items(lstEvents) { event->
+                        event?.let {
+                            RenderEventView(model = event)
+                        }
                     }
+
                 }
             } else {
                 EventEmptyScreen()
