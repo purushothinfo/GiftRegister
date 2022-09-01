@@ -17,13 +17,17 @@ object Route {
     object Home {
         object EVENT {
             val LIST = "events"
-            val MANAGE_EVENT = "event"
+            val EVENTEMPTSCREEN ="eventemptyscreen"
+            val GUESTLIST ="guestlist"
+            val EDITGUEST ="editguest"
+            val EDITEVENT ="editevent"
         }
 
         object GIFT {
             val LIST = "gifts"
             val MANAGE_GIFT = "gift"
         }
+
     }
 
     object Auth {
