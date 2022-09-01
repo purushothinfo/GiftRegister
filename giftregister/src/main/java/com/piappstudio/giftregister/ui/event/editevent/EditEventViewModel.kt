@@ -10,12 +10,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.piappstudio.giftregister.R
 import com.piappstudio.pimodel.EventInfo
+import com.piappstudio.pimodel.Resource
 import com.piappstudio.pimodel.database.PiDataRepository
 import com.piappstudio.pitheme.component.UiError
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -28,6 +27,7 @@ class EditEventViewModel @Inject constructor(private val piDataRepository: PiDat
 
     private val _errorInfo = MutableStateFlow(EventError())
     val errorInfo: StateFlow<EventError> = _errorInfo
+
 
 
     fun updateTitle(name: String) {
@@ -54,7 +54,12 @@ class EditEventViewModel @Inject constructor(private val piDataRepository: PiDat
             _errorInfo.update { it.copy(dateError = it.dateError.copy(isError = false)) }
         }
         viewModelScope.launch {
-            piDataRepository.insert(eventInfo)
+            piDataRepository.insert(eventInfo).onEach { response ->
+                _errorInfo.update { it.copy(progress = response) }
+                if (response.status == Resource.Status.SUCCESS) {
+                    _eventInfo.update { EventInfo() }
+                }
+            }.collect()
             Timber.d("Save event information")
         }
     }
@@ -62,7 +67,8 @@ class EditEventViewModel @Inject constructor(private val piDataRepository: PiDat
 
 data class EventError(
     val nameError: UiError = UiError(errorText = R.string.error_name),
-    val dateError: UiError = UiError(errorText = R.string.error_date)
+    val dateError: UiError = UiError(errorText = R.string.error_date),
+    val progress :Resource <Any?> = Resource.idle()
 )
 
 

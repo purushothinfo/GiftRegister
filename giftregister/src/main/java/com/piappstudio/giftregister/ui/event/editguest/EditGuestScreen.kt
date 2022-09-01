@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.piappstudio.giftregister.R
+import com.piappstudio.pimodel.GuestInfo
 import com.piappstudio.pitheme.component.PiErrorView
 import com.piappstudio.pitheme.theme.Dimen
 
@@ -41,7 +42,9 @@ fun EditGuestScreen(viewModel: EditGuestViewModel= hiltViewModel(),callback: ()-
 
     }) {
 
+        // READ
         val guestInfo by viewModel.guestInfo.collectAsState()
+
         val errorInfo by viewModel.errorInfo.collectAsState()
 
         LazyColumn(
