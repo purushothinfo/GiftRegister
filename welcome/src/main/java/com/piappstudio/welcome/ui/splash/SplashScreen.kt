@@ -24,6 +24,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.piappstudio.pinavigation.NavInfo
+import com.piappstudio.pitheme.route.Root
 import com.piappstudio.pitheme.route.Route
 import com.piappstudio.pitheme.theme.AppTheme
 import com.piappstudio.pitheme.theme.Dimen
@@ -72,7 +73,7 @@ fun SplashScreen(viewModel: SplashViewModel = hiltViewModel()) {
                     if (progress == 1.0f) {
 
 
-                        viewModel.navManager.navigate(NavInfo(id = Route.Auth.Login.LOGIN,
+                        viewModel.navManager.navigate(NavInfo(id = Root.HOME,
                             navOption = NavOptions.Builder().setPopUpTo(Route.Welcome.SPLASH, inclusive = true).build()))
 
                         Timber.d("Animation is completed")

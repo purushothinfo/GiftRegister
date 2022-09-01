@@ -44,12 +44,9 @@ fun EventListScreen(lstEvents: List<EventInfo>, callBack: () -> Unit) {
     }) {
 
 
-        Box(modifier = Modifier.fillMaxSize()) {
-
-
+        Box(modifier = Modifier.fillMaxSize().padding(it)) {
             LazyColumn(
                 modifier = Modifier
-                    .padding(it)
                     .padding(
                         start = Dimen.double_space,
                         end = Dimen.double_space,
@@ -94,9 +91,10 @@ fun RenderEventView(model: EventInfo) {
 
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(Dimen.double_space)) {
-            Text(text = model.title ?: EMPTY_STRING, style = MaterialTheme.typography.titleMedium)
+            Text(text = model.title ?: EMPTY_STRING,
+                style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)
             Spacer(modifier = Modifier.height(Dimen.space))
-            Text(text = model.date ?: EMPTY_STRING, style = MaterialTheme.typography.titleSmall)
+            Text(text = model.date ?: EMPTY_STRING, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Medium)
             Spacer(modifier = Modifier.height(Dimen.double_space))
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -138,7 +136,7 @@ fun ItemCountView(imageVector: ImageVector, text: String?) {
             Text(
                 text = text?: "N/A",
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Black
+                fontWeight = FontWeight.Light
             )
         }
     //}

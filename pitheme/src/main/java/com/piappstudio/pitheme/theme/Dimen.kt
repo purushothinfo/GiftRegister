@@ -10,6 +10,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 object Dimen {
+    val doubleSpace = 16.dp
     val splash_size = 100.dp
     val small_lottie_icon = 150.dp
     val product_peek_height = 300.dp
