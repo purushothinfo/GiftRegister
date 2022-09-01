@@ -17,7 +17,9 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.piappstudio.pimodel.database.PiDataRepository
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class EventPagingSource @Inject constructor (private val repository:PiDataRepository ): PagingSource<Int, EventInfo>() {
 
     private companion object {
@@ -32,7 +34,7 @@ class EventPagingSource @Inject constructor (private val repository:PiDataReposi
         return LoadResult.Page(
                 data = allEventsList,
                 prevKey = if (position == INITIAL_PAGE_INDEX) null else position-1,
-                nextKey = if (allEventsList.isEmpty()) null else position+1
+                nextKey = position.plus(1)
         )
 
     }

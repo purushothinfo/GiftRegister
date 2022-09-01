@@ -11,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.piappstudio.pimodel.EventInfo
 import com.piappstudio.pimodel.EventPagingSource
 import com.piappstudio.pimodel.Resource
@@ -25,9 +26,13 @@ import javax.inject.Inject
 
 // ViewModel, Model-View-ViewModel
 @HiltViewModel
-class EventListScreenViewModel @Inject constructor(private val piDataRepository: PiDataRepository) : ViewModel() {
+class EventListScreenViewModel @Inject constructor(private val piDataRepository: PiDataRepository, val eventPagingSource: EventPagingSource) : ViewModel() {
 
-    val lstEvents : Flow<PagingData<EventInfo>> = Pager(PagingConfig(pageSize = 1)) {
-       EventPagingSource(piDataRepository)
-    }.flow
+    private val _eventList = MutableStateFlow(emptyList<EventInfo>())
+    val eventList:StateFlow<List<EventInfo>> = _eventList
+    fun fetchEventList() {
+        viewModelScope.launch {
+            _eventList.update { piDataRepository.fetchEvents() }
+        }
+    }
 }

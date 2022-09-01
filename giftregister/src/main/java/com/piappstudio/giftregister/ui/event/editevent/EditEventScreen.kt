@@ -31,7 +31,7 @@ import com.piappstudio.pitheme.theme.Dimen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditEventScreen(viewModel: EditEventViewModel= hiltViewModel(),callback:()->Unit) {
+fun EditEventScreen(viewModel: EditEventViewModel ,callback:()->Unit) {
     Scaffold(topBar = {
         SmallTopAppBar(title = {
             Text(text = stringResource(R.string.edit_event))
