@@ -9,33 +9,37 @@ package com.piappstudio.pitheme.route
 /** Class contains all route information*/
 object Route {
     object Welcome {
-        val SPLASH = "splash"
-        val FEATURE = "feature"
-        val TNC = "termscondition"
+        const val SPLASH = "splash"
+        const val FEATURE = "feature"
+        const val TNC = "termscondition"
     }
 
     object Home {
         object EVENT {
-            val LIST = "events"
-            val EVENTEMPTSCREEN ="eventemptyscreen"
-            val GUESTLIST ="guestlist"
-            val EDITGUEST ="editguest"
-            val EDITEVENT ="editevent"
+            const val LIST = "events"
+            const val EVENT_EMPTY_SCREEN ="eventemptyscreen"
         }
 
-        object GIFT {
-            val LIST = "gifts"
-            val MANAGE_GIFT = "gift"
+        object GUEST {
+            object Argument {
+                const val eventId= "eventId"
+                const val guestId = "guestId"
+            }
+            const val LIST = "guest/{${Argument.eventId}}"
+            const val MANAGE_GIFT = "guest"
+            fun guestList(eventId:Long?):String {
+                return "guest/${eventId?:0}"
+            }
         }
 
     }
 
     object Auth {
-        val REGISTER = "register"
+        const val REGISTER = "register"
 
         object Login {
-            val LOGIN = "login"
-            val FORGETPASSWORD = "forgetpassword"
+            const val LOGIN = "login"
+            const val FORGET_PASSWORD = "forgetpassword"
         }
     }
 
@@ -43,17 +47,17 @@ object Route {
 
 /** To hold the nav graph roots */
 object Root {
-    val APPROOT = "approot"
-    val WELCOME = "welcomeroot"
-    val HOME = "homeroot"
-    val AUTH = "authroot"
+    const val APPROOT = "approot"
+    const val WELCOME = "welcomeroot"
+    const val HOME = "homeroot"
+    const val AUTH = "authroot"
 
     object Home {
-        val EVENTS = "eventsroot"
-        val GIFTS = "giftroot"
+        const val EVENTS = "eventsroot"
+        const val GIFTS = "giftroot"
     }
 
     object Auth {
-        val LOGIN = "loginroot"
+        const val LOGIN = "loginroot"
     }
 }

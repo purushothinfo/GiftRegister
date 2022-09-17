@@ -8,6 +8,7 @@ package com.piappstudio.giftregister.ui.event.editguest
 
 import androidx.lifecycle.ViewModel
 import com.piappstudio.giftregister.R
+import com.piappstudio.pimodel.GiftType
 import com.piappstudio.pimodel.GuestInfo
 import com.piappstudio.pitheme.component.UiError
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,6 +28,11 @@ class EditGuestViewModel   @Inject constructor() : ViewModel() {
     private val _errorInfo = MutableStateFlow(GuestError())
     val errorInfo: StateFlow<GuestError> = _errorInfo
 
+    fun updateGuestInfo(guestInfo: GuestInfo?) {
+        guestInfo?.let {
+            _guestInfo.value = guestInfo
+        }
+    }
     fun updateName(name: String) {
         _guestInfo.update { it.copy(name = name) }
     }
@@ -55,6 +61,10 @@ class EditGuestViewModel   @Inject constructor() : ViewModel() {
         Timber.d("Save event information")
 
 
+    }
+
+    fun updateGiftType(giftType: GiftType) {
+        _guestInfo.update { it.copy(giftType = giftType) }
     }
 }
 

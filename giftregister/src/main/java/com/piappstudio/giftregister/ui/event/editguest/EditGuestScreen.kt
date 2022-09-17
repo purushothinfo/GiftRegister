@@ -5,6 +5,7 @@
  */
 
 package com.piappstudio.giftregister.ui.event.editguest
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
@@ -22,20 +23,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.piappstudio.giftregister.R
+import com.piappstudio.pimodel.Constant.EMPTY_STRING
+import com.piappstudio.pimodel.GiftType
 import com.piappstudio.pimodel.GuestInfo
 import com.piappstudio.pitheme.component.PiErrorView
 import com.piappstudio.pitheme.theme.Dimen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditGuestScreen(viewModel: EditGuestViewModel= hiltViewModel(),callback: ()->Unit) {
+fun EditGuestScreen(
+    viewModel: EditGuestViewModel = hiltViewModel(),
+    callback: () -> Unit
+) {
+
     Scaffold(topBar = {
         SmallTopAppBar(title = {
             Text(text = stringResource(R.string.title_edit_guest))
 
         }, actions = {
-            IconButton(onClick = {callback.invoke() }) {
-                Icon(imageVector = Icons.Default.Close, contentDescription ="close" )
+            IconButton(onClick = { callback.invoke() }) {
+                Icon(imageVector = Icons.Default.Close, contentDescription = "close")
 
             }
         })
@@ -67,10 +74,10 @@ fun EditGuestScreen(viewModel: EditGuestViewModel= hiltViewModel(),callback: ()-
 
                     Spacer(modifier = Modifier.height(Dimen.double_space))
                     OutlinedTextField(
-                        value = guestInfo.name?: "", onValueChange = { name->
-                                                                     viewModel.updateName(name)
+                        value = guestInfo.name ?: EMPTY_STRING, onValueChange = { name ->
+                            viewModel.updateName(name)
 
-                        },isError = errorInfo.nameError.isError,
+                        }, isError = errorInfo.nameError.isError,
                         placeholder = {
                             Text(text = stringResource(R.string.type_name))
                         },
@@ -92,9 +99,9 @@ fun EditGuestScreen(viewModel: EditGuestViewModel= hiltViewModel(),callback: ()-
                     )
                     Spacer(modifier = Modifier.height(Dimen.double_space))
                     OutlinedTextField(
-                        value =guestInfo.address?: "", onValueChange = {address->
-                                                                       viewModel.updateAddress(address)
-                        },isError = errorInfo.addressError.isError,
+                        value = guestInfo.address ?: EMPTY_STRING, onValueChange = { address ->
+                            viewModel.updateAddress(address)
+                        }, isError = errorInfo.addressError.isError,
                         placeholder = {
                             Text(text = stringResource(R.string.type_address))
                         },
@@ -110,12 +117,14 @@ fun EditGuestScreen(viewModel: EditGuestViewModel= hiltViewModel(),callback: ()-
                     PiErrorView(uiError = errorInfo.addressError)
                     Spacer(modifier = Modifier.height(Dimen.double_space))
 
-                    RadioButtonDemo()
+                    GiftTypeOption(guestInfo.giftType) { giftType ->
+                        viewModel.updateGiftType(giftType)
+                    }
 
                     Spacer(modifier = Modifier.height(Dimen.fourth_space))
 
                     Button(onClick = {
-                                     viewModel.onClickSubmit()
+                        viewModel.onClickSubmit()
                     }, modifier = Modifier.fillMaxWidth()) {
                         Text(
                             text = stringResource(R.string.submit),
@@ -137,37 +146,31 @@ fun EditGuestScreen(viewModel: EditGuestViewModel= hiltViewModel(),callback: ()-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RadioButtonDemo() {
+fun GiftTypeOption(type: GiftType, callback: (selectedType: GiftType) -> Unit) {
     Column {
-        val selectedGiftType = remember { mutableStateOf("") }
-        Text("Select GiftType")
-        Spacer(modifier = Modifier.size(Dimen.double_space))
-        Row (modifier = Modifier.fillMaxWidth(),
+        Text(stringResource(R.string.select_gift_type))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
-            ){
-            RadioButton(selected = selectedGiftType.value ==GiftType.Cash, onClick = {
-                selectedGiftType.value =GiftType.Cash
-            },colors = RadioButtonDefaults.colors(Color.Green))
-            Text(GiftType.Cash)
-            RadioButton(selected = selectedGiftType.value == GiftType.Gold, onClick = {
-                selectedGiftType.value = GiftType.Gold
-            },colors = RadioButtonDefaults.colors(Color.Green))
-            Text(GiftType.Gold)
+        ) {
+            RadioButton(selected = type == GiftType.CASH, onClick = {
+                callback.invoke(GiftType.CASH)
 
-            RadioButton(selected = selectedGiftType.value == GiftType.Others, onClick = {
-                selectedGiftType.value = GiftType.Others
-            },colors = RadioButtonDefaults.colors(Color.Green))
-            Text(GiftType.Others)
+            }, colors = RadioButtonDefaults.colors(Color.Green))
+            Text(stringResource(R.string.cash))
+            RadioButton(selected = type == GiftType.GOLD, onClick = {
+                callback.invoke(GiftType.GOLD)
+            }, colors = RadioButtonDefaults.colors(Color.Green))
+            Text(stringResource(R.string.gold))
+
+            RadioButton(selected = type == GiftType.OTHERS, onClick = {
+                callback.invoke(GiftType.OTHERS)
+            }, colors = RadioButtonDefaults.colors(Color.Green))
+            Text(stringResource(R.string.others))
 
         }
 
     }
-}
-
-object GiftType {
-    const val Cash = "Cash"
-    const val Gold= "Gold"
-    const val Others="Others"
 }
 

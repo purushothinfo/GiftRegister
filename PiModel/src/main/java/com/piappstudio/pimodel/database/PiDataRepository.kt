@@ -35,6 +35,7 @@ class PiDataRepository @Inject constructor(private val eventDao:IEventDao) {
         try {
             emit(Resource.loading())
             val response = api.invoke()
+            // TODO: Remove it
             kotlinx.coroutines.delay(2000)
             emit(Resource.success(response))
         } catch (ex: Exception) {

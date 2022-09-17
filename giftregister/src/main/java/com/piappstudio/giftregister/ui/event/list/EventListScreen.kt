@@ -6,6 +6,7 @@
 
 package com.piappstudio.giftregister.ui.event.list
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,29 +14,22 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.paging.LoadState
-import androidx.paging.PagingData
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemsIndexed
 import com.piappstudio.giftregister.R
 import com.piappstudio.pimodel.Constant.EMPTY_STRING
 import com.piappstudio.pimodel.EventInfo
-import com.piappstudio.pitheme.component.PiProgressIndicator
 import com.piappstudio.pitheme.theme.Dimen
-import kotlinx.coroutines.flow.Flow
 
 // MVVM = Model- View- ViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EventListScreen(lstEvents: List<EventInfo>, callBack: () -> Unit) {
+fun EventListScreen(lstEvents: List<EventInfo>,
+                    onClickFloatingAction: () -> Unit, onClickEventItem:((eventInfo:EventInfo?)->Unit)? = null) {
 
     Scaffold(topBar = {
         SmallTopAppBar(title = {
@@ -59,7 +53,9 @@ fun EventListScreen(lstEvents: List<EventInfo>, callBack: () -> Unit) {
 
 
                 items(lstEvents) { event->
-                    RenderEventView(model = event)
+                    RenderEventView(model = event) {
+                        onClickEventItem?.invoke(event)
+                    }
                 }
 
             }
@@ -70,7 +66,7 @@ fun EventListScreen(lstEvents: List<EventInfo>, callBack: () -> Unit) {
 
 
             ExtendedFloatingActionButton(
-                onClick = { callBack.invoke() },
+                onClick = { onClickFloatingAction.invoke() },
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(Dimen.double_space)
@@ -87,9 +83,11 @@ fun EventListScreen(lstEvents: List<EventInfo>, callBack: () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RenderEventView(model: EventInfo) {
+fun RenderEventView(model: EventInfo, callBack: (() -> Unit)? = null) {
 
-    Card(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth().clickable {
+        callBack?.invoke()
+    }) {
         Column(modifier = Modifier.padding(Dimen.double_space)) {
             Text(text = model.title ?: EMPTY_STRING,
                 style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black)

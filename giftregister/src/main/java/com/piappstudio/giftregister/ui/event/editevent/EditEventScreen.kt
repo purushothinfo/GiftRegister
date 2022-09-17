@@ -32,7 +32,14 @@ import com.piappstudio.pitheme.theme.Dimen
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditEventScreen(viewModel: EditEventViewModel ,callback:()->Unit) {
+
+
     Scaffold(topBar = {
+        Divider(
+            modifier = Modifier.fillMaxWidth(0.3f).padding(Dimen.double_space),
+            color = MaterialTheme.colorScheme.outline,
+            thickness = Dimen.half_space
+        )
         SmallTopAppBar(title = {
             Text(text = stringResource(R.string.edit_event))
         }, modifier = Modifier.padding(Dimen.space), actions = {
@@ -52,88 +59,92 @@ fun EditEventScreen(viewModel: EditEventViewModel ,callback:()->Unit) {
         } else if (errorInfo.progress.status == Resource.Status.SUCCESS) {
             callback.invoke()
         }
-        LazyColumn(
-            modifier = Modifier
-                .padding(it)
-                .padding(
-                    start = Dimen.double_space,
-                    top = Dimen.double_space,
-                    end = Dimen.double_space
-                )
-                .fillMaxWidth(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            item {
-                Column(
-                    modifier = Modifier
-                        .padding(Dimen.double_space)
-                ) {
-                    
-                    Text(
-                        text = stringResource(id = R.string.title_name),
-                        fontWeight = FontWeight.Normal
+
+        Box {
+
+            LazyColumn(
+                modifier = Modifier
+                    .padding(it)
+                    .padding(
+                        start = Dimen.double_space,
+                        top = Dimen.double_space,
+                        end = Dimen.double_space
                     )
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                item {
+                    Column(
+                        modifier = Modifier
+                            .padding(Dimen.double_space)
+                    ) {
 
-                    Spacer(modifier = Modifier.height(Dimen.double_space))
-                    OutlinedTextField(
-                        value = eventInfo.title?:"", onValueChange = { name->
-                            viewModel.updateTitle(name)
-                        },
-                        isError = errorInfo.nameError.isError,
-                        placeholder = {
-                            Text(text = stringResource(R.string.please_enter_your_event))
-                        },
-                        leadingIcon = {
-                            Icon(
-                                Icons.Default.People,
-                                contentDescription = stringResource(R.string.people)
-                            )
-                        }, modifier = Modifier
-                            .fillMaxWidth(),
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
-                    )
-                    PiErrorView(uiError = errorInfo.nameError)
-
-                    Spacer(modifier = Modifier.height(Dimen.double_space))
-                    Text(
-                        text = stringResource(id = R.string._date),
-                        fontWeight = FontWeight.Normal
-                    )
-                    Spacer(modifier = Modifier.height(Dimen.double_space))
-                    OutlinedTextField(
-                        value = eventInfo.date?:"", onValueChange = { eventDate->
-                            viewModel.updateDate(eventDate)
-
-                        },
-                        isError = errorInfo.dateError.isError,
-                        placeholder = {
-                            Text(text = "DD/MM/YYYY")
-                        },
-                        leadingIcon = {
-                            Icon(
-                                Icons.Default.CalendarToday,
-                                contentDescription = "Date"
-                            )
-                        }, modifier = Modifier
-                            .fillMaxWidth(),
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
-                    )
-                    PiErrorView(uiError = errorInfo.dateError)
-
-                    Spacer(modifier = Modifier.height(Dimen.triple_space))
-
-                    Button(onClick = {
-                                     viewModel.onClickSubmit()
-                    }, modifier = Modifier.fillMaxWidth()) {
                         Text(
-                            text = stringResource(R.string.submit),
-                            modifier = Modifier.padding(Dimen.space)
+                            text = stringResource(id = R.string.title_name),
+                            fontWeight = FontWeight.Normal
                         )
+
+                        Spacer(modifier = Modifier.height(Dimen.double_space))
+                        OutlinedTextField(
+                            value = eventInfo.title ?: "", onValueChange = { name ->
+                                viewModel.updateTitle(name)
+                            },
+                            isError = errorInfo.nameError.isError,
+                            placeholder = {
+                                Text(text = stringResource(R.string.please_enter_your_event))
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    Icons.Default.People,
+                                    contentDescription = stringResource(R.string.people)
+                                )
+                            }, modifier = Modifier
+                                .fillMaxWidth(),
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+                        )
+                        PiErrorView(uiError = errorInfo.nameError)
+
+                        Spacer(modifier = Modifier.height(Dimen.double_space))
+                        Text(
+                            text = stringResource(id = R.string._date),
+                            fontWeight = FontWeight.Normal
+                        )
+                        Spacer(modifier = Modifier.height(Dimen.double_space))
+                        OutlinedTextField(
+                            value = eventInfo.date ?: "", onValueChange = { eventDate ->
+                                viewModel.updateDate(eventDate)
+
+                            },
+                            isError = errorInfo.dateError.isError,
+                            placeholder = {
+                                Text(text = "DD/MM/YYYY")
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    Icons.Default.CalendarToday,
+                                    contentDescription = "Date"
+                                )
+                            }, modifier = Modifier
+                                .fillMaxWidth(),
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+                        )
+                        PiErrorView(uiError = errorInfo.dateError)
+
+                        Spacer(modifier = Modifier.height(Dimen.triple_space))
+
+                        Button(onClick = {
+                            viewModel.onClickSubmit()
+                        }, modifier = Modifier.fillMaxWidth()) {
+                            Text(
+                                text = stringResource(R.string.submit),
+                                modifier = Modifier.padding(Dimen.space)
+                            )
+                        }
                     }
                 }
-            }
 
+            }
         }
     }
 

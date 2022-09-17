@@ -42,6 +42,7 @@ class MainActivity : ComponentActivity() {
         LaunchedEffect(key1 = navInfo) {
             navInfo.id?.let {
                 navController.navigate(it, navOptions = navInfo.navOption)
+                navManager.navigate(null)
             }
 
         }

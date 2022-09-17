@@ -18,6 +18,8 @@ import com.piappstudio.giftregister.ui.event.editevent.EditEventScreen
 import com.piappstudio.giftregister.ui.event.editevent.EditEventViewModel
 import com.piappstudio.giftregister.ui.event.list.EventListScreen
 import com.piappstudio.giftregister.ui.event.list.EventListScreenViewModel
+import com.piappstudio.pinavigation.NavInfo
+import com.piappstudio.pitheme.route.Route
 import kotlinx.coroutines.launch
 
 
@@ -57,10 +59,12 @@ fun EventHome(viewModel: EditEventViewModel = hiltViewModel(), eventListScreenVi
         sheetPeekHeight = 0.dp
     ) {
         //Content
-        EventListScreen (lstEvents = lstEvents)  {
+        EventListScreen (lstEvents = lstEvents, onClickFloatingAction =   {
             coroutineScope.launch {
                 bottomSheetScaffoldState.bottomSheetState.expand()
             }
+        }) {
+            eventListScreenViewModel.navManager.navigate(routeInfo = NavInfo(id = Route.Home.GUEST.guestList(it?.id)))
         }
     }
 }

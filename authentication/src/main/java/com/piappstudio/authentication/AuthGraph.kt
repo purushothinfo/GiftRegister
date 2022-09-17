@@ -34,7 +34,7 @@ fun NavGraphBuilder.loginNavGraph() {
         composable(Route.Auth.Login.LOGIN) {
             LoginScreen()
         }
-        composable(Route.Auth.Login.FORGETPASSWORD) {
+        composable(Route.Auth.Login.FORGET_PASSWORD) {
             ForgetPasswordScreen()
         }
     }

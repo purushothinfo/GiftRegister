@@ -11,56 +11,60 @@ import com.piappstudio.pimodel.GuestInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
-class GuestLIstViewModel @Inject constructor(): ViewModel() {
-    private val _lstGuest: MutableStateFlow<List<GuestInfo>> = MutableStateFlow(emptyList())
+class GuestListViewModel @Inject constructor() : ViewModel() {
 
-    val lstGuest:StateFlow<List<GuestInfo>> = _lstGuest
+    var selectedEventId: Long = 0
+    private val _lstGuest: MutableStateFlow<List<GuestInfo>> = MutableStateFlow(emptyList())
+    val lstGuest: StateFlow<List<GuestInfo>> = _lstGuest
+    private val _selectedGiftInfo:MutableStateFlow<GuestInfo> = MutableStateFlow(GuestInfo())
+    val selectedGiftInfo: StateFlow<GuestInfo> = _selectedGiftInfo
+
+    fun updateSelectedGiftInfo(guestInfo: GuestInfo?) {
+
+        _selectedGiftInfo.update { guestInfo?:GuestInfo()  }
+    }
 
     init {
         Timber.d("init part")
         fetchGuest()
-
     }
 
-    private fun fetchGuest(){
+    private fun fetchGuest() {
         val guests = mutableListOf<GuestInfo>()
 
         val calender = Calendar.getInstance()
         calender.time.time = Date().time
 
 
-      val phone=956668991
+        val phone = 956668991
         for (index in 1..100) {
             calender.add(Calendar.DATE, 1)
-            val updatedPhone  = phone+index
+            val updatedPhone = phone + index
 
-            val guestInfo=GuestInfo(
+            val guestInfo = GuestInfo(
                 name = "Gundu$index ",
                 address = "Arumbakkam",
                 phone = updatedPhone.toString()
-
 
 
             )
             guests.add(guestInfo)
 
         }
-          _lstGuest.value =guests
+        _lstGuest.value = guests
 
-
-        }
-
-      fun onClickAdd(){
-          Timber.d("onclick is called")
-      }
-     fun onClickEdit(info: GuestInfo){
-         Timber.d("called name= ${info.name},address = ${info.address}, phone = ${info.phone}")
-     }
 
     }
+
+    fun onClickAdd() {
+        Timber.d("onclick is called")
+    }
+
+}
 

@@ -10,19 +10,30 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.piappstudio.giftregister.ui.event.editevent.EditEventScreen
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.piappstudio.giftregister.ui.event.editguest.EditGuestScreen
-import com.piappstudio.giftregister.ui.event.list.EventListScreen
+import com.piappstudio.giftregister.ui.event.editguest.EditGuestViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 
 @ExperimentalMaterialApi
 @Composable
-fun GuestHome() {
+fun GuestHome(
+    eventId: Long? = 0,
+    guestListViewModel: GuestListViewModel = hiltViewModel(),
+    editGuestViewModel: EditGuestViewModel = hiltViewModel()
+) {
+
+    Timber.d("EventId: $eventId")
+    LaunchedEffect(key1 = eventId) {
+        guestListViewModel.selectedEventId = eventId ?: 0
+    }
 
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState =
@@ -37,10 +48,13 @@ fun GuestHome() {
             Box(
                 Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(.6f)
-                    .background(Color(0XFF0F9D58))) {
-                EditGuestScreen{
-                    coroutineScope.launch{bottomSheetScaffoldState.bottomSheetState.collapse()}
+                    .fillMaxHeight(.7f)
+                    .background(Color(0XFF0F9D58))
+            ) {
+                EditGuestScreen(
+                    viewModel = editGuestViewModel
+                ) {
+                    coroutineScope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() }
                 }
             }
 
@@ -48,10 +62,20 @@ fun GuestHome() {
         sheetPeekHeight = 0.dp
     ) {
         //Content
-       GuestLIstScreen{
-           coroutineScope.launch{bottomSheetScaffoldState.bottomSheetState.expand()
-           }
-       }
+        GuestListScreen(viewModel = guestListViewModel, callback = {
+            coroutineScope.launch {
+                // This is new event
+                editGuestViewModel.updateGuestInfo(null)
+                bottomSheetScaffoldState.bottomSheetState.expand()
+            }
+        }) {
+            coroutineScope.launch {
+                // This is old event
+                editGuestViewModel.updateGuestInfo(it)
+                bottomSheetScaffoldState.bottomSheetState.expand()
+            }
+
+        }
 
     }
 }

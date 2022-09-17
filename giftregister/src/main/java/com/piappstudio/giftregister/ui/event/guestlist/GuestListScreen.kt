@@ -30,7 +30,7 @@ import com.piappstudio.pitheme.theme.Dimen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GuestLIstScreen(viewModel: GuestLIstViewModel = hiltViewModel(),callback: ()->Unit) {
+fun GuestListScreen(viewModel: GuestListViewModel = hiltViewModel(), callback: ()->Unit, onClickGuestItem:(guestInfo:GuestInfo)->Unit) {
 
     val lstGuest by viewModel.lstGuest.collectAsState()
 
@@ -52,7 +52,7 @@ fun GuestLIstScreen(viewModel: GuestLIstViewModel = hiltViewModel(),callback: ()
             ) {
                 items(lstGuest) { guest ->
                     // Rendering the row
-                    RenderGuestListView(guestInfo = guest, viewModel)
+                    RenderGuestListView(guestInfo = guest, viewModel, onClickGuestItem)
 
                 }
             }
@@ -76,11 +76,11 @@ fun GuestLIstScreen(viewModel: GuestLIstViewModel = hiltViewModel(),callback: ()
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RenderGuestListView(guestInfo: GuestInfo, viewModel: GuestLIstViewModel) {
+fun RenderGuestListView(guestInfo: GuestInfo, viewModel: GuestListViewModel, onClickGuestItem:(guestInfo:GuestInfo)->Unit) {
 
     Card(modifier = Modifier
         .fillMaxWidth()
-        .clickable { viewModel.onClickEdit(guestInfo) }) {
+        .clickable { onClickGuestItem.invoke(guestInfo) }) {
         Column(modifier = Modifier.padding(Dimen.double_space)) {
             Text(
                 text = guestInfo.name ?: Constant.EMPTY_STRING,

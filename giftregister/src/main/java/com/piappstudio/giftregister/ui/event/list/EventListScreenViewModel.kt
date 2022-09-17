@@ -17,6 +17,7 @@ import com.piappstudio.pimodel.EventPagingSource
 import com.piappstudio.pimodel.Resource
 import com.piappstudio.pimodel.database.PiDataRepository
 import com.piappstudio.pimodel.database.dao.IEventDao
+import com.piappstudio.pinavigation.NavManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -26,7 +27,7 @@ import javax.inject.Inject
 
 // ViewModel, Model-View-ViewModel
 @HiltViewModel
-class EventListScreenViewModel @Inject constructor(private val piDataRepository: PiDataRepository, val eventPagingSource: EventPagingSource) : ViewModel() {
+class EventListScreenViewModel @Inject constructor(private val piDataRepository: PiDataRepository, val eventPagingSource: EventPagingSource, val navManager: NavManager) : ViewModel() {
 
     private val _eventList = MutableStateFlow(emptyList<EventInfo>())
     val eventList:StateFlow<List<EventInfo>> = _eventList
