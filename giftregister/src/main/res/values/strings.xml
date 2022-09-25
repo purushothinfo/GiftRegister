@@ -26,11 +26,15 @@
     <string name="error_name">Please enter name</string>
     <string name="error_date">Enter event date</string>
     <string name="error_address">Enter your address</string>
+    <string name="error_quantity">Enter the number</string>
     <string name="icon_address">Address</string>
     <string name="select_gift_type">Select GiftType</string>
     <string name="cash">Cash</string>
     <string name="gold">Gold</string>
     <string name="others">Others</string>
+    <string name="back">Back</string>
+    <string name="gold_in_gram">Gold (in grams)</string>
+    <string name="gift_detail">Gift Description</string>
 
 
 </resources>

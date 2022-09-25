@@ -123,10 +123,11 @@ fun RenderEventView(model: EventInfo, callBack: (() -> Unit)? = null) {
 
 
 @Composable
-fun ItemCountView(imageVector: ImageVector, text: String?) {
+fun ItemCountView(imageVector: ImageVector, text: String?, modifier: Modifier = Modifier) {
 
     //text?.let {
         Column(
+            modifier = modifier,
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -134,7 +135,7 @@ fun ItemCountView(imageVector: ImageVector, text: String?) {
             Text(
                 text = text?: "N/A",
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Light
+                fontWeight = FontWeight.Bold
             )
         }
     //}

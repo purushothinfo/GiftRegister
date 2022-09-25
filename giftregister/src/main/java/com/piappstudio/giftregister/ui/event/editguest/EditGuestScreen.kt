@@ -6,33 +6,36 @@
 
 package com.piappstudio.giftregister.ui.event.editguest
 
+import android.icu.util.Currency
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.ui.text.input.KeyboardType
 import com.piappstudio.giftregister.R
+import com.piappstudio.giftregister.ui.event.guestlist.giftImage
 import com.piappstudio.pimodel.Constant.EMPTY_STRING
 import com.piappstudio.pimodel.GiftType
-import com.piappstudio.pimodel.GuestInfo
-import com.piappstudio.pitheme.component.PiErrorView
+import com.piappstudio.pimodel.Resource
+import com.piappstudio.pitheme.component.*
 import com.piappstudio.pitheme.theme.Dimen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditGuestScreen(
-    viewModel: EditGuestViewModel = hiltViewModel(),
+    viewModel: EditGuestViewModel,
     callback: () -> Unit
 ) {
 
@@ -49,10 +52,17 @@ fun EditGuestScreen(
 
     }) {
 
+        val piFocus = rememberPiFocus()
+
         // READ
         val guestInfo by viewModel.guestInfo.collectAsState()
-
         val errorInfo by viewModel.errorInfo.collectAsState()
+
+        if (errorInfo.progress.status == Resource.Status.LOADING) {
+            PiProgressIndicator()
+        } else if (errorInfo.progress.status == Resource.Status.SUCCESS) {
+            callback.invoke()
+        }
 
         LazyColumn(
             modifier = Modifier
@@ -62,17 +72,11 @@ fun EditGuestScreen(
             verticalArrangement = Arrangement.spacedBy(Dimen.double_space),
         ) {
             item {
-                Column(
-                    modifier = Modifier
-                        .padding(Dimen.double_space)
-                ) {
-                    Spacer(modifier = Modifier.height(Dimen.triple_space))
-                    Text(
-                        text = stringResource(R.string.name),
-                        fontWeight = FontWeight.Normal
-                    )
-
+                Column {
                     Spacer(modifier = Modifier.height(Dimen.double_space))
+                    FieldTitle(title = stringResource(R.string.name))
+
+                    Spacer(modifier = Modifier.height(Dimen.space))
                     OutlinedTextField(
                         value = guestInfo.name ?: EMPTY_STRING, onValueChange = { name ->
                             viewModel.updateName(name)
@@ -87,17 +91,17 @@ fun EditGuestScreen(
                                 contentDescription = "Person"
                             )
                         }, modifier = Modifier
-                            .fillMaxWidth(),
+                            .fillMaxWidth()
+                            .piFocus(errorInfo.nameError.focusRequester, piFocus),
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
                     )
                     PiErrorView(uiError = errorInfo.nameError)
 
                     Spacer(modifier = Modifier.height(Dimen.double_space))
-                    Text(
-                        text = stringResource(R.string._address),
-                        fontWeight = FontWeight.Normal
-                    )
-                    Spacer(modifier = Modifier.height(Dimen.double_space))
+
+
+                    FieldTitle(title = stringResource(R.string._address))
+                    Spacer(modifier = Modifier.height(Dimen.space))
                     OutlinedTextField(
                         value = guestInfo.address ?: EMPTY_STRING, onValueChange = { address ->
                             viewModel.updateAddress(address)
@@ -111,7 +115,8 @@ fun EditGuestScreen(
                                 contentDescription = stringResource(R.string.icon_address)
                             )
                         }, modifier = Modifier
-                            .fillMaxWidth(),
+                            .fillMaxWidth()
+                            .piFocus(errorInfo.addressError.focusRequester, piFocus),
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
                     )
                     PiErrorView(uiError = errorInfo.addressError)
@@ -120,6 +125,51 @@ fun EditGuestScreen(
                     GiftTypeOption(guestInfo.giftType) { giftType ->
                         viewModel.updateGiftType(giftType)
                     }
+
+                    val keyboardType = when (guestInfo.giftType) {
+                        GiftType.GOLD, GiftType.CASH -> {
+                            KeyboardType.Number
+                        }
+                        else -> {
+                            KeyboardType.Text
+                        }
+                    }
+
+                    val description = when (guestInfo.giftType) {
+                        GiftType.GOLD -> {
+                            stringResource(id = R.string.gold_in_gram)
+                        }
+                        GiftType.CASH -> {
+                            stringResource(id = R.string.cash)
+                        }
+                        else -> {
+                            stringResource(id = R.string.gift_detail)
+                        }
+                    }
+                    FieldTitle(title = description)
+                    Spacer(modifier = Modifier.height(Dimen.space))
+
+                    OutlinedTextField(
+                        value = guestInfo.giftValue?: EMPTY_STRING, onValueChange = { quantity ->
+                            viewModel.updateQuantity(quantity)
+                        }, isError = errorInfo.quantity.isError,
+                        placeholder = {
+                            Text(text = description)
+                        },
+                        leadingIcon = {
+                            Icon(
+                                giftImage(guestInfo),
+                                contentDescription = stringResource(R.string.icon_address)
+                            )
+                        }, modifier = Modifier
+                            .fillMaxWidth()
+                            .piFocus(errorInfo.quantity.focusRequester, piFocus),
+                        keyboardOptions = KeyboardOptions(
+                            imeAction = ImeAction.Next, keyboardType =
+                            keyboardType
+                        )
+                    )
+                    PiErrorView(uiError = errorInfo.quantity)
 
                     Spacer(modifier = Modifier.height(Dimen.fourth_space))
 
@@ -132,11 +182,7 @@ fun EditGuestScreen(
                             fontWeight = FontWeight.Bold
                         )
                     }
-
-
                 }
-
-
             }
 
         }
@@ -144,11 +190,20 @@ fun EditGuestScreen(
 
 }
 
+@Composable
+fun FieldTitle(title:String) {
+    Text(
+        text = title,
+        color = MaterialTheme.colorScheme.secondary,
+        fontWeight = FontWeight.Medium
+    )
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GiftTypeOption(type: GiftType, callback: (selectedType: GiftType) -> Unit) {
     Column {
-        Text(stringResource(R.string.select_gift_type))
+        FieldTitle(title = stringResource(R.string.select_gift_type))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly,

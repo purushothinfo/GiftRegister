@@ -17,6 +17,7 @@ import android.content.Context
 import androidx.room.Room
 import com.piappstudio.pimodel.database.PiGiftDatabase
 import com.piappstudio.pimodel.database.dao.IEventDao
+import com.piappstudio.pimodel.database.dao.IGuestDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,6 +43,11 @@ object DatabaseModule {
     @Provides
     fun provideEventDao(database: PiGiftDatabase): IEventDao {
         return database.eventDao()
+    }
+
+    @Provides
+    fun provideGuestDao(database: PiGiftDatabase):IGuestDao {
+        return database.guestDao()
     }
 }
 

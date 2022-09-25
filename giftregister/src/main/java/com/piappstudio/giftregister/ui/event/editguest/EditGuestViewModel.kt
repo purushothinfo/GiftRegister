@@ -7,19 +7,23 @@
 package com.piappstudio.giftregister.ui.event.editguest
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.piappstudio.giftregister.R
+import com.piappstudio.pimodel.EventInfo
 import com.piappstudio.pimodel.GiftType
 import com.piappstudio.pimodel.GuestInfo
+import com.piappstudio.pimodel.Resource
+import com.piappstudio.pimodel.database.PiDataRepository
 import com.piappstudio.pitheme.component.UiError
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 @HiltViewModel
-class EditGuestViewModel   @Inject constructor() : ViewModel() {
+class EditGuestViewModel   @Inject constructor(private val piDataRepository: PiDataRepository) : ViewModel() {
 
+    var selectedEventId:Long = 0
     // READ & write
     private val _guestInfo = MutableStateFlow(GuestInfo())
     // READ
@@ -29,9 +33,7 @@ class EditGuestViewModel   @Inject constructor() : ViewModel() {
     val errorInfo: StateFlow<GuestError> = _errorInfo
 
     fun updateGuestInfo(guestInfo: GuestInfo?) {
-        guestInfo?.let {
-            _guestInfo.value = guestInfo
-        }
+        _guestInfo.value = guestInfo?:GuestInfo()
     }
     fun updateName(name: String) {
         _guestInfo.update { it.copy(name = name) }
@@ -39,6 +41,10 @@ class EditGuestViewModel   @Inject constructor() : ViewModel() {
 
     fun updateAddress(address: String) {
         _guestInfo.update { it.copy(address = address) }
+    }
+
+    fun updateQuantity(quantity:String) {
+        _guestInfo.update { it.copy(giftValue = quantity) }
     }
 
     fun onClickSubmit() {
@@ -57,7 +63,22 @@ class EditGuestViewModel   @Inject constructor() : ViewModel() {
             _errorInfo.update { it.copy(addressError  = it.addressError.copy(isError = false)) }
         }
 
-        //TODO: Save event information
+        if (guestInfo.giftValue == null || guestInfo.giftValue?.isBlank() == true) {
+            _errorInfo.update { it.copy(addressError  = it.quantity.copy(isError = true)) }
+            return
+        } else {
+            _errorInfo.update { it.copy(addressError  = it.quantity.copy(isError = false)) }
+        }
+
+        val updatedGuestInfo = guestInfo.copy(eventId = selectedEventId)
+        viewModelScope.launch {
+            piDataRepository.insert(updatedGuestInfo).onEach { response ->
+                _errorInfo.update { it.copy(progress = response) }
+                if (response.status == Resource.Status.SUCCESS) {
+                    _guestInfo.update { GuestInfo() }
+                }
+            }.collect()
+        }
         Timber.d("Save event information")
 
 
@@ -70,6 +91,8 @@ class EditGuestViewModel   @Inject constructor() : ViewModel() {
 
 data class GuestError(
     val nameError: UiError = UiError(errorText = R.string.error_name),
-    val addressError: UiError = UiError(errorText = R.string.error_address)
+    val addressError: UiError = UiError(errorText = R.string.error_address),
+    val quantity: UiError = UiError(errorText = R.string.error_quantity),
+    val progress : Resource<Any?> = Resource.idle()
 )
 

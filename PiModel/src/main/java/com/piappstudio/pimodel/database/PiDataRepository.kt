@@ -7,9 +7,11 @@
 package com.piappstudio.pimodel.database
 
 import com.piappstudio.pimodel.EventInfo
+import com.piappstudio.pimodel.GuestInfo
 import com.piappstudio.pimodel.error.PIError
 import com.piappstudio.pimodel.Resource
 import com.piappstudio.pimodel.database.dao.IEventDao
+import com.piappstudio.pimodel.database.dao.IGuestDao
 import com.piappstudio.pimodel.error.ErrorCode.DATABASE_ERROR
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -18,7 +20,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PiDataRepository @Inject constructor(private val eventDao:IEventDao) {
+class PiDataRepository @Inject constructor(private val eventDao:IEventDao, private val guestDao: IGuestDao) {
 
     suspend fun insert(eventInfo: EventInfo): Flow<Resource<Long?>> {
         return makeSafeApiCall {
@@ -30,6 +32,15 @@ class PiDataRepository @Inject constructor(private val eventDao:IEventDao) {
         return eventDao.fetchEvents()
     }
 
+    suspend fun insert(guestInfo: GuestInfo): Flow<Resource<Long?>> {
+        return makeSafeApiCall {
+            guestDao.insert(guestInfo)
+        }
+    }
+
+    suspend fun fetchGuest(eventId:Long): List<GuestInfo> {
+        return guestDao.fetchGuest(eventId)
+    }
 
     private suspend fun <T> makeSafeApiCall(api: suspend () -> T?) = flow {
         try {

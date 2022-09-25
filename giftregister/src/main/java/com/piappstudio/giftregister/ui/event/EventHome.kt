@@ -28,8 +28,7 @@ import kotlinx.coroutines.launch
 fun EventHome(viewModel: EditEventViewModel = hiltViewModel(), eventListScreenViewModel: EventListScreenViewModel = hiltViewModel()) {
 
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState =
-        BottomSheetState(BottomSheetValue.Collapsed)
+        bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
     )
 
     val coroutineScope = rememberCoroutineScope()
@@ -64,7 +63,7 @@ fun EventHome(viewModel: EditEventViewModel = hiltViewModel(), eventListScreenVi
                 bottomSheetScaffoldState.bottomSheetState.expand()
             }
         }) {
-            eventListScreenViewModel.navManager.navigate(routeInfo = NavInfo(id = Route.Home.GUEST.guestList(it?.id)))
+            eventListScreenViewModel.navManager.navigate(routeInfo = NavInfo(id = Route.Home.GUEST.guestList(it)))
         }
     }
 }

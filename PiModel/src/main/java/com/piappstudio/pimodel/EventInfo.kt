@@ -9,6 +9,7 @@ package com.piappstudio.pimodel
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.Gson
 import kotlinx.parcelize.Parcelize
 
 /***
@@ -26,4 +27,8 @@ data class EventInfo(
     val cashAmount: Double? = null,
     val totalGold:Float? = null,
     val totalOthers:Int? = null
-) : Parcelable
+) : Parcelable {
+    override fun toString(): String {
+        return Gson().toJson(this)
+    }
+}
