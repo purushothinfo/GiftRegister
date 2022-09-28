@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GiftRegister</string>
+    <string name="perm_read_label">GiftRegister_Read</string>
 </resources>

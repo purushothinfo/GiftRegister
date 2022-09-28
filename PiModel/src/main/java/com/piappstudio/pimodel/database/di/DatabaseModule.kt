@@ -18,6 +18,7 @@ import androidx.room.Room
 import com.piappstudio.pimodel.database.PiGiftDatabase
 import com.piappstudio.pimodel.database.dao.IEventDao
 import com.piappstudio.pimodel.database.dao.IGuestDao
+import com.piappstudio.pimodel.database.dao.IMediaDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -48,6 +49,11 @@ object DatabaseModule {
     @Provides
     fun provideGuestDao(database: PiGiftDatabase):IGuestDao {
         return database.guestDao()
+    }
+
+    @Provides
+    fun provideMedia(database: PiGiftDatabase):IMediaDao {
+        return database.mediaDao()
     }
 }
 

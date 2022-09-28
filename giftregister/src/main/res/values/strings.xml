@@ -35,6 +35,10 @@
     <string name="back">Back</string>
     <string name="gold_in_gram">Gold (in grams)</string>
     <string name="gift_detail">Gift Description</string>
+    <string name="acc_add_photo">Add photos</string>
+    <string name="camera_permission_desc">Please provide camera permission to take a photo.</string>
+    <string name="acc_delete">Delete</string>
+    <string name="acc_close">Close</string>
 
 
 </resources>

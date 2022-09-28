@@ -31,6 +31,7 @@ import com.piappstudio.pimodel.EventInfo
 import com.piappstudio.pimodel.GiftType
 import com.piappstudio.pimodel.GuestInfo
 import com.piappstudio.pinavigation.NavInfo
+import com.piappstudio.pitheme.component.piShadow
 import com.piappstudio.pitheme.route.Route
 import com.piappstudio.pitheme.theme.Dimen
 
@@ -139,7 +140,7 @@ fun RenderGuestListView(
 ) {
 
     Card(modifier = Modifier
-        .fillMaxWidth()
+        .fillMaxWidth().piShadow().padding(start = Dimen.space, end = Dimen.space)
         .clickable { onClickGuestItem.invoke(guestInfo) }) {
         Row (modifier = Modifier.padding(Dimen.double_space).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween){
             Column {

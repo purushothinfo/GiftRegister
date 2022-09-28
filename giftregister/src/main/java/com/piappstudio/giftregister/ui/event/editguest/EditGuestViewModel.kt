@@ -9,32 +9,56 @@ package com.piappstudio.giftregister.ui.event.editguest
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.piappstudio.giftregister.R
-import com.piappstudio.pimodel.EventInfo
-import com.piappstudio.pimodel.GiftType
-import com.piappstudio.pimodel.GuestInfo
-import com.piappstudio.pimodel.Resource
+import com.piappstudio.pimodel.*
 import com.piappstudio.pimodel.database.PiDataRepository
+import com.piappstudio.pimodel.pref.PiPrefKey
+import com.piappstudio.pimodel.pref.PiPreference
 import com.piappstudio.pitheme.component.UiError
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
-@HiltViewModel
-class EditGuestViewModel   @Inject constructor(private val piDataRepository: PiDataRepository) : ViewModel() {
 
-    var selectedEventId:Long = 0
+@HiltViewModel
+class EditGuestViewModel @Inject constructor(
+    private val piDataRepository: PiDataRepository,
+    private val piPreference: PiPreference
+) :
+    ViewModel() {
+
+    var selectedEventId: Long = 0
+
     // READ & write
     private val _guestInfo = MutableStateFlow(GuestInfo())
+
     // READ
     val guestInfo: StateFlow<GuestInfo> = _guestInfo
+
+    private val _medias = MutableStateFlow<List<MediaInfo>>(emptyList())
+    val lstMedias: StateFlow<List<MediaInfo>> = _medias
 
     private val _errorInfo = MutableStateFlow(GuestError())
     val errorInfo: StateFlow<GuestError> = _errorInfo
 
     fun updateGuestInfo(guestInfo: GuestInfo?) {
-        _guestInfo.value = guestInfo?:GuestInfo()
+        _guestInfo.value = guestInfo ?: GuestInfo()
+        _medias.value = emptyList()
+        viewModelScope.launch(Dispatchers.IO) {
+            if (_guestInfo.value.id != 0L) {
+                piDataRepository.fetchGuestMedia(_guestInfo.value.id).onEach { result ->
+                    if (result.status == Resource.Status.SUCCESS) {
+                        result.data?.let {
+                            _medias.value = it
+                        }
+
+                    }
+                }.collect()
+            }
+        }
     }
+
     fun updateName(name: String) {
         _guestInfo.update { it.copy(name = name) }
     }
@@ -43,9 +67,29 @@ class EditGuestViewModel   @Inject constructor(private val piDataRepository: PiD
         _guestInfo.update { it.copy(address = address) }
     }
 
-    fun updateQuantity(quantity:String) {
+    fun updateQuantity(quantity: String) {
         _guestInfo.update { it.copy(giftValue = quantity) }
     }
+
+    //region Camera Permission
+    fun addMedia(path: String) {
+        val media = MediaInfo(path = path, guestId = _guestInfo.value.id)
+        val lstMedia = mutableListOf<MediaInfo>()
+        lstMedia.addAll(_medias.value)
+        lstMedia.add(media)
+        _medias.update { lstMedia }
+    }
+
+    fun previousCameraPermissionAttempt(): Int {
+        return piPreference.getInt(PiPrefKey.CAMERA_PERMISSION)
+    }
+
+    fun updateCameraPermissionAttempt() {
+        val prev = piPreference.getInt(PiPrefKey.CAMERA_PERMISSION)
+        piPreference.save(PiPrefKey.CAMERA_PERMISSION, prev + 1)
+    }
+    //endregion
+
 
     fun onClickSubmit() {
         val guestInfo = _guestInfo.value
@@ -57,27 +101,28 @@ class EditGuestViewModel   @Inject constructor(private val piDataRepository: PiD
         }
 
         if (guestInfo.address == null || guestInfo.address?.isBlank() == true) {
-            _errorInfo.update { it.copy(addressError  = it.addressError.copy(isError = true)) }
+            _errorInfo.update { it.copy(addressError = it.addressError.copy(isError = true)) }
             return
         } else {
-            _errorInfo.update { it.copy(addressError  = it.addressError.copy(isError = false)) }
+            _errorInfo.update { it.copy(addressError = it.addressError.copy(isError = false)) }
         }
 
         if (guestInfo.giftValue == null || guestInfo.giftValue?.isBlank() == true) {
-            _errorInfo.update { it.copy(addressError  = it.quantity.copy(isError = true)) }
+            _errorInfo.update { it.copy(addressError = it.quantity.copy(isError = true)) }
             return
         } else {
-            _errorInfo.update { it.copy(addressError  = it.quantity.copy(isError = false)) }
+            _errorInfo.update { it.copy(addressError = it.quantity.copy(isError = false)) }
         }
 
         val updatedGuestInfo = guestInfo.copy(eventId = selectedEventId)
         viewModelScope.launch {
-            piDataRepository.insert(updatedGuestInfo).onEach { response ->
-                _errorInfo.update { it.copy(progress = response) }
-                if (response.status == Resource.Status.SUCCESS) {
-                    _guestInfo.update { GuestInfo() }
-                }
-            }.collect()
+            piDataRepository.insert(updatedGuestInfo, lstMediaInfo = lstMedias.value)
+                .onEach { response ->
+                    _errorInfo.update { it.copy(progress = response) }
+                    if (response.status == Resource.Status.SUCCESS) {
+                        _guestInfo.update { GuestInfo() }
+                    }
+                }.collect()
         }
         Timber.d("Save event information")
 
@@ -87,12 +132,26 @@ class EditGuestViewModel   @Inject constructor(private val piDataRepository: PiD
     fun updateGiftType(giftType: GiftType) {
         _guestInfo.update { it.copy(giftType = giftType) }
     }
+
+    fun deleteImage(media: MediaInfo) {
+        // Not saved into DB yet, so just remove from he list
+        val lstMedia = mutableListOf<MediaInfo>()
+        lstMedia.addAll(_medias.value)
+        lstMedia.remove(media)
+        _medias.value = lstMedia
+        viewModelScope.launch {
+            piDataRepository.delete(media).onEach { result ->
+                Timber.d("Result status: ${result.status}")
+            }.collect()
+        }
+
+    }
 }
 
 data class GuestError(
     val nameError: UiError = UiError(errorText = R.string.error_name),
     val addressError: UiError = UiError(errorText = R.string.error_address),
     val quantity: UiError = UiError(errorText = R.string.error_quantity),
-    val progress : Resource<Any?> = Resource.idle()
+    val progress: Resource<Any?> = Resource.idle()
 )
 

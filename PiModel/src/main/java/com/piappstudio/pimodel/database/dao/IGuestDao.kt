@@ -10,6 +10,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.piappstudio.pimodel.GuestInfo
+import com.piappstudio.pimodel.MediaInfo
 
 @Dao
 interface IGuestDao {

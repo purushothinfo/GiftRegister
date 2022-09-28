@@ -6,31 +6,36 @@
 
 package com.piappstudio.giftregister.ui.event.editguest
 
-import android.icu.util.Currency
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import com.piappstudio.giftregister.R
+import com.piappstudio.giftregister.ui.PiImagePreviewDialog
 import com.piappstudio.giftregister.ui.event.guestlist.giftImage
+import com.piappstudio.giftregister.ui.theme.Cash
+import com.piappstudio.giftregister.ui.theme.Diamond
+import com.piappstudio.giftregister.ui.theme.Gift
 import com.piappstudio.pimodel.Constant.EMPTY_STRING
 import com.piappstudio.pimodel.GiftType
+import com.piappstudio.pimodel.MediaInfo
 import com.piappstudio.pimodel.Resource
-import com.piappstudio.pitheme.component.*
+import com.piappstudio.pitheme.component.PiErrorView
+import com.piappstudio.pitheme.component.PiProgressIndicator
+import com.piappstudio.pitheme.component.piFocus
+import com.piappstudio.pitheme.component.rememberPiFocus
 import com.piappstudio.pitheme.theme.Dimen
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,11 +44,16 @@ fun EditGuestScreen(
     callback: () -> Unit
 ) {
 
+    var capturePhoto by remember { mutableStateOf(false) }
+
     Scaffold(topBar = {
         SmallTopAppBar(title = {
             Text(text = stringResource(R.string.title_edit_guest))
 
         }, actions = {
+            IconButton(onClick = { capturePhoto = true }) {
+                Icon(imageVector = Icons.Default.Camera, contentDescription =  stringResource(R.string.acc_add_photo))
+            }
             IconButton(onClick = { callback.invoke() }) {
                 Icon(imageVector = Icons.Default.Close, contentDescription = "close")
 
@@ -57,11 +67,21 @@ fun EditGuestScreen(
         // READ
         val guestInfo by viewModel.guestInfo.collectAsState()
         val errorInfo by viewModel.errorInfo.collectAsState()
+        val lstPhotos by viewModel.lstMedias.collectAsState()
 
         if (errorInfo.progress.status == Resource.Status.LOADING) {
             PiProgressIndicator()
         } else if (errorInfo.progress.status == Resource.Status.SUCCESS) {
             callback.invoke()
+        }
+
+        var zoomImage by remember { mutableStateOf(false) }
+        var selectedMedia by remember { mutableStateOf(MediaInfo(path = EMPTY_STRING))}
+
+        if (zoomImage) {
+            PiImagePreviewDialog(imagePath = selectedMedia.path) {
+                zoomImage = false
+            }
         }
 
         LazyColumn(
@@ -72,7 +92,23 @@ fun EditGuestScreen(
             verticalArrangement = Arrangement.spacedBy(Dimen.double_space),
         ) {
             item {
+                PhotoSlider(lstMediaInfo = lstPhotos, onClickDelete = { media->
+                                                                      viewModel.deleteImage(media)
+                }, onClickZoom = { media->
+                    selectedMedia = media
+                    zoomImage = true
+                })
+                Spacer(modifier = Modifier.height(Dimen.double_space))
                 Column {
+                    if (capturePhoto) {
+                        CapturePhoto(callback = { path->
+                            viewModel.addMedia(path)
+                            capturePhoto = false
+                        }, noOfPreviousAttempt = viewModel.previousCameraPermissionAttempt()) {
+                            viewModel.updateCameraPermissionAttempt()
+                            capturePhoto = false
+                        }
+                    }
                     Spacer(modifier = Modifier.height(Dimen.double_space))
                     FieldTitle(title = stringResource(R.string.name))
 
@@ -182,6 +218,8 @@ fun EditGuestScreen(
                             fontWeight = FontWeight.Bold
                         )
                     }
+                    Spacer(modifier = Modifier.height(Dimen.double_space))
+
                 }
             }
 
@@ -204,28 +242,39 @@ fun FieldTitle(title:String) {
 fun GiftTypeOption(type: GiftType, callback: (selectedType: GiftType) -> Unit) {
     Column {
         FieldTitle(title = stringResource(R.string.select_gift_type))
+        Spacer(modifier = Modifier.height(Dimen.space))
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
+            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            RadioButton(selected = type == GiftType.CASH, onClick = {
-                callback.invoke(GiftType.CASH)
+            FilterChip(modifier = Modifier.padding(Dimen.space), selected = type == GiftType.CASH, onClick = { callback.invoke(GiftType.CASH) }, label = {
+                Text(stringResource(R.string.cash), fontWeight = FontWeight.Medium, style = MaterialTheme.typography.titleSmall)
+            }, leadingIcon = {
+                Icon(imageVector = Icons.Default.Payments, contentDescription = stringResource(R.string.cash))
+            }, selectedIcon = {
+                Icon(imageVector = Icons.Default.Payments, contentDescription = stringResource(R.string.cash), tint = Cash)
+            })
 
-            }, colors = RadioButtonDefaults.colors(Color.Green))
-            Text(stringResource(R.string.cash))
-            RadioButton(selected = type == GiftType.GOLD, onClick = {
-                callback.invoke(GiftType.GOLD)
-            }, colors = RadioButtonDefaults.colors(Color.Green))
-            Text(stringResource(R.string.gold))
+            FilterChip(selected = type == GiftType.GOLD, onClick = { callback.invoke(GiftType.GOLD) }, label = {
+                Text(stringResource(R.string.gold), fontWeight = FontWeight.Medium, style = MaterialTheme.typography.titleSmall)
+            }, leadingIcon = {
+                Icon(imageVector = Icons.Default.Diamond, contentDescription = stringResource(R.string.gold))
+            }, selectedIcon = {
+                Icon(imageVector = Icons.Default.Diamond, contentDescription = stringResource(R.string.gold), tint = Diamond)
+            })
 
-            RadioButton(selected = type == GiftType.OTHERS, onClick = {
-                callback.invoke(GiftType.OTHERS)
-            }, colors = RadioButtonDefaults.colors(Color.Green))
-            Text(stringResource(R.string.others))
+
+            FilterChip(selected = type == GiftType.OTHERS, onClick = { callback.invoke(GiftType.OTHERS) }, label = {
+                Text(stringResource(R.string.gold), fontWeight = FontWeight.Medium, style = MaterialTheme.typography.titleSmall)
+            }, leadingIcon = {
+                Icon(imageVector = Icons.Default.Redeem, contentDescription = stringResource(R.string.others))
+            }, selectedIcon = {
+                Icon(imageVector = Icons.Default.Redeem, contentDescription = stringResource(R.string.others), tint = Gift)
+            })
 
         }
-
+        Spacer(modifier = Modifier.height(Dimen.space))
     }
 }
 

@@ -8,6 +8,7 @@ package com.piappstudio.pimodel
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.Relation
 import java.util.*
 
 @Entity
