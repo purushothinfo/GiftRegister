@@ -31,7 +31,9 @@ import com.piappstudio.pimodel.EventInfo
 import com.piappstudio.pimodel.GiftType
 import com.piappstudio.pimodel.GuestInfo
 import com.piappstudio.pinavigation.NavInfo
+import com.piappstudio.pitheme.component.getColor
 import com.piappstudio.pitheme.component.piShadow
+import com.piappstudio.pitheme.component.piTopBar
 import com.piappstudio.pitheme.route.Route
 import com.piappstudio.pitheme.theme.Dimen
 
@@ -69,7 +71,7 @@ fun GuestListScreen(
                 modifier = Modifier
                     .padding(it)
             ) {
-                Row (verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top=Dimen.space, bottom = Dimen.space)) {
+                Row (verticalAlignment = Alignment.CenterVertically, modifier = Modifier.piTopBar().padding(top=Dimen.space, bottom = Dimen.space), ) {
                     IconButton(onClick = { viewModel.navManager.navigate(NavInfo(Route.Control.Back)) }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
@@ -140,7 +142,7 @@ fun RenderGuestListView(
 ) {
 
     Card(modifier = Modifier
-        .fillMaxWidth().piShadow().padding(start = Dimen.space, end = Dimen.space)
+        .fillMaxWidth().padding(start = Dimen.space, end = Dimen.space)
         .clickable { onClickGuestItem.invoke(guestInfo) }) {
         Row (modifier = Modifier.padding(Dimen.double_space).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween){
             Column {
@@ -166,16 +168,18 @@ fun RenderGuestListView(
                 }
             }
 
+
             val image = giftImage(guestInfo)
             Column(
+                modifier = Modifier.padding(top= Dimen.double_space, bottom = Dimen.double_space),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Icon(imageVector = image, contentDescription = guestInfo.giftValue)
+                Icon(imageVector = image, contentDescription = guestInfo.giftValue, tint = guestInfo.getColor())
                 Text(
                     text = guestInfo.displayGiftValue()?: "N/A",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Medium
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.ExtraBold
                 )
             }
 

@@ -7,11 +7,8 @@
 package com.piappstudio.pimodel.database
 
 import android.util.Log
-import com.piappstudio.pimodel.EventInfo
-import com.piappstudio.pimodel.GuestInfo
-import com.piappstudio.pimodel.MediaInfo
+import com.piappstudio.pimodel.*
 import com.piappstudio.pimodel.error.PIError
-import com.piappstudio.pimodel.Resource
 import com.piappstudio.pimodel.database.dao.IEventDao
 import com.piappstudio.pimodel.database.dao.IGuestDao
 import com.piappstudio.pimodel.database.dao.IMediaDao
@@ -34,7 +31,7 @@ class PiDataRepository @Inject constructor(private val eventDao:IEventDao,
         }
     }
 
-    suspend fun fetchEvents(): List<EventInfo> {
+    suspend fun fetchEvents(): List<EventSummary> {
         return eventDao.fetchEvents()
     }
 

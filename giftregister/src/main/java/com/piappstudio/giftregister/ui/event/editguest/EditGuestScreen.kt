@@ -266,7 +266,7 @@ fun GiftTypeOption(type: GiftType, callback: (selectedType: GiftType) -> Unit) {
 
 
             FilterChip(selected = type == GiftType.OTHERS, onClick = { callback.invoke(GiftType.OTHERS) }, label = {
-                Text(stringResource(R.string.gold), fontWeight = FontWeight.Medium, style = MaterialTheme.typography.titleSmall)
+                Text(stringResource(R.string.others), fontWeight = FontWeight.Medium, style = MaterialTheme.typography.titleSmall)
             }, leadingIcon = {
                 Icon(imageVector = Icons.Default.Redeem, contentDescription = stringResource(R.string.others))
             }, selectedIcon = {

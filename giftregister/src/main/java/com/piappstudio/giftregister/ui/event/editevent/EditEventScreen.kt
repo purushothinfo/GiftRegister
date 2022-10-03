@@ -27,6 +27,7 @@ import com.piappstudio.giftregister.R
 import com.piappstudio.pimodel.Resource
 import com.piappstudio.pitheme.component.PiErrorView
 import com.piappstudio.pitheme.component.PiProgressIndicator
+import com.piappstudio.pitheme.component.piTopBar
 import com.piappstudio.pitheme.theme.Dimen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,7 +43,7 @@ fun EditEventScreen(viewModel: EditEventViewModel ,callback:()->Unit) {
         )
         SmallTopAppBar(title = {
             Text(text = stringResource(R.string.edit_event))
-        }, modifier = Modifier.padding(Dimen.space), actions = {
+        }, modifier = Modifier.piTopBar().padding(Dimen.space), actions = {
             IconButton(onClick = { callback.invoke()}) {
                 Icon(imageVector = Icons.Default.Close, contentDescription ="close" )
 

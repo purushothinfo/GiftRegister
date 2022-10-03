@@ -12,7 +12,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Diamond
+import androidx.compose.material.icons.filled.People
+import androidx.compose.material.icons.filled.Redeem
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,29 +24,30 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.piappstudio.giftregister.R
-import com.piappstudio.giftregister.ui.theme.Cash
 import com.piappstudio.giftregister.ui.theme.Diamond
 import com.piappstudio.giftregister.ui.theme.Gift
 import com.piappstudio.giftregister.ui.theme.People
 import com.piappstudio.pimodel.Constant.EMPTY_STRING
 import com.piappstudio.pimodel.EventInfo
-import com.piappstudio.pitheme.component.piImageCircle
+import com.piappstudio.pimodel.EventSummary
+import com.piappstudio.pimodel.GiftType
 import com.piappstudio.pitheme.component.piShadow
+import com.piappstudio.pitheme.component.piTopBar
+import com.piappstudio.pitheme.component.toCurrency
 import com.piappstudio.pitheme.theme.Dimen
 
 // MVVM = Model- View- ViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EventListScreen(lstEvents: List<EventInfo>,
+fun EventListScreen(lstEvents: List<EventSummary>,
                     onClickFloatingAction: () -> Unit, onClickEventItem:((eventInfo:EventInfo?)->Unit)? = null) {
 
     Scaffold(topBar = {
         SmallTopAppBar(title = {
             Text(text = stringResource(R.string.title_events))
-        })
+        }, modifier = Modifier.piTopBar())
     }) {
 
 
@@ -64,8 +68,8 @@ fun EventListScreen(lstEvents: List<EventInfo>,
 
 
                 items(lstEvents) { event->
-                    RenderEventView(model = event) {
-                        onClickEventItem?.invoke(event)
+                    RenderEventView(eventSummary = event) {
+                        onClickEventItem?.invoke(event.eventInfo)
                     }
                 }
 
@@ -94,7 +98,9 @@ fun EventListScreen(lstEvents: List<EventInfo>,
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RenderEventView(model: EventInfo, callBack: (() -> Unit)? = null) {
+fun RenderEventView(eventSummary: EventSummary, callBack: (() -> Unit)? = null) {
+
+    val model = eventSummary.eventInfo
 
     Card(modifier = Modifier
         .fillMaxWidth()
@@ -110,38 +116,31 @@ fun RenderEventView(model: EventInfo, callBack: (() -> Unit)? = null) {
                     Spacer(modifier = Modifier.height(Dimen.space))
                     Text(text = model.date ?: EMPTY_STRING, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Medium)
                 }
-                ItemCountView(
-                    modifier = Modifier
-                        .weight(0.4f, true)
-                        .padding(start = Dimen.double_space),
-                    imageVector = Icons.Default.Payments,
-                    text = model.cashAmount?.toString(),
-                    color = Cash,
-                    isShadowEnabled = false
-                )
+                Text(modifier = Modifier.padding(start=Dimen.double_space),
+                    text  = eventSummary.lstGuestInfo?.filter { it.giftType == GiftType.CASH }?.sumOf { it.giftValue?.toDouble()?:0.0 }?.toCurrency()?:"0", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.ExtraBold)
             }
 
            Spacer(modifier = Modifier.height(Dimen.double_space))
             Row(
-                horizontalArrangement = Arrangement.spacedBy(Dimen.half_space),
+                horizontalArrangement = Arrangement.spacedBy(Dimen.space),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 ItemCountView(
                     modifier = Modifier.weight(1f, true),
                     imageVector = Icons.Default.People,
-                    text = model.noOfPeople?.toString(),
+                    text = eventSummary.lstGuestInfo?.size?.toString()?:"0",
                     color = People
                 )
                 ItemCountView(
                     modifier = Modifier.weight(1f, true),
                     imageVector = Icons.Default.Diamond,
-                    text = model.totalGold?.toString(),
+                    text = eventSummary.lstGuestInfo?.filter { it.giftType == GiftType.GOLD }?.sumOf { it.giftValue?.toDouble()?:0.0 }?.toString()?:"0",
                     color = Diamond
                 )
                 ItemCountView(
                     modifier = Modifier.weight(1f, true),
                     imageVector = Icons.Default.Redeem,
-                    text = model.totalOthers?.toString(),
+                    text = eventSummary.lstGuestInfo?.filter { it.giftType == GiftType.OTHERS }?.size?.toString()?:"0",
                     color = Gift
                 )
             }
@@ -159,20 +158,22 @@ fun ItemCountView(imageVector: ImageVector, text: String?, modifier: Modifier = 
     if (isShadowEnabled) {
         updatedModifier = updatedModifier.piShadow(Dimen.half_space)
     }
-    //text?.let {
         Column(
-            modifier =updatedModifier.padding(Dimen.space),
+            modifier = updatedModifier
+                .background(color)
+                .padding(Dimen.space),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Icon(imageVector = imageVector, contentDescription = text, tint = color, modifier = Modifier.padding(top = Dimen.half_space))
+            Icon(imageVector = imageVector, contentDescription = text, modifier = Modifier.padding(top = Dimen.half_space), tint = Color.White)
             Text(
                 text = text?: "$100",
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = Color.White
             )
         }
-    //}
+
 
 }
 

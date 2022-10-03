@@ -49,22 +49,6 @@ fun GuestHome(
 
     val coroutineScope = rememberCoroutineScope()
 
-    GuestListScreen(eventInfo = eventInfo, viewModel = guestListViewModel, callback = {
-        coroutineScope.launch {
-            // This is new event
-            Timber.d("Expand called: $bottomSheetScaffoldState")
-            editGuestViewModel.updateGuestInfo(null)
-            bottomSheetScaffoldState.animateTo(ModalBottomSheetValue.Expanded)
-        }
-    }) {
-        coroutineScope.launch {
-            Timber.d("Expand called: $bottomSheetScaffoldState")
-            // This is old event
-            editGuestViewModel.updateGuestInfo(it)
-            bottomSheetScaffoldState.animateTo(ModalBottomSheetValue.Expanded)
-        }
-    }
-
     ModalBottomSheetLayout(
         sheetState = bottomSheetScaffoldState,
         sheetContent = {
@@ -85,7 +69,21 @@ fun GuestHome(
             }
         }
     ) {
-
+        GuestListScreen(eventInfo = eventInfo, viewModel = guestListViewModel, callback = {
+            coroutineScope.launch {
+                // This is new event
+                Timber.d("Expand called: $bottomSheetScaffoldState")
+                editGuestViewModel.updateGuestInfo(null)
+                bottomSheetScaffoldState.animateTo(ModalBottomSheetValue.Expanded)
+            }
+        }) {
+            coroutineScope.launch {
+                Timber.d("Expand called: $bottomSheetScaffoldState")
+                // This is old event
+                editGuestViewModel.updateGuestInfo(it)
+                bottomSheetScaffoldState.animateTo(ModalBottomSheetValue.Expanded)
+            }
+        }
 
     }
 }

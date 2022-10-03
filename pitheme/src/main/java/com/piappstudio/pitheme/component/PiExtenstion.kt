@@ -23,7 +23,9 @@ import android.provider.Settings
 import android.text.Html
 import androidx.compose.animation.rememberSplineBasedDecay
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -50,6 +52,11 @@ import androidx.lifecycle.LifecycleOwner
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.placeholder
 import com.google.accompanist.placeholder.shimmer
+import com.piappstudio.giftregister.ui.theme.Cash
+import com.piappstudio.giftregister.ui.theme.Diamond
+import com.piappstudio.giftregister.ui.theme.Gift
+import com.piappstudio.pimodel.GiftType
+import com.piappstudio.pimodel.GuestInfo
 import com.piappstudio.pitheme.theme.Dimen
 import timber.log.Timber
 import java.text.DecimalFormat
@@ -200,4 +207,23 @@ fun String.toColor(): Color? {
     }
 
     return null
+}
+
+fun GuestInfo.getColor():Color {
+    return when (this.giftType) {
+        GiftType.CASH -> {
+            Cash
+        }
+        GiftType.GOLD -> {
+            Diamond
+        }
+        GiftType.OTHERS -> {
+            Gift
+        }
+    }
+}
+
+@Composable
+fun Modifier.piTopBar():Modifier {
+    return this.fillMaxWidth().background(MaterialTheme.colorScheme.outline.copy(0.1f))
 }
