@@ -28,6 +28,8 @@ object PiPrefKey {
     const val CALL_PERMISSION = "call_permission"
     const val FILE_PERMISSION = "file_permission"
     const val CAMERA_PERMISSION = "file_permission"
+    const val LAST_SYNC_TIME = "last_sync_time"
+
 }
 @Singleton
 class PiPreference @Inject constructor(@ApplicationContext context: Context) {
