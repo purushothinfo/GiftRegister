@@ -57,10 +57,14 @@ object Root {
     const val WELCOME = "welcomeroot"
     const val HOME = "homeroot"
     const val AUTH = "authroot"
+    const val DRIVE = "driveRoot"
 
     object Home {
         const val EVENTS = "eventsroot"
         const val GIFTS = "giftroot"
+    }
+    object Drive {
+        const val INTRO = "drive_intro"
     }
 
     object Auth {

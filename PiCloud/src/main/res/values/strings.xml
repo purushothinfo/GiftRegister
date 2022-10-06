@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ /***
+  ~ Pi App Studio. All rights reserved.Copyright (c) 2022.
+  ~ **/
+  -->
+
+<resources>
+    <string name="desc_google_drive_login">Please perform google authentication to sync your details with Google drive. Please note, you will be redirected to google api for further authentication</string>
+    <string name="desc_google_drive_logout">This system using your google drive account to sync your details. Please use logout option to Logout, if you no longer wanted to sync the data</string>
+    <string name="title_google_drive">Let\'s sync with GoogleDrive</string>
+    <string name="btn_login">Google SignIn</string>
+    <string name="btn_logout">Google SignOut</string>
+    <string name="desc_auth_failed">Authentication is failed, please try again later</string>
+    <string name="acc_sync_google_drive">Sync with Google drive</string>
+    <string name="user_name">User Name</string>
+    <string name="title_sync_summary">Data sync summary</string>
+    <string name="last_sync_time">Last sync time</string>
+    <string name="no_sync_yet">Data synchronization is not happen yet</string>
+    <string name="sync_schedule">Data synchronization is scheduled mid night 12:00 AM every day</string>
+    <string name="acc_sync_file">Sync files</string>
+</resources>
