@@ -24,7 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 class EditGuestViewModel @Inject constructor(
     private val piDataRepository: PiDataRepository,
-    private val piPreference: PiPreference
+    private val piPreference: PiPreference,
+    val piSession: PiSession
 ) :
     ViewModel() {
 

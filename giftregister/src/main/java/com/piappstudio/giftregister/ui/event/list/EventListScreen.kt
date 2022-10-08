@@ -12,10 +12,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Diamond
-import androidx.compose.material.icons.filled.People
-import androidx.compose.material.icons.filled.Redeem
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -42,12 +39,18 @@ import com.piappstudio.pitheme.theme.Dimen
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventListScreen(lstEvents: List<EventSummary>,
-                    onClickFloatingAction: () -> Unit, onClickEventItem:((eventInfo:EventInfo?)->Unit)? = null) {
+                    onClickSetting:()->Unit,
+                    onClickFloatingAction: () -> Unit,
+                    onClickEventItem:((eventInfo:EventInfo?)->Unit)? = null) {
 
     Scaffold(topBar = {
         SmallTopAppBar(title = {
             Text(text = stringResource(R.string.title_events))
-        }, modifier = Modifier.piTopBar())
+        }, modifier = Modifier.piTopBar(), actions = {
+            IconButton(onClick = { onClickSetting() }) {
+                Icon(imageVector = Icons.Default.Settings, contentDescription = stringResource(R.string.acc_setting))
+            }
+        })
     }) {
 
 

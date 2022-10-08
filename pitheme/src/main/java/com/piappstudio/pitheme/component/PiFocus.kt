@@ -44,20 +44,11 @@ fun rememberPiFocus(): PiFocus {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 fun Modifier.piFocus(
     focusRequester: FocusRequester,
     piFocus: PiFocus
 ): Modifier {
     return this
         .focusRequester(focusRequester)
-        .onFocusEvent { focusState ->
-            if (focusState.isFocused) {
-                piFocus.scope.launch {
-                    piFocus.bringIntoViewRequester.bringIntoView()
-                    piFocus.focusManager.moveFocus(FocusDirection.In)
-                    piFocus.keyboardController?.show()
-                }
-            }
-        }
+
 }

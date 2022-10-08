@@ -13,6 +13,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.drive.Drive
+import com.piappstudio.picloud.worker.PiDriveManager
 import com.piappstudio.pimodel.Constant
 import com.piappstudio.pimodel.pref.PiPrefKey
 import com.piappstudio.pimodel.pref.PiPreference
@@ -30,7 +31,8 @@ data class AuthState(val isUserSignIn:Boolean = false, val currentUser:GoogleSig
 @HiltViewModel
 class AuthIntroViewModel @Inject constructor(
     @ApplicationContext val context: Context,
-    private val piPreference: PiPreference
+    private val piPreference: PiPreference,
+    private val piDriveManager: PiDriveManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AuthState())
@@ -73,8 +75,13 @@ class AuthIntroViewModel @Inject constructor(
     }
 
     fun syncNow() {
-        val date = Constant.PiFormat.orderItemDisplay.format(Date())
-        piPreference.save(PiPrefKey.LAST_SYNC_TIME, date)
-        lastSyncDate()
+        viewModelScope.launch {
+            piDriveManager.syncFiles()
+            val date = Constant.PiFormat.orderItemDisplay.format(Date())
+            piPreference.save(PiPrefKey.LAST_SYNC_TIME, date)
+            lastSyncDate()
+        }
     }
+
+
 }

@@ -104,7 +104,7 @@ fun EditGuestScreen(
                         CapturePhoto(callback = { path->
                             viewModel.addMedia(path)
                             capturePhoto = false
-                        }, noOfPreviousAttempt = viewModel.previousCameraPermissionAttempt()) {
+                        }, noOfPreviousAttempt = viewModel.previousCameraPermissionAttempt(), piSession = viewModel.piSession) {
                             viewModel.updateCameraPermissionAttempt()
                             capturePhoto = false
                         }

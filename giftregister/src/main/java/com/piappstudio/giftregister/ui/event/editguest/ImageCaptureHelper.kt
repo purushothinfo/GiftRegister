@@ -24,6 +24,7 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.piappstudio.giftregister.R
 import com.piappstudio.pimodel.Constant
 import com.piappstudio.pimodel.MediaInfo
+import com.piappstudio.pimodel.PiSession
 import com.piappstudio.pitheme.component.PiPermissionRequired
 import timber.log.Timber
 import java.io.File
@@ -34,14 +35,14 @@ import java.util.*
 @Composable
 
 fun CapturePhoto(callback:(imagePath:String)->Unit,
-                 noOfPreviousAttempt:Int, updatePermissionAttempt:()->Unit) {
+                 noOfPreviousAttempt:Int, piSession: PiSession, updatePermissionAttempt:()->Unit) {
 
     fun createImageFile(context: Context): File {
         // Create an image file name
         val timeStamp = Constant.PiFormat.mediaDateTimeFormat.format(Date())
         val storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(
-            "JPEG_${timeStamp}_", //prefix
+            "${piSession.appName}_JPEG_${timeStamp}_", //prefix
             ".jpg", //suffix
             storageDir //directory
         )
@@ -51,14 +52,14 @@ fun CapturePhoto(callback:(imagePath:String)->Unit,
     val file = createImageFile(context = context)
     val imageUri = FileProvider.getUriForFile(
         context,
-        "com.piappstudio.giftregister.provider", file
+        "${piSession.packageName}.provider", file
     )
 
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture(),
         onResult = { isSuccess ->
             if (isSuccess) {
-                Timber.d("Successfully saved the image")
+                Timber.d("Successfully saved the image :${imageUri}")
                 callback.invoke(imageUri.toString())
             }
         })

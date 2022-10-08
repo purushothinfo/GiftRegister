@@ -39,6 +39,7 @@
     <string name="camera_permission_desc">Please provide camera permission to take a photo.</string>
     <string name="acc_delete">Delete</string>
     <string name="acc_close">Close</string>
+    <string name="acc_setting">Setting Configuration</string>
 
 
 </resources>
