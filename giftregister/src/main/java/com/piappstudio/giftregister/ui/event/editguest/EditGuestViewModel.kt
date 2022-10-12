@@ -48,14 +48,16 @@ class EditGuestViewModel @Inject constructor(
         _medias.value = emptyList()
         viewModelScope.launch(Dispatchers.IO) {
             if (_guestInfo.value.id != 0L) {
-                piDataRepository.fetchGuestMedia(_guestInfo.value.id).onEach { result ->
-                    if (result.status == Resource.Status.SUCCESS) {
-                        result.data?.let {
-                            _medias.value = it
-                        }
+                _guestInfo.value.id?.let {
+                    piDataRepository.fetchGuestMedia(it).onEach { result ->
+                        if (result.status == Resource.Status.SUCCESS) {
+                            result.data?.let {
+                                _medias.value = it
+                            }
 
-                    }
-                }.collect()
+                        }
+                    }.collect()
+                }
             }
         }
     }

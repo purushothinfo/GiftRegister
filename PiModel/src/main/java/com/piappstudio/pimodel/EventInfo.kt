@@ -20,7 +20,7 @@ import kotlinx.parcelize.Parcelize
 @Entity
 data class EventInfo(
     @PrimaryKey (autoGenerate = true)
-    val id:Long = 0,
+    var id:Long = 0,
     val title: String? = null,
     val date: String? = null,
     val noOfPeople: Int? = null,

@@ -29,6 +29,8 @@ object PiPrefKey {
     const val FILE_PERMISSION = "file_permission"
     const val CAMERA_PERMISSION = "file_permission"
     const val LAST_SYNC_TIME = "last_sync_time"
+    const val GOOGLE_DRIVE_FOLDER_ID = "google_drive_folder_id"
+    const val JSON_FILE_ID = "json_file_id"
 
 }
 @Singleton

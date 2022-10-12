@@ -19,4 +19,9 @@ interface IEventDao {
 
     @Query ("SELECT * FROM eventinfo")
     suspend fun fetchEvents():List<EventSummary>
+
+    @Query ("SELECT * FROM eventinfo")
+    fun fetchAllEvents():List<EventInfo>
+    @Insert
+    fun insertEvents(events: List<EventInfo>): List<Long>
 }

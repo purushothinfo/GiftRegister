@@ -6,7 +6,6 @@
 
 package com.piappstudio.pimodel.database
 
-import android.util.Log
 import com.piappstudio.pimodel.*
 import com.piappstudio.pimodel.error.PIError
 import com.piappstudio.pimodel.database.dao.IEventDao
@@ -70,12 +69,35 @@ class PiDataRepository @Inject constructor(private val eventDao:IEventDao,
         try {
             emit(Resource.loading())
             val response = api.invoke()
-            // TODO: Remove it
-            kotlinx.coroutines.delay(2000)
             emit(Resource.success(response))
         } catch (ex: Exception) {
             Timber.e(ex)
             emit(Resource.error(error = PIError(code = DATABASE_ERROR, message = ex.message)))
         }
     }
+
+    //region For backup
+    fun fetchAllEvent():List<EventInfo> {
+        return eventDao.fetchAllEvents()
+    }
+    fun fetchAllGuest():List<GuestInfo> {
+        return guestDao.fetchAllGuest()
+    }
+    fun fetchAllMedia():List<MediaInfo> {
+        return mediaDao.fetchAllMedia()
+    }
+
+    fun insertEvents(events: List<EventInfo>):List<Long> {
+        return eventDao.insertEvents(events)
+    }
+    fun insertGuest(guests:List<GuestInfo>):List<Long> {
+        return guestDao.insertGuests(guests)
+    }
+
+    fun insertMedia(lstMedia:List<MediaInfo>):List<Long> {
+        return mediaDao.insertMedias(lstMedia)
+    }
+
+    //endregion
+
 }

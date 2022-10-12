@@ -19,4 +19,9 @@ interface IGuestDao {
 
     @Query("SELECT * FROM guestinfo where eventId = :eventId")
     suspend fun fetchGuest(eventId:Long):List<GuestInfo>
+
+    @Query("SELECT * FROM guestinfo")
+    fun fetchAllGuest():List<GuestInfo>
+    @Insert
+    fun insertGuests(guests: List<GuestInfo>): List<Long>
 }

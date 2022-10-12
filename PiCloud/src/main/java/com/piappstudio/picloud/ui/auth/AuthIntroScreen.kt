@@ -27,6 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.piappstudio.picloud.R
 import com.piappstudio.pimodel.error.PIError
+import com.piappstudio.pitheme.component.PiProgressIndicator
 import com.piappstudio.pitheme.theme.Dimen
 import timber.log.Timber
 
@@ -190,6 +191,9 @@ fun SyncView(viewModel: AuthIntroViewModel, uiState: AuthState) {
             Text(text = lastSyncDate, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.ExtraBold)
         }
         Spacer(modifier = Modifier.height(Dimen.doubleSpace))
+        if (uiState.isLoading) {
+            PiProgressIndicator()
+        }
         OutlinedButton(onClick = { viewModel.syncNow() } ) {
             Icon(
                 imageVector = Icons.Filled.Sync,

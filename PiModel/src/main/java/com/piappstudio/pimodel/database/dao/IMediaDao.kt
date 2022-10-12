@@ -24,6 +24,11 @@ interface IMediaDao {
     @Query("SELECT * FROM mediainfo where guestId = :guestId")
     suspend fun fetchGuestMedias(guestId:Long):List<MediaInfo>
 
+    @Query("SELECT * FROM mediainfo")
+    fun fetchAllMedia():List<MediaInfo>
+
     @Delete
     suspend fun delete(mediaInfo: MediaInfo)
+    @Insert
+    fun insertMedias(lstMedia: List<MediaInfo>): List<Long>
 }
