@@ -41,11 +41,7 @@ fun CapturePhoto(callback:(imagePath:String)->Unit,
         // Create an image file name
         val timeStamp = Constant.PiFormat.mediaDateTimeFormat.format(Date())
         val storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile(
-            "${piSession.appName}_JPEG_${timeStamp}_", //prefix
-            ".jpg", //suffix
-            storageDir //directory
-        )
+        return File(storageDir?.path+"/${piSession.appName}_JPEG_${timeStamp}.jpg")
     }
 
     val context = LocalContext.current

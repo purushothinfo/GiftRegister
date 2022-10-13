@@ -48,7 +48,7 @@ class EditGuestViewModel @Inject constructor(
         _medias.value = emptyList()
         viewModelScope.launch(Dispatchers.IO) {
             if (_guestInfo.value.id != 0L) {
-                _guestInfo.value.id?.let {
+                _guestInfo.value.id.let {
                     piDataRepository.fetchGuestMedia(it).onEach { result ->
                         if (result.status == Resource.Status.SUCCESS) {
                             result.data?.let {
@@ -111,10 +111,10 @@ class EditGuestViewModel @Inject constructor(
         }
 
         if (guestInfo.giftValue == null || guestInfo.giftValue?.isBlank() == true) {
-            _errorInfo.update { it.copy(addressError = it.quantity.copy(isError = true)) }
+            _errorInfo.update { it.copy(quantity = it.quantity.copy(isError = true)) }
             return
         } else {
-            _errorInfo.update { it.copy(addressError = it.quantity.copy(isError = false)) }
+            _errorInfo.update { it.copy(quantity = it.quantity.copy(isError = false)) }
         }
 
         val updatedGuestInfo = guestInfo.copy(eventId = selectedEventId)

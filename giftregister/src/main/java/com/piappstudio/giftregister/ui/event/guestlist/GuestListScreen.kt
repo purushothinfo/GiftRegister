@@ -144,12 +144,12 @@ fun RenderGuestListView(
     Card(modifier = Modifier
         .fillMaxWidth().padding(start = Dimen.space, end = Dimen.space)
         .clickable { onClickGuestItem.invoke(guestInfo) }) {
-        Row (modifier = Modifier.padding(Dimen.double_space).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween){
+        Row (modifier = Modifier.padding(start=Dimen.double_space, end= Dimen.double_space).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween){
             Column {
                 Text(
                     text = guestInfo.name ?: Constant.EMPTY_STRING,
                     color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Black
                 )
                 guestInfo.address?.let {
@@ -178,7 +178,7 @@ fun RenderGuestListView(
                 Icon(imageVector = image, contentDescription = guestInfo.giftValue, tint = guestInfo.getColor())
                 Text(
                     text = guestInfo.displayGiftValue()?: "N/A",
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.ExtraBold
                 )
             }

@@ -20,11 +20,11 @@
     <string name="phone_number">Phone Number</string>
     <string name="submit">Submit</string>
     <string name="edit_event">Edit Event</string>
-    <string name="_date">Date</string>
+    <string name="_date">Date (DD/MM/YYYY)</string>
     <string name="people">People</string>
     <string name="please_enter_your_event">Please enter your event</string>
     <string name="error_name">Please enter name</string>
-    <string name="error_date">Enter event date</string>
+    <string name="error_date">Please enter valid event date</string>
     <string name="error_address">Enter your address</string>
     <string name="error_quantity">Enter the number</string>
     <string name="icon_address">Address</string>

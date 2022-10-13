@@ -446,9 +446,7 @@ class PiDriveManager @Inject constructor(
                 val dictEventId = mutableMapOf<Long, Long>()
                 if (lstOldEventIds.size == updatedEventId.size) {
                     lstOldEventIds.forEachIndexed { index, id ->
-                        id?.let {
-                            dictEventId[id] = updatedEventId[index]
-                        }
+                        dictEventId[id] = updatedEventId[index]
                     }
                 }
                 send(Resource.loading("Update Guest table"))
@@ -457,7 +455,7 @@ class PiDriveManager @Inject constructor(
 
                 piTable.lstGuestInfo?.let { lstGroupInfo ->
 
-                    val lstOldGroupIds = lstGroupInfo.map { group -> group.eventId }
+                    val lstOldGroupIds = lstGroupInfo.map { group -> group.id }
                     for (groupInfo in lstGroupInfo) {
                         groupInfo.id = 0L
                         dictEventId[groupInfo.eventId]?.let { groupId ->
@@ -469,6 +467,7 @@ class PiDriveManager @Inject constructor(
                         Timber.d("Updating guest dictionary")
                         lstOldGroupIds.forEachIndexed { index, id ->
                             dictGuestId[id] = updatedGroupIds[index]
+                            Timber.d("key: $id, value : ${updatedGroupIds[index]}")
                         }
                     }
                 }

@@ -44,8 +44,7 @@ fun EventHome(viewModel: EditEventViewModel = hiltViewModel(), eventListScreenVi
             Box(
                 Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(.6f)
-                    .background(Color(0XFF0F9D58))) {
+                    .fillMaxHeight(.6f)) {
                 EditEventScreen (viewModel = viewModel) {
                     eventListScreenViewModel.fetchEventList()
                     coroutineScope.launch {

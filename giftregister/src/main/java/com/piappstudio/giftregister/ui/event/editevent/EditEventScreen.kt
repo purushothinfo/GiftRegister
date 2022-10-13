@@ -6,6 +6,7 @@
 
 package com.piappstudio.giftregister.ui.event.editevent
 
+import PiDateVisualTransform
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
@@ -22,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.piappstudio.giftregister.R
 import com.piappstudio.pimodel.Resource
@@ -36,14 +38,9 @@ fun EditEventScreen(viewModel: EditEventViewModel ,callback:()->Unit) {
 
 
     Scaffold(topBar = {
-        Divider(
-            modifier = Modifier.fillMaxWidth(0.3f).padding(Dimen.double_space),
-            color = MaterialTheme.colorScheme.outline,
-            thickness = Dimen.half_space
-        )
         SmallTopAppBar(title = {
             Text(text = stringResource(R.string.edit_event))
-        }, modifier = Modifier.piTopBar().padding(Dimen.space), actions = {
+        },  actions = {
             IconButton(onClick = { callback.invoke()}) {
                 Icon(imageVector = Icons.Default.Close, contentDescription ="close" )
 
@@ -128,7 +125,8 @@ fun EditEventScreen(viewModel: EditEventViewModel ,callback:()->Unit) {
                                 )
                             }, modifier = Modifier
                                 .fillMaxWidth(),
-                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next, keyboardType = KeyboardType.Number),
+                            visualTransformation = PiDateVisualTransform()
                         )
                         PiErrorView(uiError = errorInfo.dateError)
 
