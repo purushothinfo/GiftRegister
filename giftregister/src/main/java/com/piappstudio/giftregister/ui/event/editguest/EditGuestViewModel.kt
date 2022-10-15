@@ -19,7 +19,9 @@ import javax.inject.Inject
 @HiltViewModel
 class EditGuestViewModel   @Inject constructor() : ViewModel() {
 
+    // READ & write
     private val _guestInfo = MutableStateFlow(GuestInfo())
+    // READ
     val guestInfo: StateFlow<GuestInfo> = _guestInfo
 
     private val _errorInfo = MutableStateFlow(GuestError())

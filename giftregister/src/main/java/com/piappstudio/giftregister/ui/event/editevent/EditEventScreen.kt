@@ -10,12 +10,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.CalendarToday
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.People
 import androidx.compose.material3.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -26,14 +24,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.piappstudio.giftregister.R
+import com.piappstudio.pimodel.Resource
 import com.piappstudio.pitheme.component.PiErrorView
-import com.piappstudio.pitheme.component.UiError
+import com.piappstudio.pitheme.component.PiProgressIndicator
 import com.piappstudio.pitheme.theme.Dimen
-import javax.security.auth.callback.Callback
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditEventScreen(viewModel: EditEventViewModel= hiltViewModel(),callback:()->Unit) {
+fun EditEventScreen(viewModel: EditEventViewModel ,callback:()->Unit) {
     Scaffold(topBar = {
         SmallTopAppBar(title = {
             Text(text = stringResource(R.string.edit_event))
@@ -49,6 +47,11 @@ fun EditEventScreen(viewModel: EditEventViewModel= hiltViewModel(),callback:()->
         val eventInfo by viewModel.eventInfo.collectAsState()
         val errorInfo by viewModel.errorInfo.collectAsState()
 
+        if (errorInfo.progress.status == Resource.Status.LOADING) {
+            PiProgressIndicator()
+        } else if (errorInfo.progress.status == Resource.Status.SUCCESS) {
+            callback.invoke()
+        }
         LazyColumn(
             modifier = Modifier
                 .padding(it)

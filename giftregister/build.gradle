@@ -51,6 +51,8 @@ dependencies {
 
     // Hilt integration
     implementation "com.google.dagger:hilt-android:$hilt_version"
+    implementation 'androidx.paging:paging-common-ktx:3.0.0'
+    implementation 'androidx.paging:paging-compose:1.0.0-alpha11'
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     implementation "androidx.hilt:hilt-navigation-fragment:$hilt_nav_fragment"
     // To access hiltViewModel
