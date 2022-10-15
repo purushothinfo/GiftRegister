@@ -41,6 +41,10 @@ class MainActivity : ComponentActivity() {
         val navInfo by navManager.routeInfo.collectAsState()
         LaunchedEffect(key1 = navInfo) {
             navInfo.id?.let {
+                if (it == Route.Control.Back) {
+                    navController.navigateUp()
+                    return@let
+                }
                 navController.navigate(it, navOptions = navInfo.navOption)
                 navManager.navigate(null)
             }

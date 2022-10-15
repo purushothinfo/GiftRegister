@@ -9,6 +9,7 @@ package com.piappstudio.giftregister.ui.event.editevent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.piappstudio.giftregister.R
+import com.piappstudio.pimodel.Constant
 import com.piappstudio.pimodel.EventInfo
 import com.piappstudio.pimodel.Resource
 import com.piappstudio.pimodel.database.PiDataRepository
@@ -47,7 +48,19 @@ class EditEventViewModel @Inject constructor(private val piDataRepository: PiDat
             _errorInfo.update { it.copy(nameError = it.nameError.copy(isError = false)) }
         }
 
-        if (eventInfo.date == null || eventInfo.date?.isBlank() == true) {
+        var isValidDate = false
+        try {
+            eventInfo.date?.let {
+                val eventDate = Constant.PiFormat.eventInputFormat.parse(it)
+                isValidDate = true
+
+            }
+        }catch (ex:Exception) {
+            Timber.e(ex)
+        }
+
+
+        if (!isValidDate || eventInfo.date == null || eventInfo.date?.isBlank() == true) {
             _errorInfo.update { it.copy(dateError = it.dateError.copy(isError = true)) }
             return
         } else {

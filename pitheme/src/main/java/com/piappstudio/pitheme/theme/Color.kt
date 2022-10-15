@@ -63,3 +63,9 @@ val md_theme_dark_surfaceTintColor = Color(0xFFF4BF00)
 
 
 val seed = Color(0xFFFFC800)
+
+val People = Color(0xFFFF9800)
+val Cash = Color(0xFF8BC34A)
+val Diamond = Color(0xFFE91E63)
+val Gift = Color(0xFF03A9F4)
+

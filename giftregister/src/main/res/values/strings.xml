@@ -20,17 +20,26 @@
     <string name="phone_number">Phone Number</string>
     <string name="submit">Submit</string>
     <string name="edit_event">Edit Event</string>
-    <string name="_date">Date</string>
+    <string name="_date">Date (DD/MM/YYYY)</string>
     <string name="people">People</string>
     <string name="please_enter_your_event">Please enter your event</string>
     <string name="error_name">Please enter name</string>
-    <string name="error_date">Enter event date</string>
+    <string name="error_date">Please enter valid event date</string>
     <string name="error_address">Enter your address</string>
+    <string name="error_quantity">Enter the number</string>
     <string name="icon_address">Address</string>
     <string name="select_gift_type">Select GiftType</string>
     <string name="cash">Cash</string>
     <string name="gold">Gold</string>
     <string name="others">Others</string>
+    <string name="back">Back</string>
+    <string name="gold_in_gram">Gold (in grams)</string>
+    <string name="gift_detail">Gift Description</string>
+    <string name="acc_add_photo">Add photos</string>
+    <string name="camera_permission_desc">Please provide camera permission to take a photo.</string>
+    <string name="acc_delete">Delete</string>
+    <string name="acc_close">Close</string>
+    <string name="acc_setting">Setting Configuration</string>
 
 
 </resources>

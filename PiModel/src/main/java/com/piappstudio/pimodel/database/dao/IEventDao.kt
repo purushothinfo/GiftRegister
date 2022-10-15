@@ -10,6 +10,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.piappstudio.pimodel.EventInfo
+import com.piappstudio.pimodel.EventSummary
 
 @Dao
 interface IEventDao {
@@ -17,5 +18,10 @@ interface IEventDao {
     suspend fun insert(eventInfo: EventInfo):Long
 
     @Query ("SELECT * FROM eventinfo")
-    suspend fun fetchEvents():List<EventInfo>
+    suspend fun fetchEvents():List<EventSummary>
+
+    @Query ("SELECT * FROM eventinfo")
+    fun fetchAllEvents():List<EventInfo>
+    @Insert
+    fun insertEvents(events: List<EventInfo>): List<Long>
 }

@@ -10,6 +10,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 object Dimen {
+    val zero = 0.dp
     val doubleSpace = 16.dp
     val splash_size = 100.dp
     val small_lottie_icon = 150.dp
@@ -19,6 +20,7 @@ object Dimen {
     val video_height = 150.dp
     val video_width = 140.dp
     val half_space = 4.dp
+    val two_space = 2.dp
     val space = 8.dp
     val person_image = 60.dp
 

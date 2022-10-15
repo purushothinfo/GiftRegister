@@ -6,8 +6,13 @@
 
 package com.piappstudio.pitheme.route
 
+import com.piappstudio.pimodel.EventInfo
+
 /** Class contains all route information*/
 object Route {
+    object Control {
+        const val Back = "back"
+    }
     object Welcome {
         const val SPLASH = "splash"
         const val FEATURE = "feature"
@@ -24,11 +29,12 @@ object Route {
             object Argument {
                 const val eventId= "eventId"
                 const val guestId = "guestId"
+                const val query = "query"
             }
-            const val LIST = "guest/{${Argument.eventId}}"
+            const val LIST = "guest?${Argument.query}={${Argument.query}}"
             const val MANAGE_GIFT = "guest"
-            fun guestList(eventId:Long?):String {
-                return "guest/${eventId?:0}"
+            fun guestList(eventInfo:EventInfo?):String {
+                return "guest?${Argument.query}=${eventInfo.toString()}"
             }
         }
 
@@ -51,10 +57,14 @@ object Root {
     const val WELCOME = "welcomeroot"
     const val HOME = "homeroot"
     const val AUTH = "authroot"
+    const val DRIVE = "driveRoot"
 
     object Home {
         const val EVENTS = "eventsroot"
         const val GIFTS = "giftroot"
+    }
+    object Drive {
+        const val INTRO = "drive_intro"
     }
 
     object Auth {

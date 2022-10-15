@@ -50,8 +50,19 @@ dependencies {
     // For constraint layout
     api "androidx.constraintlayout:constraintlayout-compose:1.0.1"
 
+    //For lottie animation integration
+    implementation "com.airbnb.android:lottie-compose:$lottieVersion"
     // To integrate Navigation
     implementation "androidx.navigation:navigation-compose:$nav_version"
+    api "com.google.accompanist:accompanist-permissions:0.26.4-beta"
+
+    api "com.google.accompanist:accompanist-pager:0.26.4-beta"
+
+    // If using indicators, also depend on
+    api "com.google.accompanist:accompanist-pager-indicators:0.26.4-beta"
+    api "com.google.accompanist:accompanist-placeholder-material:$placeholder_version"
+
+    api("io.coil-kt:coil-compose:2.2.1")
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

@@ -18,5 +18,6 @@ object Constant {
         val orderDisplay = SimpleDateFormat("MMMM dd, yyyy", Locale.US)
         val orderTime = SimpleDateFormat("hh:mm:a", Locale.US)
         val orderItemDisplay = SimpleDateFormat("MMMM dd, yyyy hh:mm a", Locale.US)
+        val mediaDateTimeFormat = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US)
     }
 }
