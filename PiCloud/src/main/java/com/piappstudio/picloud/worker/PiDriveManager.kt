@@ -315,6 +315,7 @@ class PiDriveManager @Inject constructor(
                     val jsonFile =  File(it.path+"/"+jsonFileName())
                     val fileOutputStream = FileOutputStream(jsonFile)
                     fileOutputStream.write(json.toByteArray())
+
                     val fileInfo = uploadFileToGDrive(
                         file = jsonFile,
                         type = PiDriveConstant.JSON_CONTENT,

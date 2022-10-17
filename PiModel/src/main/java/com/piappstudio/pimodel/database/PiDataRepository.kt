@@ -29,6 +29,11 @@ class PiDataRepository @Inject constructor(private val eventDao:IEventDao,
             eventDao.insert(eventInfo)
         }
     }
+    suspend fun update(eventInfo: EventInfo): Flow<Resource<Unit?>> {
+        return makeSafeApiCall {
+            eventDao.update(eventInfo)
+        }
+    }
 
     suspend fun fetchEvents(): List<EventSummary> {
         return eventDao.fetchEvents()
@@ -43,6 +48,18 @@ class PiDataRepository @Inject constructor(private val eventDao:IEventDao,
             }
             guestId
 
+        }
+    }
+
+    suspend fun update(guestInfo: GuestInfo, lstMediaInfo: List<MediaInfo>): Flow<Resource<Unit?>> {
+        return makeSafeApiCall {
+            guestDao.update(guestInfo)
+            // Delete all media items and insert it again
+            mediaDao.delete(guestInfo.id)
+            for (mediaInfo in lstMediaInfo) {
+                val updatedMediaInfo = mediaInfo.copy(guestId = guestInfo.id)
+                mediaDao.insert(updatedMediaInfo)
+            }
         }
     }
 
