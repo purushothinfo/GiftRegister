@@ -20,7 +20,7 @@ This applicaiton is build with most advance features available in the android li
 10. Accompanist for permission, pager
 
 # Screenshots
-[Events List] (Screenshots/Events_List.png)
-[Guest List] (Screenshots/Guest_List.png)
-[Edit Guest] (Screenshots/Edit_Guest.png)
-[Google Drive Sync] (Screenshots/Google_Drive_Sync.png)
+![Events List] (Screenshots/Events_List.png)
+![Guest List] (Screenshots/Guest_List.png)
+!Edit Guest] (Screenshots/Edit_Guest.png)
+![Google Drive Sync] (Screenshots/Google_Drive_Sync.png)
