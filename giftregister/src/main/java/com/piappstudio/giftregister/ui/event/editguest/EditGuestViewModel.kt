@@ -119,13 +119,25 @@ class EditGuestViewModel @Inject constructor(
 
         val updatedGuestInfo = guestInfo.copy(eventId = selectedEventId)
         viewModelScope.launch {
-            piDataRepository.insert(updatedGuestInfo, lstMediaInfo = lstMedias.value)
-                .onEach { response ->
-                    _errorInfo.update { it.copy(progress = response) }
-                    if (response.status == Resource.Status.SUCCESS) {
-                        _guestInfo.update { GuestInfo() }
-                    }
-                }.collect()
+            if (updatedGuestInfo.id != 0L) {
+                // Perform update operation
+                piDataRepository.update(updatedGuestInfo, lstMediaInfo = lstMedias.value)
+                    .onEach { response ->
+                        _errorInfo.update { it.copy(progress = response) }
+                        if (response.status == Resource.Status.SUCCESS) {
+                            _guestInfo.update { GuestInfo() }
+                        }
+                    }.collect()
+            } else {
+                piDataRepository.insert(updatedGuestInfo, lstMediaInfo = lstMedias.value)
+                    .onEach { response ->
+                        _errorInfo.update { it.copy(progress = response) }
+                        if (response.status == Resource.Status.SUCCESS) {
+                            _guestInfo.update { GuestInfo() }
+                        }
+                    }.collect()
+            }
+
         }
         Timber.d("Save event information")
 

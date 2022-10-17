@@ -65,9 +65,11 @@ dependencies {
     def work_version = "2.7.0"
     implementation "androidx.work:work-runtime-ktx:$work_version"
 
+    // Google drive authentication
     implementation "com.google.android.gms:play-services-auth:$play_services_auth"
     implementation "com.google.android.gms:play-services-drive:$play_services_drive"
 
+    // Google drive integration
     implementation 'com.google.apis:google-api-services-drive:v3-rev20220815-2.0.0'
     implementation 'com.google.api-client:google-api-client-android:2.0.0'
     implementation 'com.google.auth:google-auth-library-oauth2-http:1.11.0'

@@ -40,7 +40,7 @@ class EditEventViewModel @Inject constructor(private val piDataRepository: PiDat
     }
 
     fun onClickSubmit() {
-        val eventInfo = _eventInfo.value
+        var eventInfo = _eventInfo.value.copy()
         if (eventInfo.title == null || eventInfo.title?.isBlank() == true) {
             _errorInfo.update { it.copy(nameError = it.nameError.copy(isError = true)) }
             return
@@ -53,6 +53,7 @@ class EditEventViewModel @Inject constructor(private val piDataRepository: PiDat
             eventInfo.date?.let {
                 val eventDate = Constant.PiFormat.eventInputFormat.parse(it)
                 isValidDate = true
+                eventInfo = eventInfo.copy(date = Constant.PiFormat.orderDisplay.format(eventDate))
 
             }
         }catch (ex:Exception) {
@@ -67,12 +68,23 @@ class EditEventViewModel @Inject constructor(private val piDataRepository: PiDat
             _errorInfo.update { it.copy(dateError = it.dateError.copy(isError = false)) }
         }
         viewModelScope.launch {
-            piDataRepository.insert(eventInfo).onEach { response ->
-                _errorInfo.update { it.copy(progress = response) }
-                if (response.status == Resource.Status.SUCCESS) {
-                    _eventInfo.update { EventInfo() }
-                }
-            }.collect()
+            if (eventInfo.id != 0L) {
+                // Perform update operation
+                piDataRepository.update(eventInfo).onEach { response ->
+                    _errorInfo.update { it.copy(progress = response) }
+                    if (response.status == Resource.Status.SUCCESS) {
+                        _eventInfo.update { EventInfo() }
+                    }
+                }.collect()
+            } else {
+                piDataRepository.insert(eventInfo).onEach { response ->
+                    _errorInfo.update { it.copy(progress = response) }
+                    if (response.status == Resource.Status.SUCCESS) {
+                        _eventInfo.update { EventInfo() }
+                    }
+                }.collect()
+            }
+
             Timber.d("Save event information")
         }
     }
