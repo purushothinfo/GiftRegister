@@ -10,14 +10,18 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Cloud
+import androidx.compose.material.icons.filled.Sync
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.piappstudio.picloud.R
 
 val VERBOSE_NOTIFICATION_CHANNEL_NAME: CharSequence =
-    "Verbose WorkManager Notifications"
+    "GiftRegister Notification"
 const val VERBOSE_NOTIFICATION_CHANNEL_DESCRIPTION =
-    "Shows notifications whenever work starts"
-const val CHANNEL_ID = "VERBOSE_NOTIFICATION"
+    "GiftRegister status notification"
+const val CHANNEL_ID = "GIFT_REGISTER_NOTIFICATION"
 const val NOTIFICATION_ID = 1
 fun makeStatusNotification(title: String, message: String, context: Context) {
 
@@ -41,6 +45,7 @@ fun makeStatusNotification(title: String, message: String, context: Context) {
     // Create the notification
     val builder = NotificationCompat.Builder(context, CHANNEL_ID)
         .setContentTitle(title)
+        .setSmallIcon(R.drawable.ic_stat_name)
         .setContentText(message)
         .setPriority(NotificationCompat.PRIORITY_HIGH)
         .setVibrate(LongArray(0))

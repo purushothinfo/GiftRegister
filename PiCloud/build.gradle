@@ -49,20 +49,23 @@ android {
 dependencies {
 
     implementation "androidx.core:core-ktx:$core_ktx_version"
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation "androidx.appcompat:appcompat:$appcompact_version"
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.material3:$material3_version"
 
     implementation "com.google.dagger:hilt-android:$hilt_version"
-
+    // Hilt worker
+    implementation "androidx.hilt:hilt-common:$hilt_worker"
+    implementation "androidx.hilt:hilt-work:$hilt_worker"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+
     implementation "androidx.hilt:hilt-navigation-fragment:$hilt_nav_fragment"
     // To access hiltViewModel
     implementation "androidx.hilt:hilt-navigation-compose:$hilt_navigation_compose"
 
     implementation project(path: ':pitheme')
     implementation project(path: ':PiModel')
-    def work_version = "2.7.0"
     implementation "androidx.work:work-runtime-ktx:$work_version"
 
     // Google drive authentication

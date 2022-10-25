@@ -35,6 +35,10 @@ data class AuthState(
     val isLoading:Boolean = false
 )
 
+fun PiPreference.isUserLoggedIn():Boolean {
+    return GoogleSignIn.getLastSignedInAccount(context)!=null
+}
+
 @HiltViewModel
 class AuthIntroViewModel @Inject constructor(
     @ApplicationContext val context: Context,
@@ -61,13 +65,16 @@ class AuthIntroViewModel @Inject constructor(
     private fun initializeSignIn() {
         viewModelScope.launch {
             val account = GoogleSignIn.getLastSignedInAccount(context)
+            piPreference.save(PiPrefKey.IS_USER_LOGGED_IN, account!=null)
             _uiState.update { it.copy(currentUser = account, isUserSignIn = account != null) }
             lastSyncDate()
         }
     }
 
     fun updateAccountInfo(account: GoogleSignInAccount?) {
+
         _uiState.update { it.copy(currentUser = account, isUserSignIn = account != null) }
+
     }
 
     fun performLogout() {

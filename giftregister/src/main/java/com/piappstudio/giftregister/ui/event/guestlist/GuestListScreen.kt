@@ -6,6 +6,7 @@
 
 package com.piappstudio.giftregister.ui.event.guestlist
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -26,6 +27,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.piappstudio.giftregister.R
 import com.piappstudio.giftregister.ui.event.list.EventEmptyScreen
 import com.piappstudio.giftregister.ui.event.list.ItemCountView
+import com.piappstudio.giftregister.ui.theme.Cash
+import com.piappstudio.giftregister.ui.theme.Diamond
+import com.piappstudio.giftregister.ui.theme.Gift
+import com.piappstudio.giftregister.ui.theme.People
 import com.piappstudio.pimodel.Constant
 import com.piappstudio.pimodel.EventInfo
 import com.piappstudio.pimodel.GiftType
@@ -49,7 +54,7 @@ fun giftImage(guestInfo: GuestInfo):ImageVector {
         }
     }
 }
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun GuestListScreen(
     eventInfo: EventInfo?,
@@ -71,7 +76,9 @@ fun GuestListScreen(
                 modifier = Modifier
                     .padding(it)
             ) {
-                Row (verticalAlignment = Alignment.CenterVertically, modifier = Modifier.piTopBar().padding(top=Dimen.space, bottom = Dimen.space), ) {
+                Row (verticalAlignment = Alignment.CenterVertically, modifier = Modifier
+                    .piTopBar()
+                    .padding(top = Dimen.space, bottom = Dimen.space), ) {
                     IconButton(onClick = { viewModel.navManager.navigate(NavInfo(Route.Control.Back)) }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
@@ -106,6 +113,39 @@ fun GuestListScreen(
                     verticalArrangement = Arrangement.spacedBy(Dimen.double_space),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
+                    stickyHeader {
+                        Row (modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(Dimen.space)) {
+
+                            ItemCountView(
+                                modifier = Modifier.weight(0.2f, true),
+                                imageVector = Icons.Default.People,
+                                text = lstGuest.size.toString() ?: "0",
+                                color = People
+                            )
+                            ItemCountView(
+                                modifier = Modifier.weight(0.2f, true),
+                                imageVector = Icons.Default.Diamond,
+                                text = lstGuest.filter { it.giftType == GiftType.GOLD }
+                                    .sumOf { it.giftValue?.toDouble() ?: 0.0 }.toString() ?: "0",
+                                color = Diamond
+                            )
+                            ItemCountView(
+                                modifier = Modifier.weight(0.2f, true),
+                                imageVector = Icons.Default.Redeem,
+                                text = lstGuest.filter { it.giftType == GiftType.OTHERS }.size.toString()
+                                    ?: "0",
+                                color = Gift
+                            )
+                            ItemCountView(
+                                modifier = Modifier.weight(.4f, true),
+                                imageVector = Icons.Default.Payments,
+                                text = lstGuest.filter { it.giftType == GiftType.CASH }
+                                    .sumOf { it.giftValue?.toDouble() ?: 0.0 }.toString() ?: "0",
+                                color = Cash
+                            )
+                        }
+                    }
                     items(lstGuest) { guest ->
                         // Rendering the row
                         RenderGuestListView(guestInfo = guest, viewModel, onClickGuestItem)
@@ -142,9 +182,12 @@ fun RenderGuestListView(
 ) {
 
     Card(modifier = Modifier
-        .fillMaxWidth().padding(start = Dimen.space, end = Dimen.space)
+        .fillMaxWidth()
+        .padding(start = Dimen.space, end = Dimen.space)
         .clickable { onClickGuestItem.invoke(guestInfo) }) {
-        Row (modifier = Modifier.padding(start=Dimen.double_space, end= Dimen.double_space).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween){
+        Row (modifier = Modifier
+            .padding(start = Dimen.double_space, end = Dimen.double_space)
+            .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween){
             Column {
                 Text(
                     text = guestInfo.name ?: Constant.EMPTY_STRING,
