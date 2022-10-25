@@ -18,4 +18,6 @@
     <string name="no_sync_yet">Data synchronization is not happen yet</string>
     <string name="sync_schedule">Data synchronization is scheduled mid night 12:00 AM every day</string>
     <string name="acc_sync_file">Sync files</string>
+    <string name="drive_sync_notification_title">GiftRegister Google Drive Sync</string>
+    <string name="default_message">Sync is in progress</string>
 </resources>

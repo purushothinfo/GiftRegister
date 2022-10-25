@@ -23,6 +23,7 @@ buildscript {
         ui_tooling =  "1.2.1"
         work_version = "2.7.1"
         pagging_version= "3.1.1"
+        hilt_worker = "1.0.0"
     }
     dependencies {
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"

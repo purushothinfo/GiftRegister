@@ -54,8 +54,12 @@ dependencies {
     implementation "androidx.compose.material3:$material3_version"
 
     implementation "com.google.dagger:hilt-android:$hilt_version"
-
+    // Hilt worker
+    implementation "androidx.hilt:hilt-common:$hilt_worker"
+    implementation "androidx.hilt:hilt-work:$hilt_worker"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+
     implementation "androidx.hilt:hilt-navigation-fragment:$hilt_nav_fragment"
     // To access hiltViewModel
     implementation "androidx.hilt:hilt-navigation-compose:$hilt_navigation_compose"

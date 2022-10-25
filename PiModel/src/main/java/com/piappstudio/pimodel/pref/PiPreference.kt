@@ -31,10 +31,11 @@ object PiPrefKey {
     const val LAST_SYNC_TIME = "last_sync_time"
     const val GOOGLE_DRIVE_FOLDER_ID = "google_drive_folder_id"
     const val JSON_FILE_ID = "json_file_id"
+    const val IS_USER_LOGGED_IN = "is_user_logged_in"
 
 }
 @Singleton
-class PiPreference @Inject constructor(@ApplicationContext context: Context) {
+class PiPreference @Inject constructor(@ApplicationContext val context: Context) {
 
     private val sharedPrefsFile: String = "aladdin"
 
