@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.piappstudio.authentication.authNavGraph
 import com.piappstudio.giftregister.homeGraph
+import com.piappstudio.picloud.driveGraph
 import com.piappstudio.pitheme.route.Root
 import com.piappstudio.welcome.welcomeNavGraph
 
@@ -15,5 +16,7 @@ fun AppNavGraph(navController: NavHostController) {
       welcomeNavGraph()
       homeGraph()
       authNavGraph()
+      driveGraph()
+
    }
 }

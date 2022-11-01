@@ -17,7 +17,7 @@ import com.piappstudio.welcome.ui.tnc.TermsAndConditionScreen
 
 fun NavGraphBuilder.welcomeNavGraph() {
 
-    navigation(startDestination = Route.Welcome.FEATURE, route = Root.WELCOME) {
+    navigation(startDestination = Route.Welcome.SPLASH, route = Root.WELCOME) {
 
         composable(Route.Welcome.SPLASH) {
             SplashScreen()

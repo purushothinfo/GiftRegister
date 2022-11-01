@@ -9,6 +9,7 @@ package com.piappstudio.giftregister.ui.event.editevent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.piappstudio.giftregister.R
+import com.piappstudio.pimodel.Constant
 import com.piappstudio.pimodel.EventInfo
 import com.piappstudio.pimodel.Resource
 import com.piappstudio.pimodel.database.PiDataRepository
@@ -39,7 +40,7 @@ class EditEventViewModel @Inject constructor(private val piDataRepository: PiDat
     }
 
     fun onClickSubmit() {
-        val eventInfo = _eventInfo.value
+        var eventInfo = _eventInfo.value.copy()
         if (eventInfo.title == null || eventInfo.title?.isBlank() == true) {
             _errorInfo.update { it.copy(nameError = it.nameError.copy(isError = true)) }
             return
@@ -47,19 +48,43 @@ class EditEventViewModel @Inject constructor(private val piDataRepository: PiDat
             _errorInfo.update { it.copy(nameError = it.nameError.copy(isError = false)) }
         }
 
-        if (eventInfo.date == null || eventInfo.date?.isBlank() == true) {
+        var isValidDate = false
+        try {
+            eventInfo.date?.let {
+                val eventDate = Constant.PiFormat.eventInputFormat.parse(it)
+                isValidDate = true
+                eventInfo = eventInfo.copy(date = Constant.PiFormat.orderDisplay.format(eventDate))
+
+            }
+        }catch (ex:Exception) {
+            Timber.e(ex)
+        }
+
+
+        if (!isValidDate || eventInfo.date == null || eventInfo.date?.isBlank() == true) {
             _errorInfo.update { it.copy(dateError = it.dateError.copy(isError = true)) }
             return
         } else {
             _errorInfo.update { it.copy(dateError = it.dateError.copy(isError = false)) }
         }
         viewModelScope.launch {
-            piDataRepository.insert(eventInfo).onEach { response ->
-                _errorInfo.update { it.copy(progress = response) }
-                if (response.status == Resource.Status.SUCCESS) {
-                    _eventInfo.update { EventInfo() }
-                }
-            }.collect()
+            if (eventInfo.id != 0L) {
+                // Perform update operation
+                piDataRepository.update(eventInfo).onEach { response ->
+                    _errorInfo.update { it.copy(progress = response) }
+                    if (response.status == Resource.Status.SUCCESS) {
+                        _eventInfo.update { EventInfo() }
+                    }
+                }.collect()
+            } else {
+                piDataRepository.insert(eventInfo).onEach { response ->
+                    _errorInfo.update { it.copy(progress = response) }
+                    if (response.status == Resource.Status.SUCCESS) {
+                        _eventInfo.update { EventInfo() }
+                    }
+                }.collect()
+            }
+
             Timber.d("Save event information")
         }
     }

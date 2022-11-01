@@ -38,18 +38,31 @@ android {
 dependencies {
 
     implementation "androidx.core:core-ktx:$core_ktx_version"
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation "androidx.appcompat:appcompat:$appcompact_version"
     api "androidx.compose.material3:$material3_version"
     api "androidx.compose.ui:ui:$compose_version"
-    debugApi "androidx.compose.ui:ui-tooling:1.2.0"
-    api "androidx.compose.ui:ui-tooling-preview:1.2.0"
+    debugApi "androidx.compose.ui:ui-tooling:$ui_tooling"
+    api "androidx.compose.ui:ui-tooling-preview:$ui_tooling"
     api "androidx.compose.material:material-icons-extended:$compose_version"
     api project(path: ':PiModel')
 
     debugApi "androidx.customview:customview-poolingcontainer:1.0.0-rc01"
+    // For constraint layout
+    api "androidx.constraintlayout:constraintlayout-compose:1.0.1"
 
+    //For lottie animation integration
+    implementation "com.airbnb.android:lottie-compose:$lottieVersion"
     // To integrate Navigation
     implementation "androidx.navigation:navigation-compose:$nav_version"
+    api "com.google.accompanist:accompanist-permissions:0.26.4-beta"
+
+    api "com.google.accompanist:accompanist-pager:$accompanist_version"
+
+    // If using indicators, also depend on
+    api "com.google.accompanist:accompanist-pager-indicators:$accompanist_version"
+    api "com.google.accompanist:accompanist-placeholder-material:$placeholder_version"
+
+    api("io.coil-kt:coil-compose:2.2.1")
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

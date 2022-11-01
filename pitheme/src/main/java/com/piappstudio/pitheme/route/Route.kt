@@ -6,36 +6,46 @@
 
 package com.piappstudio.pitheme.route
 
+import com.piappstudio.pimodel.EventInfo
+
 /** Class contains all route information*/
 object Route {
+    object Control {
+        const val Back = "back"
+    }
     object Welcome {
-        val SPLASH = "splash"
-        val FEATURE = "feature"
-        val TNC = "termscondition"
+        const val SPLASH = "splash"
+        const val FEATURE = "feature"
+        const val TNC = "termscondition"
     }
 
     object Home {
         object EVENT {
-            val LIST = "events"
-            val EVENTEMPTSCREEN ="eventemptyscreen"
-            val GUESTLIST ="guestlist"
-            val EDITGUEST ="editguest"
-            val EDITEVENT ="editevent"
+            const val LIST = "events"
+            const val EVENT_EMPTY_SCREEN ="eventemptyscreen"
         }
 
-        object GIFT {
-            val LIST = "gifts"
-            val MANAGE_GIFT = "gift"
+        object GUEST {
+            object Argument {
+                const val eventId= "eventId"
+                const val guestId = "guestId"
+                const val query = "query"
+            }
+            const val LIST = "guest?${Argument.query}={${Argument.query}}"
+            const val MANAGE_GIFT = "guest"
+            fun guestList(eventInfo:EventInfo?):String {
+                return "guest?${Argument.query}=${eventInfo.toString()}"
+            }
         }
 
     }
 
     object Auth {
-        val REGISTER = "register"
+        const val REGISTER = "register"
 
         object Login {
-            val LOGIN = "login"
-            val FORGETPASSWORD = "forgetpassword"
+            const val LOGIN = "login"
+            const val FORGET_PASSWORD = "forgetpassword"
         }
     }
 
@@ -43,17 +53,21 @@ object Route {
 
 /** To hold the nav graph roots */
 object Root {
-    val APPROOT = "approot"
-    val WELCOME = "welcomeroot"
-    val HOME = "homeroot"
-    val AUTH = "authroot"
+    const val APPROOT = "approot"
+    const val WELCOME = "welcomeroot"
+    const val HOME = "homeroot"
+    const val AUTH = "authroot"
+    const val DRIVE = "driveRoot"
 
     object Home {
-        val EVENTS = "eventsroot"
-        val GIFTS = "giftroot"
+        const val EVENTS = "eventsroot"
+        const val GIFTS = "giftroot"
+    }
+    object Drive {
+        const val INTRO = "drive_intro"
     }
 
     object Auth {
-        val LOGIN = "loginroot"
+        const val LOGIN = "loginroot"
     }
 }

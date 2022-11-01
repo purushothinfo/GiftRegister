@@ -17,4 +17,5 @@ package com.piappstudio.pitheme.component
 
 import androidx.compose.ui.focus.FocusRequester
 
+
 data class UiError(val isError: Boolean = false, val errorText: Int, val focusRequester: FocusRequester=FocusRequester(), val dynamicText:String?=null)

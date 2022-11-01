@@ -40,13 +40,13 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.4.2'
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation "androidx.core:core-ktx:$core_ktx_version"
+    implementation "androidx.appcompat:appcompat:$appcompact_version"
+    implementation 'com.google.android.material:material:1.7.0'
 
     // Hilt integration
     implementation "com.google.dagger:hilt-android:$hilt_version"
-    implementation 'androidx.paging:paging-common-ktx:3.0.0'
+    implementation "androidx.paging:paging-common-ktx:$pagging_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     implementation "androidx.hilt:hilt-navigation-fragment:$hilt_nav_fragment"
     // To access hiltViewModel
@@ -58,6 +58,8 @@ dependencies {
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation "androidx.room:room-ktx:$room_version"
 
+    api group: 'com.google.code.gson', name: 'gson', version: "$gson"
+    implementation "androidx.security:security-crypto:$crypto"
 
     // For Timber
     api "com.jakewharton.timber:timber:$timber_version"

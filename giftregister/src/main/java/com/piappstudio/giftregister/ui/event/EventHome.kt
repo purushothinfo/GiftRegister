@@ -6,18 +6,21 @@
 
 package com.piappstudio.giftregister.ui.event
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.piappstudio.giftregister.ui.event.editevent.EditEventScreen
 import com.piappstudio.giftregister.ui.event.editevent.EditEventViewModel
 import com.piappstudio.giftregister.ui.event.list.EventListScreen
 import com.piappstudio.giftregister.ui.event.list.EventListScreenViewModel
+import com.piappstudio.pinavigation.NavInfo
+import com.piappstudio.pitheme.route.Root
+import com.piappstudio.pitheme.route.Route
 import kotlinx.coroutines.launch
 
 
@@ -26,8 +29,7 @@ import kotlinx.coroutines.launch
 fun EventHome(viewModel: EditEventViewModel = hiltViewModel(), eventListScreenViewModel: EventListScreenViewModel = hiltViewModel()) {
 
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState =
-        BottomSheetState(BottomSheetValue.Collapsed)
+        bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
     )
 
     val coroutineScope = rememberCoroutineScope()
@@ -42,8 +44,7 @@ fun EventHome(viewModel: EditEventViewModel = hiltViewModel(), eventListScreenVi
             Box(
                 Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(.6f)
-                    .background(Color(0XFF0F9D58))) {
+                    .fillMaxHeight(.6f)) {
                 EditEventScreen (viewModel = viewModel) {
                     eventListScreenViewModel.fetchEventList()
                     coroutineScope.launch {
@@ -57,10 +58,14 @@ fun EventHome(viewModel: EditEventViewModel = hiltViewModel(), eventListScreenVi
         sheetPeekHeight = 0.dp
     ) {
         //Content
-        EventListScreen (lstEvents = lstEvents)  {
+        EventListScreen (lstEvents = lstEvents, onClickSetting = {
+            eventListScreenViewModel.navManager.navigate(routeInfo = NavInfo(id = Root.DRIVE))
+        }, onClickFloatingAction =   {
             coroutineScope.launch {
                 bottomSheetScaffoldState.bottomSheetState.expand()
             }
+        }) {
+            eventListScreenViewModel.navManager.navigate(routeInfo = NavInfo(id = Route.Home.GUEST.guestList(it)))
         }
     }
 }
