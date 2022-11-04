@@ -11,11 +11,13 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
+import android.graphics.Color
 import android.os.Build
 import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkManager
@@ -33,7 +35,7 @@ fun makeStatusNotification(title: String, message: String, context: Context) {
     val notificationId = 124
     // Make a channel if necessary
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        createChannel(context)
+      createChannel(context)
     }
 
     // Create the notification
@@ -64,11 +66,11 @@ fun CoroutineWorker.createForegroundInfo(@NonNull progress: String): ForegroundI
     val intent: PendingIntent = WorkManager.getInstance(context)
         .createCancelPendingIntent(getId())
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        createChannel(context = context)
+        createChannel(context)
     }
     val notification: Notification = NotificationCompat.Builder(context, id)
         .setContentTitle(title)
-        .setTicker(title)
+        .setTicker(progress)
         .setSmallIcon(R.drawable.ic_stat_name)
         .setOngoing(true) // Add the cancel action to the notification which can
         // be used to cancel the worker
@@ -77,19 +79,20 @@ fun CoroutineWorker.createForegroundInfo(@NonNull progress: String): ForegroundI
     return ForegroundInfo(notificationId, notification)
 }
 
+/***
+ * Foreground service notification for Worker to update the notification
+ */
+
 @RequiresApi(Build.VERSION_CODES.O)
-private fun createChannel(context: Context) {
-    // Create the NotificationChannel, but only on API 26+ because
-    // the NotificationChannel class is new and not in the support library
-    val name = VERBOSE_NOTIFICATION_CHANNEL_NAME
-    val description = VERBOSE_NOTIFICATION_CHANNEL_DESCRIPTION
-    val importance = NotificationManager.IMPORTANCE_HIGH
-    val channel = NotificationChannel(CHANNEL_ID, name, importance)
-    channel.description = description
+fun createChannel(context: Context) {
+    val id = context.getString(R.string.notification_channel_id)
+    val chan = NotificationChannel(
+        id,
+        "My Foreground Service",
+        NotificationManager.IMPORTANCE_HIGH
+    )
+    chan.lightColor = Color.BLUE
+    val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
+    manager?.createNotificationChannel(chan)
 
-    // Add the channel
-    val notificationManager =
-        context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager?
-
-    notificationManager?.createNotificationChannel(channel)
 }
