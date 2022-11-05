@@ -22,9 +22,11 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var navManager: NavManager
+
     lateinit var navController: NavHostController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             AppTheme {
                 SetUpAppNavGraph()
@@ -52,6 +54,7 @@ class MainActivity : ComponentActivity() {
         }
 
     }
+
 
 }
 

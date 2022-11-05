@@ -19,6 +19,9 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
+
+data class GuestListState(val lstGuest:List<GuestInfo>, val filterOption: SearchOption)
+
 @HiltViewModel
 class GuestListViewModel @Inject constructor(
     private val piDataRepository: PiDataRepository,
@@ -26,11 +29,16 @@ class GuestListViewModel @Inject constructor(
 ) : ViewModel() {
 
     var selectedEventId: Long = 0
+
+
     private val _lstGuest: MutableStateFlow<List<GuestInfo>> = MutableStateFlow(emptyList())
-    val lstGuest: StateFlow<List<GuestInfo>> = _lstGuest
+
+    private val _guestListState = MutableStateFlow(GuestListState(lstGuest = emptyList(), filterOption = SearchOption()))
+    val guestListState:StateFlow<GuestListState> = _guestListState
+
+
     private val _selectedGiftInfo: MutableStateFlow<GuestInfo> = MutableStateFlow(GuestInfo())
     val selectedGiftInfo: StateFlow<GuestInfo> = _selectedGiftInfo
-
     fun updateSelectedGiftInfo(guestInfo: GuestInfo?) {
         _selectedGiftInfo.update { guestInfo ?: GuestInfo() }
     }
@@ -44,6 +52,7 @@ class GuestListViewModel @Inject constructor(
                     result.data?.let { guestList ->
                         Timber.d("Data size: ${guestList.size}")
                         _lstGuest.value = guestList
+                        _guestListState.update { it.copy(lstGuest = guestList) }
                     }
                 }
 
@@ -53,9 +62,13 @@ class GuestListViewModel @Inject constructor(
 
     }
 
-    fun onClickAdd() {
-        Timber.d("onclick is called")
+    fun updateSearchText(text: String) {
+        _guestListState.update { it.copy(filterOption = it.filterOption.copy(text = text)) }
+        val lstFiltered = _lstGuest.value.filter { it.name?.contains(text, true) == true
+                || it.address?.contains(text, true) == true}
+        _guestListState.update { it.copy(lstGuest = lstFiltered) }
     }
-
 }
+
+data class SearchOption(val text:String? = null)
 

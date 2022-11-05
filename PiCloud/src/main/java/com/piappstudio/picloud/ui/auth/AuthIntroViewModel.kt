@@ -9,12 +9,14 @@ package com.piappstudio.picloud.ui.auth
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.*
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.Scope
 import com.google.android.gms.drive.Drive
 import com.google.api.services.drive.DriveScopes
+import com.piappstudio.picloud.worker.GoogleDriveSyncWorker
 import com.piappstudio.picloud.worker.PiDriveManager
 import com.piappstudio.pimodel.Constant
 import com.piappstudio.pimodel.Resource
@@ -89,20 +91,34 @@ class AuthIntroViewModel @Inject constructor(
     }
 
     fun syncNow() {
-        viewModelScope.launch(Dispatchers.IO) {
-            piDriveManager.doSync().onEach { backupResult ->
-                if (backupResult.status == Resource.Status.LOADING) {
-                    _uiState.update { it.copy(isLoading = true) }
-                    _uiState.update { it.copy(syncDate = backupResult.data) }
-                } else {
-                    _uiState.update { it.copy(isLoading = false) }
+
+        viewModelScope.launch {
+
+            if (piPreference.isUserLoggedIn()) {
+                val workManager = WorkManager.getInstance(context)
+                // User is logged in, schedule the background operation
+                val constraints = Constraints.Builder()
+                    .setRequiredNetworkType(NetworkType.UNMETERED)
+                    .build()
+                val work =
+                    OneTimeWorkRequest.Builder(GoogleDriveSyncWorker::class.java)
+                        .setConstraints(constraints).build()
+                workManager.getWorkInfoByIdLiveData(work.id).observeForever {  workInfo->
+                    when (workInfo.state) {
+                        WorkInfo.State.SUCCEEDED -> {
+                            _uiState.update { it.copy(isLoading = false) }
+                            lastSyncDate()
+                        }
+                        WorkInfo.State.FAILED -> {
+                            _uiState.update { it.copy(isLoading = false, syncDate = "Last sync was failed") }
+                        }
+                        else -> {
+                            _uiState.update { it.copy(isLoading = false, syncDate = "Sync is in progress") }
+                        }
+                    }
                 }
-                if (backupResult.status == Resource.Status.SUCCESS) {
-                    val date = Constant.PiFormat.orderItemDisplay.format(Date())
-                    piPreference.save(PiPrefKey.LAST_SYNC_TIME, date)
-                    lastSyncDate()
-                }
-            }.collect()
+                workManager.enqueue(work)
+            }
 
         }
     }

@@ -29,9 +29,9 @@ import com.piappstudio.pimodel.Constant.EMPTY_STRING
 import com.piappstudio.pimodel.EventInfo
 import com.piappstudio.pimodel.EventSummary
 import com.piappstudio.pimodel.GiftType
+import com.piappstudio.pimodel.toCurrency
 import com.piappstudio.pitheme.component.piShadow
 import com.piappstudio.pitheme.component.piTopBar
-import com.piappstudio.pitheme.component.toCurrency
 import com.piappstudio.pitheme.theme.Dimen
 
 // MVVM = Model- View- ViewModel

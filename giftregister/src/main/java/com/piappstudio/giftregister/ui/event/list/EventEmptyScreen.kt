@@ -9,6 +9,8 @@ package com.piappstudio.giftregister.ui.event.list
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.HourglassEmpty
+import androidx.compose.material.icons.filled.SavedSearch
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,7 +33,7 @@ fun EventEmptyScreen() {
                 .align(alignment = Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Icon(imageVector = Icons.Default.HourglassEmpty,
+            Icon(imageVector = Icons.Default.Search,
                 contentDescription ="Empty Events" ,
                 modifier = Modifier.size(Dimen.person_image),
                 tint = MaterialTheme.colorScheme.primary )
