@@ -23,6 +23,7 @@ object Route {
         object EVENT {
             const val LIST = "events"
             const val EVENT_EMPTY_SCREEN ="eventemptyscreen"
+            const val ABOUT="adoutscreen"
         }
 
         object GUEST {

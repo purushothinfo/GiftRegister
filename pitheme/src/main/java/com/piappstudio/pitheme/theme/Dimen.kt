@@ -16,6 +16,7 @@ object Dimen {
     val small_lottie_icon = 150.dp
     val product_peek_height = 300.dp
     val image_top = (-16).dp
+    val height=70.dp
     val slider_height = 332.dp
     val video_height = 150.dp
     val video_width = 140.dp

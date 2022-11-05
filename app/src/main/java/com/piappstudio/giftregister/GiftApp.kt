@@ -9,6 +9,7 @@ package com.piappstudio.giftregister
 import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.*
+import com.google.firebase.FirebaseApp
 import com.piappstudio.picloud.ui.auth.isUserLoggedIn
 import com.piappstudio.picloud.worker.GoogleDriveSyncWorker
 import com.piappstudio.picloud.worker.makeStatusNotification
@@ -32,6 +33,7 @@ class GiftApp : Application(), Configuration.Provider {
     lateinit var piSession: PiSession
     override fun onCreate() {
         super.onCreate()
+        FirebaseApp.initializeApp(this)
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
