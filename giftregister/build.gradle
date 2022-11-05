@@ -56,6 +56,7 @@ dependencies {
     implementation "androidx.paging:paging-common-ktx:$pagging_version"
     implementation 'androidx.paging:paging-compose:1.0.0-alpha16'
     implementation 'androidx.camera:camera-view:1.1.0'
+    implementation 'com.google.ar.sceneform:filament-android:1.17.1'
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     implementation "androidx.hilt:hilt-navigation-fragment:$hilt_nav_fragment"
     // To access hiltViewModel
