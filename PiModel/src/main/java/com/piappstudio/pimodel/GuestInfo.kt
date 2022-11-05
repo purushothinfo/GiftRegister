@@ -24,9 +24,7 @@ data class GuestInfo(
 ) {
     fun displayGiftValue():String? {
         if (giftType == GiftType.CASH) {
-            val currency: Currency = Currency.getInstance(Locale.getDefault())
-            val symbol: String = currency.symbol
-            return "$symbol $giftValue"
+           return  giftValue?.toDouble()?.toCurrency()
 
         }
         return giftValue

@@ -18,6 +18,7 @@ package com.piappstudio.pitheme.component
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.icu.util.Currency
 import android.net.Uri
 import android.provider.Settings
 import android.text.Html
@@ -57,6 +58,8 @@ import com.piappstudio.pimodel.GuestInfo
 import com.piappstudio.pitheme.theme.Dimen
 import timber.log.Timber
 import java.text.DecimalFormat
+import java.text.NumberFormat
+import java.util.*
 
 
 fun Modifier.piShimmer(visible: Boolean): Modifier = composed {
@@ -191,9 +194,7 @@ fun String.toCurrency(): String {
     return "$$this"
 }
 
-fun Double.toCurrency(): String {
-    return "$${String.format("%.2f", this)}"
-}
+
 
 fun String.toColor(): Color? {
     try {
@@ -221,5 +222,7 @@ fun GuestInfo.getColor():Color {
 
 @Composable
 fun Modifier.piTopBar():Modifier {
-    return this.fillMaxWidth().background(MaterialTheme.colorScheme.outline.copy(0.1f))
+    return this
+        .fillMaxWidth()
+        .background(MaterialTheme.colorScheme.outline.copy(0.1f))
 }

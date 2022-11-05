@@ -10,6 +10,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -20,6 +21,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -31,13 +33,9 @@ import com.piappstudio.giftregister.ui.theme.Cash
 import com.piappstudio.giftregister.ui.theme.Diamond
 import com.piappstudio.giftregister.ui.theme.Gift
 import com.piappstudio.giftregister.ui.theme.People
-import com.piappstudio.pimodel.Constant
-import com.piappstudio.pimodel.EventInfo
-import com.piappstudio.pimodel.GiftType
-import com.piappstudio.pimodel.GuestInfo
+import com.piappstudio.pimodel.*
 import com.piappstudio.pinavigation.NavInfo
 import com.piappstudio.pitheme.component.getColor
-import com.piappstudio.pitheme.component.piShadow
 import com.piappstudio.pitheme.component.piTopBar
 import com.piappstudio.pitheme.route.Route
 import com.piappstudio.pitheme.theme.Dimen
@@ -114,36 +112,38 @@ fun GuestListScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     stickyHeader {
-                        Row (modifier = Modifier.fillMaxWidth(),
+                        LazyRow (modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(Dimen.space)) {
+                            item {
+                                ItemView(
 
-                            ItemCountView(
-                                modifier = Modifier.weight(0.2f, true),
-                                imageVector = Icons.Default.People,
-                                text = lstGuest.size.toString() ?: "0",
-                                color = People
-                            )
-                            ItemCountView(
-                                modifier = Modifier.weight(0.2f, true),
-                                imageVector = Icons.Default.Diamond,
-                                text = lstGuest.filter { it.giftType == GiftType.GOLD }
-                                    .sumOf { it.giftValue?.toDouble() ?: 0.0 }.toString() ?: "0",
-                                color = Diamond
-                            )
-                            ItemCountView(
-                                modifier = Modifier.weight(0.2f, true),
-                                imageVector = Icons.Default.Redeem,
-                                text = lstGuest.filter { it.giftType == GiftType.OTHERS }.size.toString()
-                                    ?: "0",
-                                color = Gift
-                            )
-                            ItemCountView(
-                                modifier = Modifier.weight(.4f, true),
-                                imageVector = Icons.Default.Payments,
-                                text = lstGuest.filter { it.giftType == GiftType.CASH }
-                                    .sumOf { it.giftValue?.toDouble() ?: 0.0 }.toString() ?: "0",
-                                color = Cash
-                            )
+                                    imageVector = Icons.Default.People,
+                                    text = lstGuest.size.toString() ?: "0",
+                                    color = People
+                                )
+                                ItemView(
+                                    modifier = Modifier.padding(start = Dimen.space),
+                                    imageVector = Icons.Default.Payments,
+                                    text = lstGuest.filter { it.giftType == GiftType.CASH }
+                                        .sumOf { it.giftValue?.toDouble() ?: 0.0 }.toCurrency(),
+                                    color = Cash
+                                )
+                                ItemView(
+                                    modifier = Modifier.padding(start = Dimen.space),
+                                    imageVector = Icons.Default.Diamond,
+                                    text = lstGuest.filter { it.giftType == GiftType.GOLD }
+                                        .sumOf { it.giftValue?.toDouble() ?: 0.0 }.toString() ?: "0",
+                                    color = Diamond
+                                )
+                                ItemView(
+                                    modifier = Modifier.padding(start = Dimen.space),
+                                    imageVector = Icons.Default.Redeem,
+                                    text = lstGuest.filter { it.giftType == GiftType.OTHERS }.size.toString(),
+                                    color = Gift
+                                )
+
+                            }
+
                         }
                     }
                     items(lstGuest) { guest ->
@@ -230,20 +230,19 @@ fun RenderGuestListView(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ItemView(imageVector: ImageVector, text: String?) {
+fun ItemView(modifier: Modifier = Modifier, imageVector: ImageVector, text: String?, color: Color) {
     text?.let {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Icon(imageVector = imageVector, contentDescription = text)
+        AssistChip(modifier = modifier, onClick = { }, label = {
             Text(
                 text = text,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Black
             )
-        }
+        }, leadingIcon = {
+            Icon(imageVector = imageVector, contentDescription = text, tint = color)
+        })
     }
 
 }
