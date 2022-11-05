@@ -8,14 +8,17 @@ package com.piappstudio.giftregister.ui.event.editguest
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -37,7 +40,7 @@ import com.piappstudio.pitheme.component.rememberPiFocus
 import com.piappstudio.pitheme.theme.Dimen
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun EditGuestScreen(
     viewModel: EditGuestViewModel,
@@ -68,6 +71,7 @@ fun EditGuestScreen(
         val guestInfo by viewModel.guestInfo.collectAsState()
         val errorInfo by viewModel.errorInfo.collectAsState()
         val lstPhotos by viewModel.lstMedias.collectAsState()
+        val keyboardController = LocalSoftwareKeyboardController.current
 
         if (errorInfo.progress.status == Resource.Status.LOADING) {
             PiProgressIndicator()
@@ -201,15 +205,20 @@ fun EditGuestScreen(
                             .fillMaxWidth()
                             .piFocus(errorInfo.quantity.focusRequester, piFocus),
                         keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.Next, keyboardType =
+                            imeAction = ImeAction.Done, keyboardType =
                             keyboardType
-                        )
+                        ),
+                        keyboardActions = KeyboardActions(onDone = {
+                            keyboardController?.hide()
+                            viewModel.onClickSubmit()
+                        })
                     )
                     PiErrorView(uiError = errorInfo.quantity)
 
                     Spacer(modifier = Modifier.height(Dimen.fourth_space))
 
                     Button(onClick = {
+                        keyboardController?.hide()
                         viewModel.onClickSubmit()
                     }, modifier = Modifier.fillMaxWidth()) {
                         Text(
