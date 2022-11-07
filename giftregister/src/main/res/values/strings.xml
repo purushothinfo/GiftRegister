@@ -49,6 +49,13 @@
     <string name="sort_by_amount">Sort By Amount</string>
     <string name="group_by">Group By</string>
     <string name="view__result">View Result</string>
+    <string name="ascending">Ascending</string>
+    <string name="descending">Descending</string>
+    <string name="opt_default">Default</string>
+
+    <string name="option_place">Place</string>
+    <string name="option_all">All</string>
+    <string name="acc_filter">Filter the item with different option</string>
 
 
 </resources>

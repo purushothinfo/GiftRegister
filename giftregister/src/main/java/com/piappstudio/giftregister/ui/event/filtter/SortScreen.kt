@@ -6,152 +6,172 @@
 
 package com.piappstudio.giftregister.ui.event.filtter
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.NavigateNext
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.piappstudio.giftregister.R
+import com.piappstudio.pimodel.Constant.EMPTY_STRING
 import com.piappstudio.pitheme.theme.Dimen
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SortScreen(){
+fun SortScreen(
+    viewModel: SortScreenViewModel = hiltViewModel(),
+    filerOption: FilterOption,
+    onClickClose: (() -> Unit)? = null,
+    onClickViewResult: ((updatedOption: FilterOption) -> Unit)? = null
+) {
+
+    LaunchedEffect(key1 = filerOption) {
+        viewModel.loadPreviousOption(filerOption)
+    }
+
     Scaffold(topBar = {
         MediumTopAppBar(title = {
-            Text( modifier = Modifier.fillMaxWidth(),
+            Text(
+                modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
                 text = stringResource(R.string.sort__filter),
-                style = MaterialTheme.typography.headlineMedium)
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.titleSmall
+            )
         },
             colors = TopAppBarDefaults.mediumTopAppBarColors(MaterialTheme.colorScheme.onPrimary),
             actions = {
-            IconButton(onClick = {}) {
-                Icon(imageVector = Icons.Default.Close, contentDescription = "close")
+                IconButton(onClick = {
+                    onClickClose?.invoke()
+                }) {
+                    Icon(imageVector = Icons.Default.Close, contentDescription = "close")
 
-            }
-        })
+                }
+            })
 
     }) { innerPadding ->
 
         Column(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .padding(innerPadding),
         ) {
-            ConstraintLayout(
+
+
+            // List, Map
+            val mapOfOption by viewModel.mapOfOption.collectAsState()
+
+            val lstOfOption = mapOfOption.keys.toTypedArray()
+            lstOfOption.sortBy { it.title }
+
+            LazyColumn(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(innerPadding)
-
-            ) {
-
-                val (listView, button) = createRefs()
-                Column(
-                    modifier = Modifier
-                        .constrainAs(listView) {
-                            top.linkTo(parent.bottom)
-                            bottom.linkTo(button.top)
-
-
-                        }
-                        .fillMaxSize(),
-                    verticalArrangement = Arrangement.Top,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                )
-                {
-                    Cards(
-                        text = stringResource(R.string.gift_type),
-                        imageVector = Icons.Default.NavigateNext
-                    )
-                    Divider()
-                    Cards(
-                        text = stringResource(R.string.sort_by_name),
-                        imageVector = Icons.Default.NavigateNext
-                    )
-                    Divider()
-                    Cards(
-                        text = stringResource(R.string.sort_by_amount),
-                        imageVector = Icons.Default.NavigateNext
-                    )
-                    Divider()
-                    Cards(
-                        text = stringResource(R.string.group_by),
-                        imageVector = Icons.Default.NavigateNext
-                    )
-
-
+                    .fillMaxSize()
+                    .padding(Dimen.double_space),
+                verticalArrangement = Arrangement.spacedBy(Dimen.space),
+                horizontalAlignment = Alignment.CenterHorizontally
+            )
+            {
+                items(lstOfOption) { option ->
+                    TopOption(option = option, mapOfOption[option], onClickTopOption = {
+                        viewModel.updateTopClick(option)
+                    }, onClickSubList = { subOption ->
+                        viewModel.updateSubListClick(option, subOption)
+                    })
+                    Divider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.25f))
                 }
-                Button(onClick = { /*TODO*/ }, modifier = Modifier
-                    .fillMaxWidth()
-                    .constrainAs(button){
-                        bottom.linkTo(parent.bottom)
-
-
-                    }) {
-                    Text(text = stringResource(R.string.view__result))
+                item {
+                    Spacer(modifier = Modifier.height(Dimen.triple_space))
+                    Button(
+                        onClick = { onClickViewResult?.invoke(viewModel.currentFilterOption) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        Text(text = stringResource(R.string.view__result))
+                    }
                 }
-
             }
 
         }
 
     }
 
-
-
 }
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Cards(text:String,imageVector:ImageVector)
-{
-    Card(modifier = Modifier
-        .fillMaxWidth()
-    ,shape = RectangleShape)
-   {
-       Row(modifier = Modifier
-           .fillMaxWidth()
-           .padding(Dimen.space),
-           horizontalArrangement = Arrangement.SpaceBetween,
-          verticalAlignment = Alignment.CenterVertically
-       ) { Text( text = text, style = MaterialTheme.typography.bodyLarge)
-           IconButton(onClick = {}) {
-                   Icon(imageVector =imageVector,
-                       contentDescription = stringResource(R.string.navigate))
+fun TopOption(
+    option: Option,
+    subList: List<Option>?,
+    onClickTopOption: (() -> Unit)? = null,
+    onClickSubList: ((option: Option) -> Unit)? = null
+) {
+    Column {
 
-               }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    onClickTopOption?.invoke()
+                }
+                .padding(Dimen.space),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = option.title ?: EMPTY_STRING,
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Bold
+            )
+            IconButton(onClick = {
+                onClickTopOption?.invoke()
+            }) {
+                Icon(
+                    imageVector = if (option.isSelected) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                    contentDescription = stringResource(R.string.navigate)
+                )
 
-       }
+            }
+        }
 
+        if (option.isSelected) {
+            subList?.let { lstOption ->
+                Column {
+                    lstOption.forEach { subOption ->
+                        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                onClickSubList?.invoke(subOption)
+                            }) {
+                            RadioButton(selected = subOption.isSelected, onClick = {
+                                onClickSubList?.invoke(subOption)
+                            })
+                            Text(text = subOption.title ?: EMPTY_STRING)
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-   }
 
 }
-
-
-
-
-
-
-
 
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    SortScreen()
+    SortScreen(filerOption = FilterOption())
 
 }
