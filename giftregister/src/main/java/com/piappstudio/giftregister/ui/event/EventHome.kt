@@ -59,7 +59,7 @@ fun EventHome(viewModel: EditEventViewModel = hiltViewModel(), eventListScreenVi
     ) {
         //Content
         EventListScreen (lstEvents = lstEvents, onClickSetting = {
-            eventListScreenViewModel.navManager.navigate(routeInfo = NavInfo(id = Root.DRIVE))
+            eventListScreenViewModel.navManager.navigate(routeInfo = NavInfo(id = Route.Home.EVENT.ABOUT))
         }, onClickFloatingAction =   {
             coroutineScope.launch {
                 bottomSheetScaffoldState.bottomSheetState.expand()
