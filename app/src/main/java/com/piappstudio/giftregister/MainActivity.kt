@@ -29,12 +29,13 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var navManager: NavManager
+
     lateinit var navController: NavHostController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Obtain the FirebaseAnalytics instance.
-       // firebaseAnalytics=FirebaseAnalytics.getInstance(this)
+       firebaseAnalytics=FirebaseAnalytics.getInstance(this)
         setContent {
             AppTheme {
                 SetUpAppNavGraph()
@@ -70,6 +71,7 @@ class MainActivity : ComponentActivity() {
         }
 
     }
+
 
 }
 

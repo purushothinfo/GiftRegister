@@ -20,4 +20,8 @@
     <string name="acc_sync_file">Sync files</string>
     <string name="drive_sync_notification_title">GiftRegister Google Drive Sync</string>
     <string name="default_message">Sync is in progress</string>
+    <string name="notification_channel_id">Gift Register</string>
+    <string name="notification_title">Sync data with Google Drive</string>
+    <string name="cancel_download">Cancel</string>
+    <string name="sync_started">Google drive sync started</string>
 </resources>

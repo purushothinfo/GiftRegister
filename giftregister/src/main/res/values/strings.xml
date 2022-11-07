@@ -40,6 +40,22 @@
     <string name="acc_delete">Delete</string>
     <string name="acc_close">Close</string>
     <string name="acc_setting">Setting Configuration</string>
+    <string name="search">Search guest by name and place</string>
+    <string name="clear_all">Clear all</string>
+    <string name="sort__filter"><![CDATA[Sort & Filter]]></string>
+    <string name="navigate">Navigate</string>
+    <string name="gift_type">Gift Type</string>
+    <string name="sort_by_name">Sort By Name</string>
+    <string name="sort_by_amount">Sort By Amount</string>
+    <string name="group_by">Group By</string>
+    <string name="view__result">View Result</string>
+    <string name="ascending">Ascending</string>
+    <string name="descending">Descending</string>
+    <string name="opt_default">Default</string>
+
+    <string name="option_place">Place</string>
+    <string name="option_all">All</string>
+    <string name="acc_filter">Filter the item with different option</string>
 
 
 </resources>
