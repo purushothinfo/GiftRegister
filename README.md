@@ -19,6 +19,14 @@ This applicaiton is build with most advance features available in the android li
 9. Google Drive
 10. Accompanist for permission, pager
 
+# Dependencies
+To run this application you need to enable Google Drive api & firebase configuration for analytics , crashlytics
+
+1. To enable Google drive api, follow the configuration details ![Google Drive Api Integration Guide] (https://www.youtube.com/watch?v=vL62JcPsN2Q) 
+in ![Google Drive Ap](https://console.cloud.google.com/apis/dashboard). 
+2. Visit ![Firebase Console] (https://console.firebase.google.com/) to register your app in Firebase and download the configuration and place inti app root folder
+
+
 # Screenshots
 
 ![Events List](Screenshots/Events_List.png)

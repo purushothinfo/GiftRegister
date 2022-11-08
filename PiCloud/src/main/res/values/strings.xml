@@ -24,4 +24,5 @@
     <string name="notification_title">Sync data with Google Drive</string>
     <string name="cancel_download">Cancel</string>
     <string name="sync_started">Google drive sync started</string>
+    <string name="title_drive_back">Google Drive Backup</string>
 </resources>

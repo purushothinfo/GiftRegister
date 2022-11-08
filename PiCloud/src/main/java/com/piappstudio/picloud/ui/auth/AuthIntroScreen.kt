@@ -27,6 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.piappstudio.picloud.R
 import com.piappstudio.pimodel.error.PIError
+import com.piappstudio.pitheme.component.PiMediumTopAppBar
 import com.piappstudio.pitheme.component.PiProgressIndicator
 import com.piappstudio.pitheme.theme.Dimen
 import timber.log.Timber
@@ -73,7 +74,9 @@ fun AuthIntroScreen(viewModel: AuthIntroViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
 
     val scrollState = rememberScrollState()
-    Scaffold {
+    Scaffold (topBar = {
+        PiMediumTopAppBar(title = stringResource(R.string.title_drive_back), navManager = viewModel.navManager)
+    }){
         Column(
             modifier = Modifier
                 .fillMaxSize()

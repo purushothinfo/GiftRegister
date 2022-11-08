@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import com.piappstudio.giftregister.R
 import com.piappstudio.giftregister.ui.theme.Diamond
 import com.piappstudio.giftregister.ui.theme.Gift
@@ -48,7 +49,8 @@ fun EventListScreen(lstEvents: List<EventSummary>,
             Text(text = stringResource(R.string.title_events))
         }, modifier = Modifier.piTopBar(), actions = {
             IconButton(onClick = { onClickSetting() }) {
-                Icon(imageVector = Icons.Default.Settings, contentDescription = stringResource(R.string.acc_setting))
+                Icon(imageVector = Icons.Default.Settings,
+                    contentDescription = stringResource(R.string.acc_setting))
             }
         })
     }) {
@@ -182,6 +184,13 @@ fun ItemCountView(imageVector: ImageVector, text: String?, modifier: Modifier = 
 
 @Composable
 fun RenderEmptyScreen() {
+
+
+}
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview(){
+
 
 
 }

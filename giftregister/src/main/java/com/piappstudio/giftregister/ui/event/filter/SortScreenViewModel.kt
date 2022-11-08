@@ -4,7 +4,7 @@
  *
  */
 
-package com.piappstudio.giftregister.ui.event.filtter
+package com.piappstudio.giftregister.ui.event.filter
 
 import androidx.lifecycle.ViewModel
 import com.piappstudio.giftregister.R
@@ -18,8 +18,7 @@ import javax.inject.Inject
 
 data class FilterOption(
     val groupBy: Option = Option(title = "Gift Type"),
-    val sortByAmount: Option = Option(title = "Ascending"),
-    val sortByName: Option = Option(title = "Ascending")
+    val sort: Option = Option(title = "Name by Asc (A->Z)")
 )
 
 data class Option(
@@ -55,45 +54,37 @@ class SortScreenViewModel @Inject constructor(
 
         lstNameSortOption.add(
             Option(
-                title = resourceHelper.getString(R.string.ascending),
-                previousOption = filerOption.sortByName
+                title = resourceHelper.getString(R.string.sort_name_by_ascending),
+                previousOption = filerOption.sort
             )
         )
         lstNameSortOption.add(
             Option(
-                title = resourceHelper.getString(R.string.descending),
-                previousOption = filerOption.sortByName
+                title = resourceHelper.getString(R.string.sort_name_by_descending),
+                previousOption = filerOption.sort
+            )
+        )
+
+        lstNameSortOption.add(
+            Option(
+                title = resourceHelper.getString(R.string.sort_amount_by_ascending),
+                previousOption = filerOption.sort
+            )
+        )
+
+        lstNameSortOption.add(
+            Option(
+                title = resourceHelper.getString(R.string.sort_amount_by_descending),
+                previousOption = filerOption.sort
             )
         )
 
         mapOfTopOption[Option(
-            title = resourceHelper.getString(R.string.sort_by_name),
-            subTitle = resourceHelper.getString(R.string.ascending),
+            title = resourceHelper.getString(R.string.sort),
+            subTitle = resourceHelper.getString(R.string.sort_name_by_ascending),
             isSelected = true
         )] = lstNameSortOption
 
-
-        // Sort By amount configuration
-        val lstSortByAmount = mutableListOf<Option>()
-
-        lstSortByAmount.add(
-            Option(
-                title = resourceHelper.getString(R.string.ascending),
-                previousOption = filerOption.sortByAmount
-            )
-        )
-        lstSortByAmount.add(
-            Option(
-                title = resourceHelper.getString(R.string.descending),
-                previousOption = filerOption.sortByAmount
-            )
-        )
-
-        mapOfTopOption[Option(
-            title = resourceHelper.getString(R.string.sort_by_amount),
-            subTitle = resourceHelper.getString(R.string.ascending),
-            isSelected = true
-        )] = lstSortByAmount
 
 
         // Sort by group configuration
@@ -122,9 +113,9 @@ class SortScreenViewModel @Inject constructor(
 
     fun updateTopClick(option: Option) {
 
-        /*val previousSubList = _mapOfOptions.value[option]
+        val previousSubList = _mapOfOptions.value[option]
         val updatedOption = option.copy(isSelected = !option.isSelected)
-        updateOption(updatedOption, previousSubList)*/
+        updateOption(updatedOption, previousSubList)
     }
 
     private fun updateOption(topOption: Option, subList: List<Option>?) {
@@ -147,12 +138,8 @@ class SortScreenViewModel @Inject constructor(
 
     private fun updateFilterOption(topOption: Option, subOption: Option) {
         when (topOption.title) {
-            resourceHelper.getString(R.string.sort_by_name) -> {
-                currentFilterOption = currentFilterOption.copy(sortByName = subOption)
-            }
-            resourceHelper.getString(R.string.sort_by_amount) -> {
-                currentFilterOption = currentFilterOption.copy(sortByAmount = subOption)
-
+            resourceHelper.getString(R.string.sort) -> {
+                currentFilterOption = currentFilterOption.copy(sort = subOption)
             }
             resourceHelper.getString(R.string.group_by) -> {
                 currentFilterOption = currentFilterOption.copy(groupBy = subOption)

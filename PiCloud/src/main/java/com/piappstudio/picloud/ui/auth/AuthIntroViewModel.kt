@@ -22,6 +22,7 @@ import com.piappstudio.pimodel.Constant
 import com.piappstudio.pimodel.Resource
 import com.piappstudio.pimodel.pref.PiPrefKey
 import com.piappstudio.pimodel.pref.PiPreference
+import com.piappstudio.pinavigation.NavManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -45,7 +46,8 @@ fun PiPreference.isUserLoggedIn():Boolean {
 class AuthIntroViewModel @Inject constructor(
     @ApplicationContext val context: Context,
     private val piPreference: PiPreference,
-    private val piDriveManager: PiDriveManager
+    private val piDriveManager: PiDriveManager,
+    val navManager:NavManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AuthState())

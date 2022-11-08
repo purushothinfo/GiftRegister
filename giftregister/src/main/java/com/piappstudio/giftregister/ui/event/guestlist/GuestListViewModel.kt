@@ -9,7 +9,7 @@ package com.piappstudio.giftregister.ui.event.guestlist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.piappstudio.giftregister.R
-import com.piappstudio.giftregister.ui.event.filtter.FilterOption
+import com.piappstudio.giftregister.ui.event.filter.FilterOption
 import com.piappstudio.pimodel.Constant.EMPTY_STRING
 import com.piappstudio.pimodel.GuestInfo
 import com.piappstudio.pimodel.Resource
@@ -95,47 +95,55 @@ class GuestListViewModel @Inject constructor(
 
     }
 
-    fun applyFilter() {
+    private fun applyFilter() {
         val filterOption = _guestListState.value.searchOption.filterOption
         val fullList = _guestListState.value.lstGuest
 
         val giftType = resourceHelper.getString(R.string.gift_type)
 
         // Applied GiftType
-        var groupedItem: Map<String, List<GuestInfo>> =
-            if (filterOption.groupBy == null || filterOption.groupBy.title == giftType) {
+        val groupedItem: Map<String, List<GuestInfo>> =
+            if (filterOption.groupBy.title == giftType) {
                 fullList.groupBy { it.giftType.toString() }
             } else {
-                fullList.groupBy { it.address ?: EMPTY_STRING }
+                fullList.groupBy { it.address?.trim()?.uppercase() ?: EMPTY_STRING }
             }
 
         val finalSortedMap = mutableMapOf<String, List<GuestInfo>>()
-
-
-        val ascending = resourceHelper.getString(R.string.ascending)
-        val descending = resourceHelper.getString(R.string.descending)
-
-        val nameOrder = filterOption.sortByName.title
-        val amountOrder = filterOption.sortByAmount.title
+        val sort = filterOption.sort.title
 
         for ((key, value) in groupedItem) {
-            var sortedArray:List<GuestInfo> = emptyList()
-            if (amountOrder == ascending && nameOrder == ascending) {
-                sortedArray = value.sortedWith(compareBy<GuestInfo> { it.giftValue?.toDouble() }.thenBy { it.name })
-            } else if (amountOrder == ascending && nameOrder == descending) {
-                sortedArray = value.sortedWith(compareBy<GuestInfo> { it.giftValue?.toDouble() }.thenByDescending { it.name } )
-            } else if (amountOrder == descending && nameOrder == descending) {
-                sortedArray = value.sortedWith(compareByDescending<GuestInfo> { it.giftValue?.toDouble() }.thenByDescending { it.name })
-            } else if (amountOrder == descending && nameOrder == ascending) {
-                sortedArray = value.sortedWith(compareByDescending<GuestInfo> { it.giftValue?.toDouble() }.thenBy {  it.name } )
+            var sortedArray: List<GuestInfo> = emptyList()
+            when (sort) {
+                resourceHelper.getString(id = R.string.sort_name_by_ascending) -> {
+                    sortedArray = value.sortedBy { it.name }
+                }
+                resourceHelper.getString(R.string.sort_name_by_descending) -> {
+                    sortedArray = value.sortedByDescending { it.name }
+                }
 
+                resourceHelper.getString(R.string.sort_amount_by_ascending) -> {
+                    sortedArray = value.sortedBy { it.giftValue?.toPiDouble() }
+                }
+                resourceHelper.getString(R.string.sort_amount_by_descending) -> {
+                    sortedArray = value.sortedByDescending { it.giftValue?.toPiDouble() }
+                }
             }
             finalSortedMap[key] = sortedArray
         }
 
 
-        _guestListState.update { it.copy(filteredItem = finalSortedMap) }
+        _guestListState.update { it.copy(filteredItem = finalSortedMap.toSortedMap()) }
 
+    }
+
+    private fun String.toPiDouble():Double {
+        try {
+            this.toDouble()
+        } catch (ex:Exception) {
+            return 0.0
+        }
+        return 0.0
     }
 }
 
@@ -156,24 +164,5 @@ class GuestListViewModel @Inject constructor(
  * */
 
 
-data class SearchOption(val text: String? = null, val filterOption: FilterOption = FilterOption()) {
-
-    fun getFilterCount(): String {
-        var count = 0
-        if (filterOption.groupBy != null) {
-            count++
-        }
-        if (filterOption.sortByName != null) {
-            count++
-        }
-        if (filterOption.sortByAmount != null) {
-            count++
-        }
-        return if (count == 0) {
-            EMPTY_STRING
-        } else {
-            count.toString()
-        }
-    }
-}
+data class SearchOption(val text: String? = null, val filterOption: FilterOption = FilterOption())
 
