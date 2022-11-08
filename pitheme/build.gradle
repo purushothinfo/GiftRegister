@@ -45,7 +45,7 @@ dependencies {
     api "androidx.compose.ui:ui-tooling-preview:$ui_tooling"
     api "androidx.compose.material:material-icons-extended:$compose_version"
     api project(path: ':PiModel')
-
+    implementation project(path: ':PiNavigation')
     debugApi "androidx.customview:customview-poolingcontainer:1.0.0-rc01"
     // For constraint layout
     api "androidx.constraintlayout:constraintlayout-compose:1.0.1"

@@ -4,7 +4,7 @@
  *
  */
 
-package com.piappstudio.giftregister.ui.event.filtter
+package com.piappstudio.giftregister.ui.event.filter
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -44,9 +44,7 @@ fun SortScreen(
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
-                text = stringResource(R.string.sort__filter),
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.titleSmall
+                text = stringResource(R.string.sort_filter)
             )
         },
             colors = TopAppBarDefaults.mediumTopAppBarColors(MaterialTheme.colorScheme.onPrimary),

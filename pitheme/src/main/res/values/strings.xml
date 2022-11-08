@@ -7,4 +7,6 @@
 <resources>
     <string name="permission_title">Permission request</string>
     <string name="ok">Ok</string>
+    <string name="acc_back">Back</string>
+
 </resources>

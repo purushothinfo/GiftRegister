@@ -33,7 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.piappstudio.giftregister.R
-import com.piappstudio.giftregister.ui.event.filtter.SortScreen
+import com.piappstudio.giftregister.ui.event.filter.SortScreen
 import com.piappstudio.giftregister.ui.event.list.EventEmptyScreen
 import com.piappstudio.giftregister.ui.theme.Cash
 import com.piappstudio.giftregister.ui.theme.Diamond
@@ -169,7 +169,7 @@ fun GuestListScreen(
                                     }
                                 }, label = {
                                     Text(
-                                        text = "Filter ${searchOption.getFilterCount()}",
+                                        text = stringResource(R.string.filter),
                                         fontWeight = FontWeight.Black
                                     )
 

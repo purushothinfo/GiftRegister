@@ -16,8 +16,8 @@ import com.google.gson.Gson
 import com.piappstudio.giftregister.ui.event.EventHome
 import com.piappstudio.giftregister.ui.event.about.AboutScreen
 
-import com.piappstudio.giftregister.ui.event.filtter.FilterOption
-import com.piappstudio.giftregister.ui.event.filtter.SortScreen
+import com.piappstudio.giftregister.ui.event.filter.FilterOption
+import com.piappstudio.giftregister.ui.event.filter.SortScreen
 import com.piappstudio.giftregister.ui.event.guestlist.GuestHome
 import com.piappstudio.giftregister.ui.event.list.EventEmptyScreen
 import com.piappstudio.pimodel.EventInfo

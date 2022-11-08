@@ -58,6 +58,7 @@ class MainActivity : ComponentActivity() {
                    // firebaseAnalytics.logEvent("Click_Back",null)
 
                     navController.navigateUp()
+                    navManager.navigate(null)
                     return@let
                 }
                 var bundle=Bundle()

@@ -6,6 +6,7 @@
 
 package com.piappstudio.giftregister.ui.event.about
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -22,7 +23,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.piappstudio.giftregister.R
 import com.piappstudio.pinavigation.NavInfo
+import com.piappstudio.pitheme.component.PiMediumTopAppBar
 import com.piappstudio.pitheme.route.Root
+import com.piappstudio.pitheme.route.Route
 import com.piappstudio.pitheme.theme.Dimen
 import dagger.hilt.android.lifecycle.HiltViewModel
 
@@ -30,76 +33,46 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 @Composable
 fun AboutScreen(viewModel: AboutViewModel = hiltViewModel()) {
     Scaffold(topBar = {
-        SmallTopAppBar(
-            title = {
-                Text(
-                    text = stringResource(R.string.about_screen),
-                    modifier = Modifier.padding(start = Dimen.space)
-                )
-            },
-            colors = TopAppBarDefaults.smallTopAppBarColors(MaterialTheme.colorScheme.onPrimary),
-            navigationIcon = {
-                IconButton(onClick = { }) {
-                    Icon(
-                        Icons.Default.ArrowBack,
-                        contentDescription = stringResource(R.string.arrow_back)
-                    )
-
-                }
-            })
+       PiMediumTopAppBar(title = stringResource(id = R.string.about_screen), navManager = viewModel.navManager)
     }) {
-        it
+
         Column(
             modifier = Modifier
-                .padding(top = Dimen.height)
+                .padding(it)
                 .fillMaxSize(),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             CardDetails(
-                text = stringResource(id = R.string.frequently_asked_questions),
+                text = stringResource(id = R.string.google_drive_backup),
                 imageVector = Icons.Default.NavigateNext, onClick = {
                     viewModel.navManager.navigate(routeInfo = NavInfo(id = Root.DRIVE))
                 }
 
             )
-           Divider(color=MaterialTheme.colorScheme.onPrimary)
+            Divider(color = MaterialTheme.colorScheme.outline.copy(.35f))
             CardDetails(
-                text = stringResource(R.string.learn_More),
+                text = stringResource(R.string.contact_us),
 
                 imageVector = Icons.Default.NavigateNext, onClick = {}
             )
-          Divider(color=MaterialTheme.colorScheme.onPrimary)
-
-            CardDetails(
-                text = stringResource(R.string.call_customer_service),
-                imageVector = Icons.Default.NavigateNext, onClick = {}
-            )
-            Divider(color=MaterialTheme.colorScheme.onPrimary)
-
+            Divider(color = MaterialTheme.colorScheme.outline.copy(.35f))
 
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardDetails(
     text: String,
     imageVector: ImageVector,
-    onClick:()->Unit
+    onClick: () -> Unit
 ) {
-
-
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RectangleShape,
-
-        ) {
-
+    Surface(modifier = Modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .clickable { onClick.invoke() }
                 .padding(Dimen.double_space),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
@@ -110,7 +83,7 @@ fun CardDetails(
                 modifier = Modifier.padding(start = Dimen.double_space),
                 fontWeight = FontWeight.SemiBold
             )
-            IconButton(onClick = {onClick.invoke() }) {
+            IconButton(onClick = { onClick.invoke() }) {
                 Icon(
                     imageVector = imageVector,
                     modifier = Modifier

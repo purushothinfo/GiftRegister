@@ -2252,3 +2252,4 @@ pimodel/build/tmp/kotlin-classes/release/com/webcroptech/pimodel/Viewport.class
 pimodel/build/tmp/kotlin-classes/release/META-INF/pimodel_release.kotlin_module
 PiNavigation/src/main/java/com/piappstudio/pinavigation/ErrorInfo.kt
 PiNavigation/src/main/java/com/piappstudio/pinavigation/ErrorManager.kt
+*.xml
