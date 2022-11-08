@@ -64,6 +64,11 @@
     <string name="google_drive_backup">Google Drive Backup</string>
     <string name="contact_us">Contact Us</string>
     <string name="filter">Filter</string>
+    <string name="delete">Delete</string>
+    <string name="icons">Icons</string>
+    <string name="btn_ok"> Ok</string>
+    <string name="title_yes"> Yes</string>
+    <string name="btn_no">No</string>
 
 
 </resources>
