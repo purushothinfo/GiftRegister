@@ -252,8 +252,10 @@ fun GuestListScreen(
                                 var showDeleteOption by remember { mutableStateOf(false) }
                                 if (showDeleteOption) {
                                     PiDialog(
-                                        title = ("Title_Delete_Address"),
-                                        message = ("delete_address_msg"),
+                                        title = stringResource(id = R.string.delete_title),
+                                        message = stringResource(id = R.string.delete_message),
+                                        lottieImages=R.raw.delete,
+
                                         onClick = { index ->
                                             showDeleteOption = false
                                             if (index == 1) {

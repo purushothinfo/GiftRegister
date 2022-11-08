@@ -57,8 +57,11 @@ fun EventListScreen(
     lstEvents: List<EventSummary>,
     onClickSetting: () -> Unit,
     onClickFloatingAction: () -> Unit,
-    onClickEventItem: ((eventInfo: EventInfo?) -> Unit)? = null
-) {
+    onClickDeleteItem: ((eventInfo: EventInfo) -> Unit)? = null,
+
+    onClickEventItem: ((eventInfo: EventInfo?) -> Unit)? = null,
+
+    ) {
 
     Scaffold(topBar = {
         SmallTopAppBar(title = {
@@ -96,11 +99,13 @@ fun EventListScreen(
                     var showDeleteOption by remember { mutableStateOf(false) }
                     if (showDeleteOption) {
                         PiDialog(
-                            title = ("Title_Delete_Address"),
-                            message = ("delete_address_msg"),
+                            title = (stringResource(R.string.delete_title)),
+                            message = (stringResource(R.string.delete_message)),
+                            lottieImages = R.raw.delete,
                             onClick = { index ->
                                 showDeleteOption = false
                                 if (index == 1) {
+                                    onClickDeleteItem?.invoke(event.eventInfo)
 
                                 }
                             },
@@ -167,7 +172,8 @@ fun EventListScreen(
                                         verticalArrangement = Arrangement.Center,
                                         horizontalAlignment = Alignment.CenterHorizontally
                                     ) {
-                                        IconButton(onClick = {                                              showDeleteOption = true
+                                        IconButton(onClick = {
+                                            showDeleteOption = true
                                             showDeleteOption = true
                                         }) {
                                             Icon(

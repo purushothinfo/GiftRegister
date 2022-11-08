@@ -69,6 +69,8 @@
     <string name="btn_ok"> Ok</string>
     <string name="title_yes"> Yes</string>
     <string name="btn_no">No</string>
+    <string name="delete_title">Are you really wants to Delete?</string>
+    <string name="delete_message">\"This operation cannot be revocable,Please press yes to continue \"</string>
 
 
 </resources>

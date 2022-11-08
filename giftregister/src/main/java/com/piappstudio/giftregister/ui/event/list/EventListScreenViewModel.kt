@@ -8,6 +8,7 @@ package com.piappstudio.giftregister.ui.event.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.piappstudio.pimodel.EventInfo
 import com.piappstudio.pimodel.EventSummary
 import com.piappstudio.pimodel.database.PiDataRepository
 import com.piappstudio.pinavigation.NavManager
@@ -27,5 +28,9 @@ class EventListScreenViewModel @Inject constructor(private val piDataRepository:
         viewModelScope.launch {
             _eventList.update { piDataRepository.fetchEvents() }
         }
+    }
+
+    fun delete(eventInfo: EventInfo) {
+
     }
 }
