@@ -34,6 +34,11 @@ class PiDataRepository @Inject constructor(private val eventDao:IEventDao,
             eventDao.update(eventInfo)
         }
     }
+    suspend fun delete(eventInfo: EventInfo):Flow<Resource<Unit?>> {
+        return makeSafeApiCall {
+            eventDao.delete(eventInfo)
+        }
+    }
 
     suspend fun fetchEvents(): List<EventSummary> {
         return eventDao.fetchEvents()

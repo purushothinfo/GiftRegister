@@ -64,6 +64,9 @@ fun EventHome(viewModel: EditEventViewModel = hiltViewModel(), eventListScreenVi
             coroutineScope.launch {
                 bottomSheetScaffoldState.bottomSheetState.expand()
             }
+        },
+        onClickDeleteItem = {eventInfo->
+            eventListScreenViewModel.delete(eventInfo)
         }) {
             eventListScreenViewModel.navManager.navigate(routeInfo = NavInfo(id = Route.Home.GUEST.guestList(it)))
         }
