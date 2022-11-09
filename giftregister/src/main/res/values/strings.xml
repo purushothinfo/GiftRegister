@@ -71,6 +71,12 @@
     <string name="btn_no">No</string>
     <string name="delete_title">Are you really wants to Delete?</string>
     <string name="delete_message">\"This operation cannot be revocable,Please press yes to continue \"</string>
+    <string name="email_id">Email ID</string>
+    <string name="digital_diary">Digital Diary</string>
+    <string name="email">Email</string>
+    <string name="gmail_id">Piappstudio@gmail.com</string>
+    <string name="fresh_look">Fresh Look</string>
+    <string name="piappstudio_gmail">piappstudio@gmail.com</string>
 
 
 </resources>
