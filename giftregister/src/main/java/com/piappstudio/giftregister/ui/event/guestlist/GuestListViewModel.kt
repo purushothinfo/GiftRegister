@@ -27,7 +27,8 @@ import javax.inject.Inject
 data class GuestListState(
     val lstGuest: List<GuestInfo>,
     val searchOption: SearchOption,
-    val filteredItem: Map<String, List<GuestInfo>>
+    val filteredItem: Map<String, List<GuestInfo>>,
+    val progress:Resource.Status = Resource.Status.NONE
 )
 
 @HiltViewModel
@@ -145,24 +146,24 @@ class GuestListViewModel @Inject constructor(
         }
         return 0.0
     }
+
+    fun delete(guest: GuestInfo) {
+        viewModelScope.launch (Dispatchers.IO) {
+            piDataRepository.delete(guest).onEach { result->
+                if (result.status == Resource.Status.SUCCESS) {
+                    fetchGuest()
+                    _guestListState.update { it.copy(progress = result.status) }
+                } else {
+                    _guestListState.update { it.copy(progress = result.status) }
+                }
+
+            }.collect()
+
+        }
+
+    }
+
 }
-
-
-/**
- * Map<Key, Value>
- *    Map<String, List<Guest>
- *       ["Cash" -> [
- *       "Gund",
- *       "Marsha",
- *       "Gowtham"
- *       ]
- *       ["Gold"-> [ "Suresh"]
- *
- *
- *
- *
- * */
-
 
 data class SearchOption(val text: String? = null, val filterOption: FilterOption = FilterOption())
 

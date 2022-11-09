@@ -24,12 +24,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.piappstudio.giftregister.R
 import com.piappstudio.pimodel.Resource
 import com.piappstudio.pitheme.component.PiErrorView
 import com.piappstudio.pitheme.component.PiProgressIndicator
-import com.piappstudio.pitheme.component.piTopBar
 import com.piappstudio.pitheme.theme.Dimen
 
 @OptIn(ExperimentalMaterial3Api::class)

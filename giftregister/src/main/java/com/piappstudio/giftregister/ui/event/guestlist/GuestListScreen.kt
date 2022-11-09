@@ -46,12 +46,10 @@ import com.piappstudio.giftregister.ui.theme.Cash
 import com.piappstudio.giftregister.ui.theme.Diamond
 import com.piappstudio.giftregister.ui.theme.Gift
 import com.piappstudio.giftregister.ui.theme.People
+import com.piappstudio.pimodel.*
 import com.piappstudio.pimodel.Constant.EMPTY_STRING
-import com.piappstudio.pimodel.EventInfo
-import com.piappstudio.pimodel.GiftType
-import com.piappstudio.pimodel.GuestInfo
-import com.piappstudio.pimodel.toCurrency
 import com.piappstudio.pinavigation.NavInfo
+import com.piappstudio.pitheme.component.PiProgressIndicator
 import com.piappstudio.pitheme.component.getColor
 import com.piappstudio.pitheme.component.piTopBar
 import com.piappstudio.pitheme.route.Route
@@ -89,6 +87,10 @@ fun GuestListScreen(
     }
 
     val guestListState by viewModel.guestListState.collectAsState()
+
+    if (guestListState.progress == Resource.Status.LOADING) {
+        PiProgressIndicator()
+    }
 
     val lstGuest = guestListState.lstGuest
 
@@ -249,6 +251,13 @@ fun GuestListScreen(
 
                             items(list) { guest ->
                                 // Rendering the row
+                                var unread by remember { mutableStateOf(false) }
+                                val dismissState = rememberDismissState(
+                                    confirmStateChange = {
+                                        if (it == DismissValue.DismissedToEnd) unread = !unread
+                                        it != DismissValue.DismissedToEnd
+                                    }
+                                )
                                 var showDeleteOption by remember { mutableStateOf(false) }
                                 if (showDeleteOption) {
                                     PiDialog(
@@ -258,24 +267,20 @@ fun GuestListScreen(
 
                                         onClick = { index ->
                                             showDeleteOption = false
+                                            coroutineScope.launch {
+                                                dismissState.animateTo(DismissValue.Default)
+                                            }
                                             if (index == 1) {
-
+                                                viewModel.delete(guest)
                                             }
                                         },
                                         enableCancel = true
                                     )
                                 }
 
-                                var unread by remember { mutableStateOf(false) }
-                                val dismissState = rememberDismissState(
-                                    confirmStateChange = {
-                                        if (it == DismissValue.DismissedToEnd) unread = !unread
-                                        it != DismissValue.DismissedToEnd
-                                    }
-                                )
+
                                 SwipeToDismiss(
                                     state = dismissState,
-                                    modifier = Modifier.padding(vertical = 4.dp),
                                     directions = setOf(
                                         DismissDirection.StartToEnd,
                                         DismissDirection.EndToStart
@@ -356,12 +361,7 @@ fun GuestListScreen(
                                         }
                                     },
                                     dismissContent = {
-                                        Card(
-                                            elevation = animateDpAsState(
-                                                if (dismissState.dismissDirection != null) 4.dp else 0.dp
-                                            ).value
-
-                                        ) {
+                                        Card{
                                             RenderGuestListView(
                                                 guestInfo = guest,
                                                 viewModel,
