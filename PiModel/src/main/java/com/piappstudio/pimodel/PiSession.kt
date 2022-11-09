@@ -14,4 +14,6 @@ import javax.inject.Singleton
 class PiSession @Inject constructor() {
     var appName:String?=null
     var packageName:String?=null
+    var appVersion:String? = null
+    var buildNumber:String? = null
 }
