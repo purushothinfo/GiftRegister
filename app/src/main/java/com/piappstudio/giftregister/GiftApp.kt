@@ -38,6 +38,9 @@ class GiftApp : Application(), Configuration.Provider {
         }
         piSession.appName = applicationContext.getString(R.string.app_name)
         piSession.packageName = BuildConfig.APPLICATION_ID
+        piSession.appVersion = BuildConfig.VERSION_NAME
+        piSession.buildNumber = BuildConfig.VERSION_CODE.toString()
+
     }
 
     override fun getWorkManagerConfiguration() =

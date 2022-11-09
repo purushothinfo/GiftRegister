@@ -20,7 +20,7 @@ import com.piappstudio.pitheme.route.Route
 import com.piappstudio.pitheme.theme.Dimen
 
 @Composable
-fun PiMediumTopAppBar(title:String, navManager: NavManager) {
+fun PiMediumTopAppBar(title:String, navManager: NavManager?=null) {
     MediumTopAppBar(
         title = {
             Text(
@@ -31,7 +31,7 @@ fun PiMediumTopAppBar(title:String, navManager: NavManager) {
         colors = TopAppBarDefaults.smallTopAppBarColors(MaterialTheme.colorScheme.onPrimary),
         navigationIcon = {
             IconButton(onClick = {
-                navManager.navigate(routeInfo = NavInfo(Route.Control.Back))
+                navManager?.navigate(routeInfo = NavInfo(Route.Control.Back))
             }) {
                 Icon(
                     Icons.Default.ArrowBack,

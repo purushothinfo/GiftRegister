@@ -15,6 +15,7 @@ import androidx.navigation.navigation
 import com.google.gson.Gson
 import com.piappstudio.giftregister.ui.event.EventHome
 import com.piappstudio.giftregister.ui.event.about.AboutScreen
+import com.piappstudio.giftregister.ui.event.contactus.ContactScreen
 
 import com.piappstudio.giftregister.ui.event.filter.FilterOption
 import com.piappstudio.giftregister.ui.event.filter.SortScreen
@@ -50,6 +51,9 @@ fun NavGraphBuilder.eventGraph() {
         }
         composable(Route.Home.EVENT.ABOUT) {
             AboutScreen()
+        }
+        composable(Route.Home.EVENT.CONTACT_US) {
+            ContactScreen()
         }
 
 

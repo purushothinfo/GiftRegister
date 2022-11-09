@@ -77,6 +77,11 @@
     <string name="gmail_id">Piappstudio@gmail.com</string>
     <string name="fresh_look">Fresh Look</string>
     <string name="piappstudio_gmail">piappstudio@gmail.com</string>
+    <string name="youtube_link">https://www.youtube.com/piappstudio</string>
+    <string name="twitter_link">https://twitter.com/piappstudio</string>
+    <string name="linkedin_link">https://www.linkedin.com/company/piappstudio/</string>
+    <string name="facebook_link">https://www.facebook.com/realpiappstudio</string>
+    <string name="app_version">App Version: </string>
 
 
 </resources>

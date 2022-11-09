@@ -25,6 +25,7 @@ object Route {
             const val SORTSCREEN="sortscreen"
             const val EVENT_EMPTY_SCREEN ="eventemptyscreen"
             const val ABOUT="adoutscreen"
+            const val CONTACT_US = "contact_us"
         }
 
         object GUEST {

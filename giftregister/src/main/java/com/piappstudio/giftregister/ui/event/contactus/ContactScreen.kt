@@ -9,7 +9,9 @@ package com.piappstudio.giftregister.ui.event.contactus
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.TopAppBar
@@ -23,137 +25,159 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.piappstudio.giftregister.R
+import com.piappstudio.pitheme.component.PiMediumTopAppBar
 import com.piappstudio.pitheme.theme.Dimen
 
 @Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ContactScreen() {
+fun ContactScreen(viewModel: ContactScreenViewModel = hiltViewModel()) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .padding(start = 60.dp),
-
-                        text = stringResource(id =R.string.contact_us),
-                        fontWeight =FontWeight.ExtraBold,
-                        style = MaterialTheme.typography.headlineSmall,
-
-
-
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = {}) {
-                        Icon(Icons.Filled.ArrowBack, "backIcon")
-                    }
-                },
-                backgroundColor = MaterialTheme.colorScheme.onPrimary,
-                elevation = 10.dp
+            PiMediumTopAppBar(
+                title = stringResource(id = R.string.contact_us),
+                navManager = viewModel.navManager
             )
         }
-    ){
-        Column(
+    ) {
 
-
-        modifier = Modifier
-            .padding(it)
-            .padding(Dimen.double_space)
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.Start,
-    ){
-        Text(
-            text = stringResource(R.string.email_id),
-            fontWeight = FontWeight.SemiBold,
-            style = MaterialTheme.typography.titleLarge,
+        ConstraintLayout(
             modifier = Modifier
-                .padding(Dimen.space)
-                .fillMaxWidth()
-
-
-        )
-            Text(
-                text = stringResource(R.string.piappstudio_gmail), fontWeight = FontWeight.SemiBold,
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier
-                    .padding(start = Dimen.space)
-                    .fillMaxWidth())
-            Spacer(modifier = Modifier.height(Dimen.triple_space))
+                .padding(it)
+                .fillMaxSize()
+        ) {
+            val (list, appversion) = createRefs()
 
             Text(
-                text ="Our Apps",
-                fontWeight = FontWeight.SemiBold,
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier
-                    .padding(Dimen.space)
-                    .fillMaxWidth())
-
-
-            CardDetails(text = stringResource(R.string.digital_diary),
-                painter= painterResource(id =R.drawable.diary))
-
-            CardDetails(text = "Fresh Look",
-                painter= painterResource(id =R.drawable.freshlook))
-            
-            Spacer(modifier = Modifier.height(Dimen.fourth_space))
-
-            Text(
-                text ="Social Media",
-                fontWeight = FontWeight.SemiBold,
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier
-                    .padding(Dimen.space)
-                    .fillMaxWidth())
-            Spacer(modifier = Modifier.height(Dimen.double_space))
-
-
-            Row(modifier = Modifier
-               .fillMaxWidth(),
-               horizontalArrangement = Arrangement.SpaceBetween,
-               verticalAlignment = Alignment.CenterVertically) {
-
-               SocialMediaCard(painter =painterResource(id = R.drawable.youtube))
-               SocialMediaCard(painter =painterResource(id = R.drawable.twitter))
-               SocialMediaCard(painter =painterResource(id = R.drawable.linkedin))
-               SocialMediaCard(painter =painterResource(id = R.drawable.facebook))
-
-
-
-
-           }
-            Spacer(modifier = Modifier.height(Dimen.height))
-            Spacer(modifier = Modifier.height(Dimen.height))
-            Spacer(modifier = Modifier.height(Dimen.fifth_space))
-            Text(
-                text ="App Version: 1.0.0(1.0)",
+                text = stringResource(R.string.app_version) + viewModel.getAppVersion(),
                 fontWeight = FontWeight.Light,
                 style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(start=0.dp))
-    }
+                modifier = Modifier
+                    .padding(Dimen.double_space)
+                    .constrainAs(appversion) {
+                        start.linkTo(parent.start)
+                        bottom.linkTo(parent.bottom)
+                    }
+            )
 
+            val scroll = rememberScrollState()
+            Column(
+                modifier = Modifier
+                    .padding(Dimen.double_space)
+                    .verticalScroll(scroll)
+                    .constrainAs(list) {
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        top.linkTo(parent.top)
+                        bottom.linkTo(appversion.top)
+                        height = Dimension.fillToConstraints
+                    },
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.Start,
+            ) {
+                Text(
+                    text = stringResource(R.string.email_id),
+                    fontWeight = FontWeight.SemiBold,
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+                Text(
+                    text = stringResource(R.string.piappstudio_gmail),
+                    fontWeight = FontWeight.SemiBold,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(Dimen.triple_space))
+
+                Text(
+                    text = "Our Apps",
+                    fontWeight = FontWeight.SemiBold,
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+
+
+
+                CardDetails(
+                    text = stringResource(R.string.digital_diary),
+                    painter = painterResource(id = R.drawable.diary)
+                )
+
+                CardDetails(
+                    text = "Fresh Look",
+                    painter = painterResource(id = R.drawable.freshlook)
+                )
+
+                Spacer(modifier = Modifier.height(Dimen.fourth_space))
+
+                Text(
+                    text = "Social Media",
+                    fontWeight = FontWeight.SemiBold,
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(Dimen.double_space))
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+
+                    SocialMediaCard(
+                        painter = painterResource(id = R.drawable.youtube), url = stringResource(
+                            R.string.youtube_link
+                        )
+                    )
+                    SocialMediaCard(
+                        painter = painterResource(id = R.drawable.twitter), url = stringResource(
+                            R.string.twitter_link
+                        )
+                    )
+                    SocialMediaCard(
+                        painter = painterResource(id = R.drawable.linkedin), url = stringResource(
+                            R.string.linkedin_link
+                        )
+                    )
+                    SocialMediaCard(
+                        painter = painterResource(id = R.drawable.facebook), url = stringResource(
+                            R.string.facebook_link
+                        )
+                    )
+                }
+
+            }
+        }
 
 
     }
 
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CardDetails(painter:Painter, text: String)
-
-{
-    Card(modifier = Modifier
-        .fillMaxWidth()
-        .padding(Dimen.space)) {
+fun CardDetails(painter: Painter, text: String) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(Dimen.space)
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -162,14 +186,16 @@ fun CardDetails(painter:Painter, text: String)
             verticalAlignment = Alignment.CenterVertically,
         ) {
             IconButton(onClick = { }) {
-                Box(modifier = Modifier
-                    .padding(Dimen.space)) {
+                Box(
+                    modifier = Modifier
+                        .padding(Dimen.space)
+                ) {
                     Image(
                         painter = painter,
                         contentDescription = "Image",
                         modifier = Modifier
                             .clip(RoundedCornerShape(35.dp))
-                            .size(100.dp)
+                            .size(Dimen.fifth_space)
                             .padding(Dimen.space),
                         contentScale = ContentScale.Crop
                     )
@@ -179,7 +205,7 @@ fun CardDetails(painter:Painter, text: String)
             Text(
                 text = text,
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight =FontWeight.SemiBold
+                fontWeight = FontWeight.SemiBold
             )
             IconButton(onClick = {}) {
                 Icon(
@@ -198,19 +224,22 @@ fun CardDetails(painter:Painter, text: String)
 }
 
 @Composable
-fun SocialMediaCard(painter:Painter) {
+fun SocialMediaCard(painter: Painter, url: String) {
+    val uriHandler = LocalUriHandler.current
+    IconButton(onClick = {
+        // Code
+        uriHandler.openUri(url)
+    })
+    {
+        Image(
+            painter = painter,
+            contentDescription = "Image",
+            modifier = Modifier
+                .size(55.dp)
+                .padding(Dimen.space),
+            contentScale = ContentScale.Crop
+        )
 
-        IconButton(onClick = { })
-        {
-            Image(
-                painter = painter,
-                contentDescription = "Image",
-                modifier = Modifier
-                    .size(55.dp)
-                    .padding(Dimen.space),
-                contentScale = ContentScale.Crop
-            )
 
-
-        }
-  }
+    }
+}

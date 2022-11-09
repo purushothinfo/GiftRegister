@@ -54,7 +54,9 @@ fun AboutScreen(viewModel: AboutViewModel = hiltViewModel()) {
             CardDetails(
                 text = stringResource(R.string.contact_us),
 
-                imageVector = Icons.Default.NavigateNext, onClick = {}
+                imageVector = Icons.Default.NavigateNext, onClick = {
+                    viewModel.navManager.navigate(routeInfo = NavInfo(id = Route.Home.EVENT.CONTACT_US))
+                }
             )
             Divider(color = MaterialTheme.colorScheme.outline.copy(.35f))
 
