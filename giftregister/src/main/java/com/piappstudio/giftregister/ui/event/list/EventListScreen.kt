@@ -1,4 +1,4 @@
-/*
+    /*
  * **
  * Pi App Studio. All rights reserved.Copyright (c) 2022.
  *
@@ -47,6 +47,7 @@ import com.piappstudio.pimodel.toCurrency
 import com.piappstudio.pitheme.component.piShadow
 import com.piappstudio.pitheme.component.piTopBar
 import com.piappstudio.pitheme.theme.Dimen
+import kotlinx.coroutines.launch
 import java.nio.file.Files.delete
 
 // MVVM = Model- View- ViewModel
@@ -57,12 +58,10 @@ fun EventListScreen(
     lstEvents: List<EventSummary>,
     onClickSetting: () -> Unit,
     onClickFloatingAction: () -> Unit,
-    onClickDeleteItem: ((eventInfo: EventInfo) -> Unit)? = null,
+    onClickDeleteItem: ((eventSummary: EventSummary) -> Unit)? = null,
+    onClickEventItem: ((eventInfo: EventInfo?) -> Unit)? = null) {
 
-    onClickEventItem: ((eventInfo: EventInfo?) -> Unit)? = null,
-
-    ) {
-
+    val coroutine = rememberCoroutineScope()
     Scaffold(topBar = {
         SmallTopAppBar(title = {
             Text(text = stringResource(R.string.title_events))
@@ -96,6 +95,16 @@ fun EventListScreen(
 
 
                 items(lstEvents) { event ->
+
+                  
+                    var unread by remember { mutableStateOf(false) }
+                    val dismissState = rememberDismissState(
+                        confirmStateChange = {
+                            if (it == DismissValue.DismissedToEnd) unread = !unread
+                            it != DismissValue.DismissedToEnd
+                        }
+                    )
+
                     var showDeleteOption by remember { mutableStateOf(false) }
                     if (showDeleteOption) {
                         PiDialog(
@@ -104,9 +113,11 @@ fun EventListScreen(
                             lottieImages = R.raw.delete,
                             onClick = { index ->
                                 showDeleteOption = false
+                                coroutine.launch {
+                                    dismissState.reset()
+                                }
                                 if (index == 1) {
-                                    onClickDeleteItem?.invoke(event.eventInfo)
-
+                                    onClickDeleteItem?.invoke(event)
                                 }
                             },
                             enableCancel = true
@@ -114,13 +125,7 @@ fun EventListScreen(
                     }
 
 
-                    var unread by remember { mutableStateOf(false) }
-                    val dismissState = rememberDismissState(
-                        confirmStateChange = {
-                            if (it == DismissValue.DismissedToEnd) unread = !unread
-                            it != DismissValue.DismissedToEnd
-                        }
-                    )
+
                     SwipeToDismiss(
                         state = dismissState,
                         modifier = Modifier.padding(vertical = 4.dp),
