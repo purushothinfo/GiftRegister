@@ -82,6 +82,14 @@
     <string name="linkedin_link">https://www.linkedin.com/company/piappstudio/</string>
     <string name="facebook_link">https://www.facebook.com/realpiappstudio</string>
     <string name="app_version">App Version: </string>
+    <string name="image">image Update</string>
+    <string name="time_to_update">Time To Update!</string>
+    <string name="we_add_lost_of_new_features_and">We added lost of new features and</string>
+    <string name="fix_some_bug_to_make_your_exprince_as">fix some bugs to make your experience as</string>
+    <string name="smooth_as_possible">Smooth as possible</string>
+    <string name="update_app">UPDATE APP</string>
+    <string name="not_now">Not now</string>
+    <string name="update_title">Update Screen</string>
 
 
 </resources>

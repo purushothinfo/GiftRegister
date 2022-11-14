@@ -24,6 +24,7 @@ import com.piappstudio.giftregister.ui.event.list.EventEmptyScreen
 import com.piappstudio.pimodel.EventInfo
 import com.piappstudio.pitheme.route.Root
 import com.piappstudio.pitheme.route.Route
+import com.webcroptech.pihome.updateapp.UpdateScreen
 
 
 fun NavGraphBuilder.homeGraph() {
@@ -38,7 +39,7 @@ fun NavGraphBuilder.homeGraph() {
 @OptIn(ExperimentalMaterialApi::class)
 fun NavGraphBuilder.eventGraph() {
 
-    navigation(startDestination = Route.Home.EVENT.LIST, route = Root.Home.EVENTS) {
+    navigation(startDestination = Route.Home.EVENT.UPDATE, route = Root.Home.EVENTS) {
 
         composable(Route.Home.EVENT.LIST) {
             EventHome()
@@ -55,6 +56,10 @@ fun NavGraphBuilder.eventGraph() {
         composable(Route.Home.EVENT.CONTACT_US) {
             ContactScreen()
         }
+        composable(Route.Home.EVENT.UPDATE){
+            UpdateScreen()
+        }
+
 
 
     }

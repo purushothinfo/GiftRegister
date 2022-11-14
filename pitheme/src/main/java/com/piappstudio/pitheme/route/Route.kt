@@ -26,6 +26,7 @@ object Route {
             const val EVENT_EMPTY_SCREEN ="eventemptyscreen"
             const val ABOUT="adoutscreen"
             const val CONTACT_US = "contact_us"
+            const val UPDATE ="update"
         }
 
         object GUEST {
