@@ -6,10 +6,7 @@
 
 package com.piappstudio.pimodel.database.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.piappstudio.pimodel.GuestInfo
 import com.piappstudio.pimodel.MediaInfo
 
@@ -20,6 +17,12 @@ interface IGuestDao {
 
     @Update
     suspend fun update(guestInfo: GuestInfo)
+
+    @Delete
+    suspend fun delete(guestInfo: GuestInfo)
+
+    @Query ("DELETE FROM guestinfo where eventId = :eventId")
+    suspend fun delete(eventId: Long)
 
     @Query("SELECT * FROM guestinfo where eventId = :eventId")
     suspend fun fetchGuest(eventId:Long):List<GuestInfo>

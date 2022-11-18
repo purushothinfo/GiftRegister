@@ -8,8 +8,12 @@ package com.piappstudio.giftregister.ui.event.guestlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.piappstudio.giftregister.R
+import com.piappstudio.giftregister.ui.event.filter.FilterOption
+import com.piappstudio.pimodel.Constant.EMPTY_STRING
 import com.piappstudio.pimodel.GuestInfo
 import com.piappstudio.pimodel.Resource
+import com.piappstudio.pimodel.ResourceHelper
 import com.piappstudio.pimodel.database.PiDataRepository
 import com.piappstudio.pinavigation.NavManager
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,24 +23,45 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
+
+data class GuestListState(
+    val lstGuest: List<GuestInfo>,
+    val searchOption: SearchOption,
+    val filteredItem: Map<String, List<GuestInfo>>,
+    val progress:Resource.Status = Resource.Status.NONE
+)
+
 @HiltViewModel
 class GuestListViewModel @Inject constructor(
     private val piDataRepository: PiDataRepository,
-    val navManager: NavManager
+    val navManager: NavManager,
+    private val resourceHelper: ResourceHelper
 ) : ViewModel() {
 
     var selectedEventId: Long = 0
+
+
     private val _lstGuest: MutableStateFlow<List<GuestInfo>> = MutableStateFlow(emptyList())
-    val lstGuest: StateFlow<List<GuestInfo>> = _lstGuest
+
+    private val _guestListState =
+        MutableStateFlow(
+            GuestListState(
+                lstGuest = emptyList(),
+                searchOption = SearchOption(),
+                emptyMap()
+            )
+        )
+    val guestListState: StateFlow<GuestListState> = _guestListState
+
+
     private val _selectedGiftInfo: MutableStateFlow<GuestInfo> = MutableStateFlow(GuestInfo())
     val selectedGiftInfo: StateFlow<GuestInfo> = _selectedGiftInfo
-
     fun updateSelectedGiftInfo(guestInfo: GuestInfo?) {
         _selectedGiftInfo.update { guestInfo ?: GuestInfo() }
     }
 
     fun fetchGuest() {
-        viewModelScope.launch (Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             Timber.d("Fetching event for $selectedEventId")
             piDataRepository.fetchGuest(selectedEventId).onEach { result ->
                 Timber.d("Status ${result.status}")
@@ -44,6 +69,8 @@ class GuestListViewModel @Inject constructor(
                     result.data?.let { guestList ->
                         Timber.d("Data size: ${guestList.size}")
                         _lstGuest.value = guestList
+                        _guestListState.update { it.copy(lstGuest = guestList) }
+                        applyFilter()
                     }
                 }
 
@@ -53,9 +80,90 @@ class GuestListViewModel @Inject constructor(
 
     }
 
-    fun onClickAdd() {
-        Timber.d("onclick is called")
+    fun updateSearchText(text: String) {
+        _guestListState.update { it.copy(searchOption = it.searchOption.copy(text = text)) }
+        val lstFiltered = _lstGuest.value.filter {
+            it.name?.contains(text, true) == true
+                    || it.address?.contains(text, true) == true
+        }
+        _guestListState.update { it.copy(lstGuest = lstFiltered) }
+        applyFilter()
+    }
+
+    fun updateFilter(updatedOption: FilterOption) {
+        _guestListState.update { it.copy(searchOption = it.searchOption.copy(filterOption = updatedOption)) }
+        applyFilter()
+
+    }
+
+    private fun applyFilter() {
+        val filterOption = _guestListState.value.searchOption.filterOption
+        val fullList = _guestListState.value.lstGuest
+
+        val giftType = resourceHelper.getString(R.string.gift_type)
+
+        // Applied GiftType
+        val groupedItem: Map<String, List<GuestInfo>> =
+            if (filterOption.groupBy.title == giftType) {
+                fullList.groupBy { it.giftType.toString() }
+            } else {
+                fullList.groupBy { it.address?.trim()?.uppercase() ?: EMPTY_STRING }
+            }
+
+        val finalSortedMap = mutableMapOf<String, List<GuestInfo>>()
+        val sort = filterOption.sort.title
+
+        for ((key, value) in groupedItem) {
+            var sortedArray: List<GuestInfo> = emptyList()
+            when (sort) {
+                resourceHelper.getString(id = R.string.sort_name_by_ascending) -> {
+                    sortedArray = value.sortedBy { it.name }
+                }
+                resourceHelper.getString(R.string.sort_name_by_descending) -> {
+                    sortedArray = value.sortedByDescending { it.name }
+                }
+
+                resourceHelper.getString(R.string.sort_amount_by_ascending) -> {
+                    sortedArray = value.sortedBy { it.giftValue?.toPiDouble() }
+                }
+                resourceHelper.getString(R.string.sort_amount_by_descending) -> {
+                    sortedArray = value.sortedByDescending { it.giftValue?.toPiDouble() }
+                }
+            }
+            finalSortedMap[key] = sortedArray
+        }
+
+
+        _guestListState.update { it.copy(filteredItem = finalSortedMap.toSortedMap()) }
+
+    }
+
+    private fun String.toPiDouble():Double {
+        try {
+            this.toDouble()
+        } catch (ex:Exception) {
+            return 0.0
+        }
+        return 0.0
+    }
+
+    fun delete(guest: GuestInfo) {
+        viewModelScope.launch (Dispatchers.IO) {
+            piDataRepository.delete(guest).onEach { result->
+                if (result.status == Resource.Status.SUCCESS) {
+                    fetchGuest()
+                    _guestListState.update { it.copy(progress = result.status) }
+                } else {
+                    _guestListState.update { it.copy(progress = result.status) }
+                }
+
+            }.collect()
+
+        }
+
     }
 
 }
+
+data class SearchOption(val text: String? = null, val filterOption: FilterOption = FilterOption())
 

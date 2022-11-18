@@ -14,11 +14,17 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.google.gson.Gson
 import com.piappstudio.giftregister.ui.event.EventHome
+import com.piappstudio.giftregister.ui.event.about.AboutScreen
+import com.piappstudio.giftregister.ui.event.contactus.ContactScreen
+
+import com.piappstudio.giftregister.ui.event.filter.FilterOption
+import com.piappstudio.giftregister.ui.event.filter.SortScreen
 import com.piappstudio.giftregister.ui.event.guestlist.GuestHome
 import com.piappstudio.giftregister.ui.event.list.EventEmptyScreen
 import com.piappstudio.pimodel.EventInfo
 import com.piappstudio.pitheme.route.Root
 import com.piappstudio.pitheme.route.Route
+import com.webcroptech.pihome.updateapp.UpdateScreen
 
 
 fun NavGraphBuilder.homeGraph() {
@@ -33,14 +39,27 @@ fun NavGraphBuilder.homeGraph() {
 @OptIn(ExperimentalMaterialApi::class)
 fun NavGraphBuilder.eventGraph() {
 
-    navigation(startDestination = Route.Home.EVENT.LIST, route = Root.Home.EVENTS) {
+    navigation(startDestination = Route.Home.EVENT.UPDATE, route = Root.Home.EVENTS) {
 
         composable(Route.Home.EVENT.LIST) {
             EventHome()
         }
+        composable(Route.Home.EVENT.SORTSCREEN) {
+           SortScreen(filerOption = FilterOption())
+        }
         composable(Route.Home.EVENT.EVENT_EMPTY_SCREEN) {
             EventEmptyScreen()
         }
+        composable(Route.Home.EVENT.ABOUT) {
+            AboutScreen()
+        }
+        composable(Route.Home.EVENT.CONTACT_US) {
+            ContactScreen()
+        }
+        composable(Route.Home.EVENT.UPDATE){
+            UpdateScreen()
+        }
+
 
 
     }

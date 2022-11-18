@@ -6,10 +6,7 @@
 
 package com.piappstudio.pimodel.database.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.piappstudio.pimodel.EventInfo
 import com.piappstudio.pimodel.EventSummary
 
@@ -20,6 +17,10 @@ interface IEventDao {
 
     @Update
     suspend fun update(eventInfo: EventInfo)
+
+    @Delete
+    suspend fun delete(eventInfo: EventInfo)
+
 
     @Query ("SELECT * FROM eventinfo")
     suspend fun fetchEvents():List<EventSummary>

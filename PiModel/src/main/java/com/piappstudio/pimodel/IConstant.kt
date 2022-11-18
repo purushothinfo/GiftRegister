@@ -6,6 +6,8 @@
 
 package com.piappstudio.pimodel
 
+import android.icu.util.Currency
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -21,4 +23,12 @@ object Constant {
         val mediaDateTimeFormat = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US)
         val eventInputFormat = SimpleDateFormat("ddmmyyyy", Locale.US)
     }
+}
+
+fun Double.toCurrency(): String {
+    val currency = Currency.getInstance(Locale.getDefault())
+    val format = NumberFormat.getInstance(Locale.getDefault())
+    val value = format.format(String.format("%.2f", this).toDouble())
+
+    return "${currency.symbol} $value"
 }

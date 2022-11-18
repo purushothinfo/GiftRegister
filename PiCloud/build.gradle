@@ -66,6 +66,8 @@ dependencies {
 
     implementation project(path: ':pitheme')
     implementation project(path: ':PiModel')
+    implementation project(path: ':PiNavigation')
+
     implementation "androidx.work:work-runtime-ktx:$work_version"
 
     // Google drive authentication

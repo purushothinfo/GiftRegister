@@ -11,6 +11,7 @@ import androidx.room.Relation
 
 data class EventSummary(
     @Embedded val eventInfo: EventInfo,
+    // Primary & Secondary Key RDBMS (relationship database management system)
     @Relation(parentColumn = "id", entityColumn = "eventId")
     val lstGuestInfo: List<GuestInfo>?
 )

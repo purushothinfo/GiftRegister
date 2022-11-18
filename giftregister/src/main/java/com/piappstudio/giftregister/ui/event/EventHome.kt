@@ -18,7 +18,9 @@ import com.piappstudio.giftregister.ui.event.editevent.EditEventScreen
 import com.piappstudio.giftregister.ui.event.editevent.EditEventViewModel
 import com.piappstudio.giftregister.ui.event.list.EventListScreen
 import com.piappstudio.giftregister.ui.event.list.EventListScreenViewModel
+import com.piappstudio.pimodel.Resource
 import com.piappstudio.pinavigation.NavInfo
+import com.piappstudio.pitheme.component.PiProgressIndicator
 import com.piappstudio.pitheme.route.Root
 import com.piappstudio.pitheme.route.Route
 import kotlinx.coroutines.launch
@@ -35,6 +37,11 @@ fun EventHome(viewModel: EditEventViewModel = hiltViewModel(), eventListScreenVi
     val coroutineScope = rememberCoroutineScope()
 
     val lstEvents  by eventListScreenViewModel.eventList.collectAsState()
+
+    val progress by eventListScreenViewModel.progress.collectAsState()
+    if (progress == Resource.Status.LOADING) {
+        PiProgressIndicator()
+    }
     LaunchedEffect(key1 =Unit) {
         eventListScreenViewModel.fetchEventList()
     }
@@ -59,11 +66,14 @@ fun EventHome(viewModel: EditEventViewModel = hiltViewModel(), eventListScreenVi
     ) {
         //Content
         EventListScreen (lstEvents = lstEvents, onClickSetting = {
-            eventListScreenViewModel.navManager.navigate(routeInfo = NavInfo(id = Root.DRIVE))
+            eventListScreenViewModel.navManager.navigate(routeInfo = NavInfo(id = Route.Home.EVENT.ABOUT))
         }, onClickFloatingAction =   {
             coroutineScope.launch {
                 bottomSheetScaffoldState.bottomSheetState.expand()
             }
+        },
+        onClickDeleteItem = {eventInfo->
+            eventListScreenViewModel.delete(eventInfo)
         }) {
             eventListScreenViewModel.navManager.navigate(routeInfo = NavInfo(id = Route.Home.GUEST.guestList(it)))
         }
